@@ -47,4 +47,18 @@ public interface JitsiMeetViewListener {
      * @param data Map with a "url" key with the conference URL.
      */
     void onConferenceWillJoin(Map<String, Object> data);
+
+    /**
+     * Called when a participant was joined.
+     *
+     * @param data Map with a "url" key with the conference URL.
+     */
+    void onParticipantJoined(Map<String, Object> data);
+
+    /**
+     * Called when a participant was left.
+     *
+     * @param data Map with a "url" key with the conference URL.
+     */
+    void onParticipantLeft(Map<String, Object> data);
 }

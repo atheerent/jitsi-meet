@@ -20,9 +20,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
+import com.facebook.react.bridge.UiThreadUtil;
 import com.facebook.react.modules.core.PermissionListener;
 
 import org.jitsi.meet.sdk.log.JitsiMeetLogger;
@@ -223,5 +226,26 @@ public class JitsiMeetActivity extends FragmentActivity
     @Override
     public void onConferenceWillJoin(Map<String, Object> data) {
         JitsiMeetLogger.i("Conference will join: " + data);
+    }
+
+    @Override
+    public void onParticipantJoined(Map<String, Object> data) {
+        Log.d(TAG, "Participant Joined: " + data);
+        on("PARTICIPANT_JOINED", data);
+
+    }
+
+    @Override
+    public void onParticipantLeft(Map<String, Object> data) {
+        Log.d(TAG, "Participant Left: " + data);
+        on("PARTICIPANT_LEFT", data);
+    }
+
+    private void on(String name, Map<String, Object> data) {
+        UiThreadUtil.assertOnUiThread();
+
+        // Log with the tag "ReactNative" in order to have the log
+        // visible in react-native log-android as well.
+        Log.d("ReactNative", JitsiMeetViewListener.class.getSimpleName() + " " + name + " " + data);
     }
 }

@@ -22,7 +22,10 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.facebook.react.bridge.ReactContext;
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableNativeMap;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import org.jitsi.meet.sdk.log.JitsiMeetLogger;
 
@@ -92,6 +95,17 @@ public class JitsiMeetView extends BaseReactView<JitsiMeetViewListener>
         }
 
         return result;
+    }
+
+    public static void emitEvent(ReactContext reactContext, String eventName, @Nullable Object data) {
+        if (reactContext == null) {
+            // XXX If no ReactContext is specified, emit through the
+            // ReactContext of ReactInstanceManager. ReactInstanceManager
+            // cooperates with ReactContextUtils i.e. ReactInstanceManager will
+            // not invoke ReactContextUtils without a ReactContext.
+            ReactInstanceManagerHolder.emitEvent(eventName, data);
+        }
+        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, data);
     }
 
     public JitsiMeetView(@NonNull Context context) {
@@ -200,5 +214,13 @@ public class JitsiMeetView extends BaseReactView<JitsiMeetViewListener>
     @Override
     protected void onExternalAPIEvent(String name, ReadableMap data) {
         onExternalAPIEvent(LISTENER_METHODS, name, data);
+    }
+
+    public void sendEvent(String eventName) {
+        emitEvent(ReactInstanceManagerHolder.getReactInstanceManager().getCurrentReactContext(), eventName, null);
+    }
+
+    public void sendEvent(String eventName, WritableNativeMap map) {
+        emitEvent(ReactInstanceManagerHolder.getReactInstanceManager().getCurrentReactContext(), eventName, map);
     }
 }
