@@ -11,10 +11,14 @@ import {
 } from '../../../base/responsive-ui';
 
 import { isFilmstripVisible } from '../../functions';
+import { getLocalParticipant } from '../../../base/participants';
 
 import LocalThumbnail from './LocalThumbnail';
 import styles from './styles';
-import Thumbnail from './Thumbnail';
+import atheerStyles from './atheerStyles';
+import Thumbnail from './AtheerThumbnail';
+
+//import { setFilmstripVisible } from '../../atheerActions'
 
 const logger = require('jitsi-meet-logger').getLogger(__filename);
 
@@ -36,6 +40,8 @@ type Props = {
      * @private
      */
     _participants: Array<any>,
+
+    _participantsNumber: int,
 
     /**
      * The indicator which determines whether the filmstrip is visible.
@@ -83,7 +89,9 @@ class Filmstrip extends Component<Props> {
         // indicators such as moderator, audio and video muted, etc. For now we
         // do not have much of a choice but to continue rendering LocalThumbnail
         // as any other remote Thumbnail on Android.
-        this._separateLocalThumbnail = Platform.OS !== 'android';
+        this._separateLocalThumbnail = false;
+        this._onExpandFilmstrip = this._onExpandFilmstrip.bind(this);
+        this._onHideFilmstrip = this._onHideFilmstrip.bind(this);
     }
 
     /**
@@ -101,48 +109,61 @@ class Filmstrip extends Component<Props> {
         const filmstripStyle
             = isNarrowAspectRatio_
                 ? styles.filmstripNarrow
-                : styles.filmstripWide;
+                : atheerStyles.atheerFilmstripWide;
+
+        var filmStripLength = 100 * this.props._participantsNumber + 20;
+        this.props._visible = true;
+
+        var visibility = true;
+
+        var hideFilmStripStyle = {
+            right: filmStripLength
+        }
 
         return (
             <Container
-                style = { filmstripStyle }
-                visible = { this.props._visible }>
+                style = { filmstripStyle }>
                 {
                     this._separateLocalThumbnail
                         && !isNarrowAspectRatio_
-                        && <LocalThumbnail />
+                        && visibility
+                         && <Thumbnail participant = { this.props._localParticipant } />
                 }
-                <ScrollView
-                    horizontal = { isNarrowAspectRatio_ }
-                    showsHorizontalScrollIndicator = { false }
-                    showsVerticalScrollIndicator = { false }
-                    style = { styles.scrollView } >
-                    {
-                        !this._separateLocalThumbnail
-                            && !isNarrowAspectRatio_
-                            && <LocalThumbnail />
-                    }
-                    {
+                { visibility &&
+                    <ScrollView
+                        horizontal = { true }
+                        showsHorizontalScrollIndicator = { false }
+                        showsVerticalScrollIndicator = { false }
+                        style = { styles.scrollView } >
+                        {
+                            !this._separateLocalThumbnail
+                                && !isNarrowAspectRatio_
+                                && <Thumbnail participant = { this.props._localParticipant } />
+                        }
+                        {
 
-                        this._sort(
-                                this.props._participants,
-                                isNarrowAspectRatio_)
-                            .map(p => (
-                                <Thumbnail
-                                    key = { p.id }
-                                    participant = { p } />))
+                            this._sort(
+                                    this.props._participants,
+                                    isNarrowAspectRatio_)
+                                .map(p => (
+                                    <Thumbnail
+                                        key = { p.id }
+                                        participant = { p } />))
 
-                    }
-                    {
-                        !this._separateLocalThumbnail
-                            && isNarrowAspectRatio_
-                            && <LocalThumbnail />
-                    }
-                </ScrollView>
+                        }
+                        {
+                            !this._separateLocalThumbnail
+                                && isNarrowAspectRatio_
+                                && visibility
+                                && <Thumbnail participant = { this.props._localParticipant } />
+                        }
+                    </ScrollView>
+                }
                 {
                     this._separateLocalThumbnail
                         && isNarrowAspectRatio_
-                        && <LocalThumbnail />
+                        && visibility
+                        && <Thumbnail participant = { this.props._localParticipant } />
                 }
             </Container>
         );
@@ -176,6 +197,18 @@ class Filmstrip extends Component<Props> {
 
         return sortedParticipants;
     }
+
+    _onExpandFilmstrip() {
+         const { dispatch } = this.props;
+
+         //dispatch(setFilmstripVisible(true));
+     }
+
+      _onHideFilmstrip() {
+         const { dispatch } = this.props;
+
+          //dispatch(setFilmstripVisible(false));
+     }
 }
 
 /**
@@ -209,6 +242,8 @@ function _mapStateToProps(state) {
          */
         _participants: participants.filter(p => !p.local),
 
+        _participantsNumber: participants.length,
+
         /**
          * The indicator which determines whether the filmstrip is visible. The
          * mobile/react-native Filmstrip is visible when there are at least 2
@@ -217,7 +252,8 @@ function _mapStateToProps(state) {
          * @private
          * @type {boolean}
          */
-        _visible: isFilmstripVisible(state)
+        _visible: isFilmstripVisible(state),
+        _localParticipant: getLocalParticipant(state)
     };
 }
 

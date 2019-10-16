@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+import '../../atheer';
 import '../../analytics';
 import '../../authentication';
 import { setColorScheme } from '../../base/color-scheme';

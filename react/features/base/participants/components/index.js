@@ -1,3 +1,3 @@
 // @flow
 
-export { default as ParticipantView } from './ParticipantView';
+export { default as ParticipantView } from './AtheerParticipantView';

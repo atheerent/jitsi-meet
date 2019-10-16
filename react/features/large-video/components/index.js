@@ -1,2 +1,2 @@
-export { default as LargeVideo } from './LargeVideo';
+export { default as LargeVideo } from './AtheerLargeVideo';
 export * from './LargeVideoBackground';

@@ -1,0 +1,1 @@
+export const VIDEO_CALL_ZOOM = 'VIDEO_CALL_ZOOM';
