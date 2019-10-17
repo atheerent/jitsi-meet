@@ -1,0 +1,1 @@
+export const SET_THUMBNAIL_SIZE = 'SET_THUMBNAIL_SIZE';

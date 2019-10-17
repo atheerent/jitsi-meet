@@ -19,6 +19,7 @@ import {
 import { MiddlewareRegistry } from '../base/redux';
 import { appNavigate } from '../app/actions';
 import { disconnect } from '../base/connection';
+import { setThumbnailSize } from '../filmstrip/atheerActions'
 
 import { sendEvent } from '../mobile/external-api/functions';
 
@@ -37,6 +38,32 @@ emitter.addListener('hangUp', (data) => {
     logger.log('receive hangup in emitter');
     if (Store) {
         Store.dispatch(disconnect(true));
+    }
+});
+
+/*
+    required keys:
+    width
+    height
+*/
+emitter.addListener('setThumbnailSize', (data) => {
+    logger.log('receive setThumbnailSize in emitter');
+    if (Store && data != null) {
+        var width = 0;
+        var height = 0;
+        Object.keys(data).forEach((key) => {
+        if (key === 'width') {
+            logger.log('jitsi emitter receive key' + data[key]);
+            width = (data[key]);
+        }
+        if (key === 'height') {
+            logger.log('jitsi emitter receive key' + data[key]);
+            height = (data[key]);
+        }
+        if (width != 0 && height != 0) {
+            Store.dispatch(setThumbnailSize(width, height));
+        }
+        });
     }
 });
 
