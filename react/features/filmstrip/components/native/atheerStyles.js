@@ -40,8 +40,8 @@ export default {
     },
 
     thumbnailVideo: {
-        height: 150,
-        width: 110
+        height: 100,
+        width: 100
     },
 
     thumbnailTools: {

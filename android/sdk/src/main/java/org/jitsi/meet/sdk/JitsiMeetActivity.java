@@ -20,12 +20,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
 import com.facebook.react.bridge.UiThreadUtil;
+import com.facebook.react.bridge.WritableNativeMap;
 import com.facebook.react.modules.core.PermissionListener;
 
 import org.jitsi.meet.sdk.log.JitsiMeetLogger;
@@ -119,6 +121,12 @@ public class JitsiMeetActivity extends FragmentActivity
 
     public void join(JitsiMeetConferenceOptions options) {
         getJitsiView().join(options);
+
+        /*
+        * WritableNativeMap map = new WritableNativeMap();
+        map.putString(USER_HASH, targetUserhash);
+        meetView.sendEvent(DISABLE_FLASHLIGHT_EVENT, map);
+        * */
     }
 
     public void leave() {
@@ -215,6 +223,18 @@ public class JitsiMeetActivity extends FragmentActivity
         JitsiMeetLogger.i("Conference joined: " + data);
         // Launch the service for the ongoing notification.
         JitsiMeetOngoingConferenceService.launch(this);
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // Do something after 5s = 5000ms
+                WritableNativeMap map = new WritableNativeMap();
+                map.putInt("width", 150);
+                map.putInt("height", 100);
+                getJitsiView().sendEvent("setThumbnailSize", map);
+            }
+        }, 3000);
+
     }
 
     @Override

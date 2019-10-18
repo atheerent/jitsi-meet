@@ -35,6 +35,7 @@ const logger = require('jitsi-meet-logger').getLogger(__filename);
 
 export const DEFAULT_THUMBNAIL_HEIGHT = 80;
 export const DEFAULT_THUMBNAIL_WIDTH = 100;
+export const DEFAULT_THUMBNAIL_WIDTH_INTERVAL = 20;
 
 /**
  * Thumbnail component's property types.
@@ -80,6 +81,8 @@ type Props = {
      * The Redux representation of the participant's video track.
      */
     _videoTrack: Object,
+
+    _thumbnailStyle?: Object,
 
     /**
      * If true, there will be no color overlay (tint) on the thumbnail
@@ -130,17 +133,33 @@ function Thumbnail(props: Props) {
         _renderModeratorIndicator: renderModeratorIndicator,
         _styles,
         _videoTrack: videoTrack,
+        _thumbnailStyle,
         disableTint,
         participant,
         renderDisplayName,
         tileView
     } = props;
 
-    let styleDimension = {
+    var styleDimension = {
         width: DEFAULT_THUMBNAIL_WIDTH,
         height: DEFAULT_THUMBNAIL_HEIGHT
     }
 
+    var thumbnailContainerOverride = {
+        width: DEFAULT_THUMBNAIL_WIDTH,
+        height: DEFAULT_THUMBNAIL_HEIGHT
+    }
+
+    if (_thumbnailStyle.thumbnailWidth && _thumbnailStyle.thumbnailWidth > 0) {
+        styleDimension.width = _thumbnailStyle.thumbnailWidth;
+        thumbnailContainerOverride.width = _thumbnailStyle.thumbnailWidth + DEFAULT_THUMBNAIL_WIDTH_INTERVAL;
+    }
+    if (_thumbnailStyle.thumbnailHeight && _thumbnailStyle.thumbnailHeight > 0) {
+        styleDimension.height = _thumbnailStyle.thumbnailHeight;
+        thumbnailContainerOverride.height = _thumbnailStyle.thumbnailHeight;
+    }
+
+    logger.log('hao check width', styleDimension.width);
     const participantId = participant.id;
     const participantInLargeVideo
         = participantId === largeVideo.participantId;
@@ -148,7 +167,7 @@ function Thumbnail(props: Props) {
     const isScreenShare = videoTrack && videoTrack.videoType === VIDEO_TYPE.DESKTOP;
 
     return (
-        <Container style = { atheerStyles.thumbnailContainer }>
+        <Container style = { [atheerStyles.thumbnailContainer, thumbnailContainerOverride] }>
             <Container
                 onClick = { _onClick }
                 onLongPress = { participant.local ? undefined : _onShowRemoteVideoMenu }
@@ -261,6 +280,7 @@ function _mapStateToProps(state, ownProps) {
     // the stage i.e. as a large video.
     const largeVideo = state['features/large-video'];
     const tracks = state['features/base/tracks'];
+    const filmstrip = state['features/filmstrip'];
     const { participant } = ownProps;
     const id = participant.id;
     const audioTrack
@@ -271,6 +291,7 @@ function _mapStateToProps(state, ownProps) {
     const renderDominantSpeakerIndicator = participant.dominantSpeaker && participantCount > 2;
     const _isEveryoneModerator = isEveryoneModerator(state);
     const renderModeratorIndicator = !_isEveryoneModerator && participant.role === PARTICIPANT_ROLE.MODERATOR;
+    const thumbnailStyle = filmstrip.thumbnailStyle;
 
     return {
         _audioMuted: audioTrack?.muted ?? true,
@@ -278,7 +299,8 @@ function _mapStateToProps(state, ownProps) {
         _renderDominantSpeakerIndicator: renderDominantSpeakerIndicator,
         _renderModeratorIndicator: renderModeratorIndicator,
         _styles: ColorSchemeRegistry.get(state, 'Thumbnail'),
-        _videoTrack: videoTrack
+        _videoTrack: videoTrack,
+        _thumbnailStyle: thumbnailStyle
     };
 }
 
