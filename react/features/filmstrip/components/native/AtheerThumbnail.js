@@ -153,6 +153,9 @@ function Thumbnail(props: Props) {
     if (_thumbnailStyle.thumbnailWidth && _thumbnailStyle.thumbnailWidth > 0) {
         styleDimension.width = _thumbnailStyle.thumbnailWidth;
         thumbnailContainerOverride.width = _thumbnailStyle.thumbnailWidth + DEFAULT_THUMBNAIL_WIDTH_INTERVAL;
+        if (_thumbnailStyle.thumbnailWidthInterval && _thumbnailStyle.thumbnailWidthInterval > 0) {
+            thumbnailContainerOverride.width = _thumbnailStyle.thumbnailWidth + _thumbnailStyle.thumbnailWidthInterval;
+        }
     }
     if (_thumbnailStyle.thumbnailHeight && _thumbnailStyle.thumbnailHeight > 0) {
         styleDimension.height = _thumbnailStyle.thumbnailHeight;

@@ -228,10 +228,15 @@ public class JitsiMeetActivity extends FragmentActivity
             @Override
             public void run() {
                 // Do something after 5s = 5000ms
-                WritableNativeMap map = new WritableNativeMap();
+                /*WritableNativeMap map = new WritableNativeMap();
                 map.putInt("width", 150);
                 map.putInt("height", 100);
-                getJitsiView().sendEvent("setThumbnailSize", map);
+                map.putInt("widthInterval", 10);
+                getJitsiView().sendEvent("setThumbnailSize", map);*/
+
+                WritableNativeMap map = new WritableNativeMap();
+                map.putBoolean("audioState", true);
+                getJitsiView().sendEvent("toggleAudio", map);
             }
         }, 3000);
 

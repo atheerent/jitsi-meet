@@ -13,6 +13,8 @@ import {
 } from './actionTypes';
 import { CAMERA_FACING_MODE, VIDEO_MUTISM_AUTHORITY } from './constants';
 
+const logger = require('jitsi-meet-logger').getLogger(__filename);
+
 /**
  * Action to adjust the availability of the local audio.
  *

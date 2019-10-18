@@ -23,8 +23,8 @@ export default {
         right: 0,
         justifyContent: 'flex-end',
         width: 500,
-        right: 30,
-        top: 10
+        right: 10,
+        top: 0
     },
 
     thumbnailContainer: {

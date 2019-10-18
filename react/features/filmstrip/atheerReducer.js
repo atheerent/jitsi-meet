@@ -72,7 +72,8 @@ ReducerRegistry.register(
                 ...state,
                 thumbnailStyle: {
                     thumbnailWidth: action.width,
-                    thumbnailHeight: action.height
+                    thumbnailHeight: action.height,
+                    thumbnailWidthInterval: action.widthInterval
                 }
             };
         }

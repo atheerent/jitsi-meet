@@ -19,7 +19,11 @@ import {
 import { MiddlewareRegistry } from '../base/redux';
 import { appNavigate } from '../app/actions';
 import { disconnect } from '../base/connection';
-import { setThumbnailSize } from '../filmstrip/atheerActions'
+import { setThumbnailSize } from '../filmstrip/atheerActions';
+import {
+    setAudioMuted,
+    toggleCameraFacingMode
+} from '../base/media/actions';
 
 import { sendEvent } from '../mobile/external-api/functions';
 
@@ -34,6 +38,9 @@ var jitsiHashDict = {};
 var Store: Object;
 
 // Atheer Emitters
+/*
+    required keys:
+*/
 emitter.addListener('hangUp', (data) => {
     logger.log('receive hangup in emitter');
     if (Store) {
@@ -43,26 +50,58 @@ emitter.addListener('hangUp', (data) => {
 
 /*
     required keys:
+    audioState
+*/
+emitter.addListener('toggleAudio', (data) => {
+    logger.log('receive toggleAudio in emitter');
+    if (Store && data != null) {
+        Object.keys(data).forEach((key) => {
+            if (key === 'audioState') {
+                logger.log('jitsi emitter receive key' + data[key]);
+                Store.dispatch(setAudioMuted(data[key], true));
+            }
+        });
+    }
+});
+
+/*
+    required keys:
+*/
+emitter.addListener('toggleCamera', (data) => {
+    logger.log('receive toggleCamera in emitter');
+    if (Store && data != null) {
+        Store.dispatch(toggleCameraFacingMode());
+    }
+});
+
+/*
+    required keys:
     width
     height
+    widthInterval
 */
 emitter.addListener('setThumbnailSize', (data) => {
     logger.log('receive setThumbnailSize in emitter');
     if (Store && data != null) {
         var width = 0;
         var height = 0;
+        var widthInterval = 0;
         Object.keys(data).forEach((key) => {
-        if (key === 'width') {
-            logger.log('jitsi emitter receive key' + data[key]);
-            width = (data[key]);
-        }
-        if (key === 'height') {
-            logger.log('jitsi emitter receive key' + data[key]);
-            height = (data[key]);
-        }
-        if (width != 0 && height != 0) {
-            Store.dispatch(setThumbnailSize(width, height));
-        }
+            if (key === 'width') {
+                logger.log('jitsi emitter receive key' + data[key]);
+                width = (data[key]);
+            }
+            if (key === 'height') {
+                logger.log('jitsi emitter receive key' + data[key]);
+                height = (data[key]);
+            }
+            if (key === 'widthInterval') {
+                logger.log('jitsi emitter receive key' + data[key]);
+                widthInterval = (data[key]);
+            }
+            if (width != 0 && height != 0) {
+                Store.dispatch(setThumbnailSize(width, height, widthInterval));
+            }
         });
     }
 });
