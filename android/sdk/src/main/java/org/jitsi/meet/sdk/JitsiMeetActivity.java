@@ -236,7 +236,7 @@ public class JitsiMeetActivity extends FragmentActivity
 
                 WritableNativeMap map = new WritableNativeMap();
                 map.putBoolean("audioState", true);
-                getJitsiView().sendEvent("toggleAudio", map);
+                getJitsiView().sendEvent("muteAudio", map);
             }
         }, 3000);
 

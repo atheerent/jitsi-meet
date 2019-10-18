@@ -22,10 +22,13 @@ import { disconnect } from '../base/connection';
 import { setThumbnailSize } from '../filmstrip/atheerActions';
 import {
     setAudioMuted,
+    setVideoMuted,
     toggleCameraFacingMode
 } from '../base/media/actions';
 
 import { sendEvent } from '../mobile/external-api/functions';
+
+import { ATHEER_LISTENERS } from './atheerListeners'
 
 const logger = require('jitsi-meet-logger').getLogger(__filename);
 
@@ -41,7 +44,7 @@ var Store: Object;
 /*
     required keys:
 */
-emitter.addListener('hangUp', (data) => {
+emitter.addListener(ATHEER_LISTENERS.HANG_UP, (data) => {
     logger.log('receive hangup in emitter');
     if (Store) {
         Store.dispatch(disconnect(true));
@@ -52,8 +55,8 @@ emitter.addListener('hangUp', (data) => {
     required keys:
     audioState
 */
-emitter.addListener('toggleAudio', (data) => {
-    logger.log('receive toggleAudio in emitter');
+emitter.addListener(ATHEER_LISTENERS.MUTE_AUDIO, (data) => {
+    logger.log('receive muteAudio in emitter');
     if (Store && data != null) {
         Object.keys(data).forEach((key) => {
             if (key === 'audioState') {
@@ -66,8 +69,24 @@ emitter.addListener('toggleAudio', (data) => {
 
 /*
     required keys:
+    videoState
 */
-emitter.addListener('toggleCamera', (data) => {
+emitter.addListener(ATHEER_LISTENERS.MUTE_VIDEO, (data) => {
+    logger.log('receive muteVideo in emitter');
+    if (Store && data != null) {
+        Object.keys(data).forEach((key) => {
+            if (key === 'videoState') {
+                logger.log('jitsi emitter receive key' + data[key]);
+                Store.dispatch(setVideoMuted(data[key]));
+            }
+        });
+    }
+});
+
+/*
+    required keys:
+*/
+emitter.addListener(ATHEER_LISTENERS.TOGGLE_CAMERA, (data) => {
     logger.log('receive toggleCamera in emitter');
     if (Store && data != null) {
         Store.dispatch(toggleCameraFacingMode());
@@ -80,7 +99,7 @@ emitter.addListener('toggleCamera', (data) => {
     height
     widthInterval
 */
-emitter.addListener('setThumbnailSize', (data) => {
+emitter.addListener(ATHEER_LISTENERS.SET_THUMBNAIL_SIZE, (data) => {
     logger.log('receive setThumbnailSize in emitter');
     if (Store && data != null) {
         var width = 0;
@@ -141,7 +160,7 @@ MiddlewareRegistry.register(store => next => action => {
     }
 
     case PARTICIPANT_JOINED:
-        logger.log('hao check participant joined');
+        logger.log('hao check participant joined', action.participant.name);
         logger.log('jitsi react emitter receive message participant_joined');
         userHashDict[action.participant.id] = action.participant.name;
         jitsiHashDict[action.participant.name] = action.participant.id;

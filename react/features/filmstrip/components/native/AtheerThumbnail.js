@@ -162,7 +162,6 @@ function Thumbnail(props: Props) {
         thumbnailContainerOverride.height = _thumbnailStyle.thumbnailHeight;
     }
 
-    logger.log('hao check width', styleDimension.width);
     const participantId = participant.id;
     const participantInLargeVideo
         = participantId === largeVideo.participantId;
