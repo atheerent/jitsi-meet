@@ -111,14 +111,10 @@ class Filmstrip extends Component<Props> {
                 ? styles.filmstripNarrow
                 : atheerStyles.atheerFilmstripWide;
 
-        var filmStripLength = 100 * this.props._participantsNumber + 20;
-        this.props._visible = true;
+        //var filmStripLength = 100 * this.props._participantsNumber + 20;
+        //this.props._visible = true;
 
-        var visibility = true;
-
-        var hideFilmStripStyle = {
-            right: filmStripLength
-        }
+        var visibility = this.props._visible;
 
         return (
             <Container
@@ -223,7 +219,7 @@ class Filmstrip extends Component<Props> {
  */
 function _mapStateToProps(state) {
     const participants = state['features/base/participants'];
-    const { enabled } = state['features/filmstrip'];
+    const { enabled, visible } = state['features/filmstrip'];
 
     return {
         /**
@@ -252,7 +248,7 @@ function _mapStateToProps(state) {
          * @private
          * @type {boolean}
          */
-        _visible: isFilmstripVisible(state),
+        _visible: isFilmstripVisible(state) && visible,
         _localParticipant: getLocalParticipant(state)
     };
 }

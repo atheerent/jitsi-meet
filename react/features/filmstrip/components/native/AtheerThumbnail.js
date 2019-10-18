@@ -245,13 +245,9 @@ function _mapDispatchToProps(dispatch: Function, ownProps): Object {
          * @returns {void}
          */
         _onClick() {
-            const { participant, tileView } = ownProps;
+            const { participant } = ownProps;
 
-            if (tileView) {
-                dispatch(toggleToolboxVisible());
-            } else {
-                dispatch(pinParticipant(participant.pinned ? null : participant.id));
-            }
+            dispatch(pinParticipant(participant.id));
         },
 
         /**

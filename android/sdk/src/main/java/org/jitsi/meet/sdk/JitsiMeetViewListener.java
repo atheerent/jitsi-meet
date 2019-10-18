@@ -61,4 +61,11 @@ public interface JitsiMeetViewListener {
      * @param data Map with a "url" key with the conference URL.
      */
     void onParticipantLeft(Map<String, Object> data);
+
+    /**
+     * Called when a participant was pinned.
+     *
+     * @param data Map with a "url" key with the conference URL.
+     */
+    void onPinParticipant(Map<String, Object> data);
 }

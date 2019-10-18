@@ -234,11 +234,15 @@ public class JitsiMeetActivity extends FragmentActivity
                 map.putInt("widthInterval", 10);
                 getJitsiView().sendEvent("setThumbnailSize", map);*/
 
-                WritableNativeMap map = new WritableNativeMap();
+                /*WritableNativeMap map = new WritableNativeMap();
                 map.putBoolean("audioState", true);
-                getJitsiView().sendEvent("muteAudio", map);
+                getJitsiView().sendEvent("muteAudio", map);*/
+
+                WritableNativeMap map = new WritableNativeMap();
+                map.putBoolean("filmstripState", false);
+                getJitsiView().sendEvent("hideFilmstrip", map);
             }
-        }, 3000);
+        }, 2000);
 
     }
 
@@ -264,6 +268,12 @@ public class JitsiMeetActivity extends FragmentActivity
     public void onParticipantLeft(Map<String, Object> data) {
         Log.d(TAG, "Participant Left: " + data);
         on("PARTICIPANT_LEFT", data);
+    }
+
+    @Override
+    public void onPinParticipant(Map<String, Object> data) {
+        Log.d(TAG, "Pin Participant: " + data);
+        on("PIN_PARTICIPANT", data);
     }
 
     private void on(String name, Map<String, Object> data) {

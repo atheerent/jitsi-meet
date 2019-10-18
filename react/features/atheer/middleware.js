@@ -16,10 +16,19 @@ import {
     CONNECTION_DISCONNECTED,
     CONNECTION_FAILED
 } from '../base/connection';
+import {
+    SELECT_LARGE_VIDEO_PARTICIPANT
+} from '../large-video';
+import {
+    PIN_PARTICIPANT
+} from '../base/participants';
 import { MiddlewareRegistry } from '../base/redux';
 import { appNavigate } from '../app/actions';
 import { disconnect } from '../base/connection';
-import { setThumbnailSize } from '../filmstrip/atheerActions';
+import {
+    setThumbnailSize,
+    setFilmstripHidden
+} from '../filmstrip/atheerActions';
 import {
     setAudioMuted,
     setVideoMuted,
@@ -28,7 +37,10 @@ import {
 
 import { sendEvent } from '../mobile/external-api/functions';
 
-import { ATHEER_LISTENERS } from './atheerListeners'
+import {
+    ATHEER_LISTENERS,
+    ATHEER_LISTENER_KEYS
+} from './atheerConstants'
 
 const logger = require('jitsi-meet-logger').getLogger(__filename);
 
@@ -45,7 +57,7 @@ var Store: Object;
     required keys:
 */
 emitter.addListener(ATHEER_LISTENERS.HANG_UP, (data) => {
-    logger.log('receive hangup in emitter');
+    logger.log('atheer jitsi receive ' + ATHEER_LISTENERS.HANG_UP + ' in emitter');
     if (Store) {
         Store.dispatch(disconnect(true));
     }
@@ -56,10 +68,10 @@ emitter.addListener(ATHEER_LISTENERS.HANG_UP, (data) => {
     audioState
 */
 emitter.addListener(ATHEER_LISTENERS.MUTE_AUDIO, (data) => {
-    logger.log('receive muteAudio in emitter');
+    logger.log('atheer jitsi receive ' + ATHEER_LISTENERS.MUTE_AUDIO + ' in emitter');
     if (Store && data != null) {
         Object.keys(data).forEach((key) => {
-            if (key === 'audioState') {
+            if (key === ATHEER_LISTENER_KEYS.AUDIO_STATE) {
                 logger.log('jitsi emitter receive key' + data[key]);
                 Store.dispatch(setAudioMuted(data[key], true));
             }
@@ -72,10 +84,10 @@ emitter.addListener(ATHEER_LISTENERS.MUTE_AUDIO, (data) => {
     videoState
 */
 emitter.addListener(ATHEER_LISTENERS.MUTE_VIDEO, (data) => {
-    logger.log('receive muteVideo in emitter');
+    logger.log('atheer jitsi receive ' + ATHEER_LISTENERS.MUTE_VIDEO + ' in emitter');
     if (Store && data != null) {
         Object.keys(data).forEach((key) => {
-            if (key === 'videoState') {
+            if (key === ATHEER_LISTENER_KEYS.VIDEO_STATE) {
                 logger.log('jitsi emitter receive key' + data[key]);
                 Store.dispatch(setVideoMuted(data[key]));
             }
@@ -87,7 +99,7 @@ emitter.addListener(ATHEER_LISTENERS.MUTE_VIDEO, (data) => {
     required keys:
 */
 emitter.addListener(ATHEER_LISTENERS.TOGGLE_CAMERA, (data) => {
-    logger.log('receive toggleCamera in emitter');
+    logger.log('atheer jitsi receive ' + ATHEER_LISTENERS.TOGGLE_CAMERA + ' in emitter');
     if (Store && data != null) {
         Store.dispatch(toggleCameraFacingMode());
     }
@@ -100,26 +112,42 @@ emitter.addListener(ATHEER_LISTENERS.TOGGLE_CAMERA, (data) => {
     widthInterval
 */
 emitter.addListener(ATHEER_LISTENERS.SET_THUMBNAIL_SIZE, (data) => {
-    logger.log('receive setThumbnailSize in emitter');
+    logger.log('atheer jitsi receive ' + ATHEER_LISTENERS.SET_THUMBNAIL_SIZE + ' in emitter');
     if (Store && data != null) {
         var width = 0;
         var height = 0;
         var widthInterval = 0;
         Object.keys(data).forEach((key) => {
-            if (key === 'width') {
+            if (key === ATHEER_LISTENER_KEYS.WIDTH) {
                 logger.log('jitsi emitter receive key' + data[key]);
                 width = (data[key]);
             }
-            if (key === 'height') {
+            if (key === ATHEER_LISTENER_KEYS.HEIGHT) {
                 logger.log('jitsi emitter receive key' + data[key]);
                 height = (data[key]);
             }
-            if (key === 'widthInterval') {
+            if (key === ATHEER_LISTENER_KEYS.WIDTH_INTERVAL) {
                 logger.log('jitsi emitter receive key' + data[key]);
                 widthInterval = (data[key]);
             }
             if (width != 0 && height != 0) {
                 Store.dispatch(setThumbnailSize(width, height, widthInterval));
+            }
+        });
+    }
+});
+
+/*
+    required keys:
+    filmstripState
+*/
+emitter.addListener(ATHEER_LISTENERS.HIDE_FILMSTRIP, (data) => {
+    logger.log('atheer jitsi receive ' + ATHEER_LISTENERS.HIDE_FILMSTRIP + ' in emitter');
+    if (Store && data != null) {
+        Object.keys(data).forEach((key) => {
+            if (key === ATHEER_LISTENER_KEYS.FILMSTRIP_STATE) {
+                logger.log('jitsi emitter receive key' + data[key]);
+                Store.dispatch(setFilmstripHidden(data[key]));
             }
         });
     }
@@ -160,33 +188,36 @@ MiddlewareRegistry.register(store => next => action => {
     }
 
     case PARTICIPANT_JOINED:
-        logger.log('hao check participant joined', action.participant.name);
-        logger.log('jitsi react emitter receive message participant_joined');
         userHashDict[action.participant.id] = action.participant.name;
         jitsiHashDict[action.participant.name] = action.participant.id;
         sendEvent(store, type,
         /* data */ {
-            participantId: action.participant.id,
-            userhash: _getAtheerUserhash(action.participant.name)
+            jitsiParticipantId: action.participant.id,
+            atheerUser: _getAtheerUserhash(action.participant.name)
         });
         break;
 
     case PARTICIPANT_LEFT:
-        logger.log('hao check participant left');
-        logger.log('jitsi react emitter receive message participant_left');
         sendEvent(store, type,
         /* data */ {
-            participantId: action.participant.id,
-            userhash: _getAtheerUserhash(userHashDict[action.participant.id])
+            jitsiParticipantId: action.participant.id,
+            atheerUser: _getAtheerUserhash(userHashDict[action.participant.id])
         });
         break;
 
     case CONNECTION_FAILED:
         break;
 
-    case LOAD_CONFIG_ERROR: {
+    case LOAD_CONFIG_ERROR:
         break;
-    }
+
+    case PIN_PARTICIPANT:
+        sendEvent(store, type,
+        /* data */ {
+            jitsiParticipantId: action.participant.id,
+            atheerUser: _getAtheerUserhash(userHashDict[action.participant.id])
+        });
+        break;
 
     case SET_ROOM:
         Store = store;

@@ -9,7 +9,8 @@ import {
 } from './actionTypes';
 
 import {
-    SET_THUMBNAIL_SIZE
+    SET_THUMBNAIL_SIZE,
+    SET_FILMSTRIP_HIDDEN
 } from './atheerActionTypes';
 
 const DEFAULT_STATE = {
@@ -62,10 +63,16 @@ ReducerRegistry.register(
             };
 
         case SET_FILMSTRIP_VISIBLE:
+            /*
+            Disable the meet default filmstrip visibility setup
             return {
                 ...state,
                 visible: action.visible
             };
+            */
+            return {
+                ...state
+            }
 
         case SET_THUMBNAIL_SIZE:
             return {
@@ -75,6 +82,12 @@ ReducerRegistry.register(
                     thumbnailHeight: action.height,
                     thumbnailWidthInterval: action.widthInterval
                 }
+            };
+
+        case SET_FILMSTRIP_HIDDEN:
+            return {
+                ...state,
+                visible: !action.filmstripState
             };
         }
 
