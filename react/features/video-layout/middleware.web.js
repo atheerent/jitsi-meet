@@ -66,6 +66,8 @@ MiddlewareRegistry.register(store => next => action => {
     }
 
     case DOMINANT_SPEAKER_CHANGED:
+        // Disable Jitsi feature that shows the video feed of the dominant user (user with the higher volume)
+        break;
         VideoLayout.onDominantSpeakerChanged(action.participant.id);
         break;
 

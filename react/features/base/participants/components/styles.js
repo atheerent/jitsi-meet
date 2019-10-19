@@ -41,5 +41,20 @@ export default createStyleSheet({
         alignItems: 'stretch',
         flex: 1,
         justifyContent: 'center'
+    },
+
+    profileImgContainer: {
+        marginLeft: 20,
+        height: 52,
+        width: 52,
+        borderRadius: 30,
+        borderWidth: 1,
+        overflow: 'hidden'
+    },
+
+    profileImg: {
+        height: 50,
+        width: 50,
+        borderRadius: 30,
     }
 });

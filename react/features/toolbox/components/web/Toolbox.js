@@ -333,6 +333,8 @@ class Toolbox extends Component<Props, State> {
      * @returns {ReactElement}
      */
     render() {
+        // Hide the toolbar
+        return null;
         const { _visible, _visibleButtons } = this.props;
         const rootClassNames = `new-toolbox ${_visible ? 'visible' : ''} ${
             _visibleButtons.size ? '' : 'no-buttons'}`;

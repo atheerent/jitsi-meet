@@ -45,7 +45,18 @@ export type Props = {
     /**
      * Indicates whether zooming (pinch to zoom and/or drag) is enabled.
      */
-    zoomEnabled?: boolean
+    zoomEnabled?: boolean,
+
+    zoomUnlocked: boolean,
+
+    /*
+    * Need to add the participant id here in order to send out zoom messages
+    */
+    participantId: string,
+
+    isLargeVideo: boolean,
+
+    isLocal: boolean
 };
 
 /**
@@ -105,11 +116,7 @@ export default class AbstractVideoTrack<P: Props> extends Component<P> {
 
         // Actual zoom is currently only enabled if the stream is a desktop
         // stream.
-        const zoomEnabled
-            = this.props.zoomEnabled
-                && stream
-                && videoTrack
-                && videoTrack.videoType === 'desktop';
+        const zoomEnabled = this.props.zoomEnabled;
 
         return (
             <Video
@@ -118,7 +125,11 @@ export default class AbstractVideoTrack<P: Props> extends Component<P> {
                 onPress = { this.props.onPress }
                 stream = { stream }
                 zOrder = { this.props.zOrder }
-                zoomEnabled = { zoomEnabled } />
+                zoomEnabled = { zoomEnabled }
+                zoomUnlocked = { this.props.zoomUnlocked }
+                participantId = { this.props.participantId }
+                isLargeVideo = { this.props.isLargeVideo }
+                isLocal = { this.props.isLocal } />
         );
     }
 

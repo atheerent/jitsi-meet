@@ -23,6 +23,9 @@ class UserMediaPermissionsOverlay extends AbstractUserMediaPermissionsOverlay {
      * @returns {ReactElement}
      */
     render() {
+        // Hide Jitsi Meet UI (Message to inform user to give access to camera and microphone) from showing at the start of video call
+        return null;
+
         const { browser, t } = this.props;
 
         return (

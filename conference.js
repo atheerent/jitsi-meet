@@ -119,6 +119,7 @@ import {
 import { setSharedVideoStatus } from './react/features/shared-video';
 import { isButtonEnabled } from './react/features/toolbox';
 import { endpointMessageReceived } from './react/features/subtitles';
+import { sendMessage, iframeMessages} from './atheer';
 
 const logger = require('jitsi-meet-logger').getLogger(__filename);
 
@@ -136,6 +137,37 @@ window.JitsiMeetScreenObtainer = {
         APP.store.dispatch(showDesktopPicker(options, onSourceChoose));
     }
 };
+
+var myRoom;
+
+window.addEventListener("message", onMessage, false);
+
+function onMessage(event) {
+    var receivedData;
+    if (!event.data) {
+        console.error('Message event contains no readable data.');
+        return;
+    }
+    if (typeof event.data === 'object') {
+        receivedData = event.data;
+    } else {
+        try {
+            receivedData = JSON.parse(event.data);
+        } catch (e) {
+            receivedData = {};
+            return;
+        }
+    }
+
+    if (receivedData.action === iframeMessages.disableP2pMode) {
+        try {
+            myRoom && myRoom.stopP2PSession();
+        } catch (error) {
+            logger.error('Stop P2P failed', error);
+            throw error;
+        }
+    }
+}
 
 /**
  * Known custom conference commands.
@@ -1266,6 +1298,7 @@ export default {
         APP.store.dispatch(conferenceWillJoin(room));
         this._setLocalAudioVideoStreams(localTracks);
         this._room = room; // FIXME do not use this
+        myRoom = this._room;
 
         sendLocalParticipant(APP.store, room);
 
@@ -1425,6 +1458,7 @@ export default {
      * @private
      */
     _turnScreenSharingOff(didHaveVideo, wasVideoMuted) {
+        sendMessage(iframeMessages.cancelHosting, {});
         this._untoggleScreenSharing = null;
         this.videoSwitchInProgress = true;
         const { receiver } = APP.remoteControl;
@@ -1628,9 +1662,11 @@ export default {
             .then(() => {
                 this.videoSwitchInProgress = false;
                 sendAnalytics(createScreenSharingEvent('started'));
+                sendMessage(iframeMessages.pinUser, {});
                 logger.log('Screen sharing started');
             })
             .catch(error => {
+                sendMessage(iframeMessages.cancelHosting, {});
                 this.videoSwitchInProgress = false;
 
                 // Pawel: With this call I'm trying to preserve the original

@@ -7,7 +7,7 @@ const process = require('process');
  * development with webpack-dev-server.
  */
 const devServerProxyTarget
-    = process.env.WEBPACK_DEV_SERVER_PROXY_TARGET || 'https://beta.meet.jit.si';
+    = process.env.JITSI_DOMAIN ? 'https://' + process.env.JITSI_DOMAIN : 'https://meet.airsuite-dev.atheerair.com'
 
 const minimize
     = process.argv.indexOf('-p') !== -1

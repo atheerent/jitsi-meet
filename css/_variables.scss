@@ -12,8 +12,8 @@ $hangupFontSize: 2em;
  */
 
 // Video layout.
-$thumbnailToolbarHeight: 22px;
-$thumbnailIndicatorBorder: 2px;
+$thumbnailToolbarHeight: 14px;
+$thumbnailIndicatorBorder: 0px;
 $thumbnailIndicatorSize: $thumbnailToolbarHeight;
 $thumbnailVideoMargin: 2px;
 $thumbnailsBorder: 2px;
@@ -52,7 +52,7 @@ $overflowMenuItemColor: #B8C7E0;
  * Video layout
  */
 $videoThumbnailHovered: rgba(22, 94, 204, .4);
-$videoThumbnailSelected: #165ECC;
+$videoThumbnailSelected: #96ebff;
 $participantNameColor: #fff;
 $thumbnailPictogramColor: #fff;
 $dominantSpeakerBg: #165ecc;
@@ -94,7 +94,7 @@ $sidebarWidth: 375px;
  /**
  * Misc.
  */
-$borderRadius: 4px;
+$borderRadius: 2px;
 $defaultWatermarkLink: '../images/watermark.png';
 $popoverMenuPadding: 13px;
 $happySoftwareBackground: transparent;
@@ -136,8 +136,8 @@ $defaultDarkFontColor: #000;
 //inputs
 $inputControlEmColor: #f29424;
 //buttons
-$linkFontColor: #489afe;
-$linkHoverFontColor: #287ade;
+$linkFontColor: #298786;
+$linkHoverFontColor: #298786;
 $formPadding: 16px;
 
 /**

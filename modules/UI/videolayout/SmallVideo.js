@@ -198,8 +198,6 @@ SmallVideo.createStreamElement = function(stream) {
 
     if (isVideo) {
         element.setAttribute('muted', 'true');
-    } else if (config.startSilent) {
-        element.muted = true;
     }
 
     element.autoplay = true;
@@ -828,7 +826,7 @@ SmallVideo.prototype.updateIndicators = function() {
         <Provider store = { APP.store }>
             <I18nextProvider i18n = { i18next }>
                 <div>
-                    <AtlasKitThemeProvider mode = 'dark'>
+                    <AtlasKitThemeProvider mode = ''>
                         { this._showConnectionIndicator
                             ? <ConnectionIndicator
                                 alwaysVisible = { showConnectionIndicator }
@@ -840,15 +838,6 @@ SmallVideo.prototype.updateIndicators = function() {
                                 participantId = { this.id }
                                 statsPopoverPosition
                                     = { statsPopoverPosition } />
-                            : null }
-                        <RaisedHandIndicator
-                            iconSize = { iconSize }
-                            participantId = { this.id }
-                            tooltipPosition = { tooltipPosition } />
-                        { this._showDominantSpeaker
-                            ? <DominantSpeakerIndicator
-                                iconSize = { iconSize }
-                                tooltipPosition = { tooltipPosition } />
                             : null }
                     </AtlasKitThemeProvider>
                 </div>

@@ -96,6 +96,30 @@
     [self _onJitsiMeetViewDelegateEvent:@"CONFERENCE_WILL_JOIN" withData:data];
 }
 
+- (void)participantJoined:(NSDictionary *)data {
+  [self _onJitsiMeetViewDelegateEvent:@"PARTICIPANT_JOINED" withData:data];
+}
+
+- (void)participantLeft:(NSDictionary *)data {
+  [self _onJitsiMeetViewDelegateEvent:@"PARTICIPANT_LEFT" withData:data];
+}
+
+- (void)loadConfigError:(NSDictionary *)data {
+  [self _onJitsiMeetViewDelegateEvent:@"LOAD_CONFIG_ERROR" withData:data];
+}
+
+- (void)muteMic:(NSDictionary *)data {
+  [self _onJitsiMeetViewDelegateEvent:@"MUTE_MIC" withData:data];
+}
+
+- (void)toggleFlashlight:(NSDictionary *)data {
+  [self _onJitsiMeetViewDelegateEvent:@"TOGGLE_FLASHLIGHT" withData:data];
+}
+
+- (void)videoCallZoomUpdated:(NSDictionary *)data {
+  [self _onJitsiMeetViewDelegateEvent:@"VIDEO_CALL_ZOOM_UPDATED" withData:data];
+}
+
 #if 0
 - (void)enterPictureInPicture:(NSDictionary *)data {
     [self _onJitsiMeetViewDelegateEvent:@"ENTER_PICTURE_IN_PICTURE" withData:data];

@@ -22,6 +22,7 @@
 #import "JitsiMeetView+Private.h"
 #import "ReactUtils.h"
 #import "RNRootView.h"
+#import "RNEventEmitter.h"
 
 
 /**
@@ -113,6 +114,18 @@ static void initializeViewsMap() {
 
 - (void)leave {
     [self setProps:@{}];
+}
+
+- (void) sendEventOnly:(NSString *)eventName {
+    printf("Send Event Only\n");
+    RNEventEmitter *emitter = [RNEventEmitter allocWithZone: nil];
+    [emitter sendNotificationToReactNativeEventOnly:eventName];
+}
+
+- (void) sendEvent:(NSString *)eventName withMap:(NSDictionary *)map {
+    printf("Send Event with MAP\n");
+    RNEventEmitter *emitter = [RNEventEmitter allocWithZone: nil];
+    [emitter sendNotificationToReactNative:eventName withMap:map];
 }
 
 #pragma mark Private methods

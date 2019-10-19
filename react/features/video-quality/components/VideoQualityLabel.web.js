@@ -97,14 +97,10 @@ export class VideoQualityLabel extends AbstractVideoQualityLabel<Props> {
 
 
         return (
-            <Tooltip
-                content = { t(tooltipKey) }
-                position = { 'left' }>
-                <CircularLabel
-                    className = { className }
-                    id = 'videoResolutionLabel'
-                    label = { labelContent } />
-            </Tooltip>
+            <CircularLabel
+                className={className}
+                id='videoResolutionLabel'
+                label={labelContent} />
         );
     }
 }

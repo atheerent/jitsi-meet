@@ -9,7 +9,7 @@ THE_MVN_REPO=${MVN_REPO:-${1:-$DEFAULT_MVN_REPO}}
 MVN_HTTP=0
 DEFAULT_SDK_VERSION=$(grep sdkVersion ${THIS_DIR}/../gradle.properties | cut -d"=" -f2)
 SDK_VERSION=${OVERRIDE_SDK_VERSION:-${DEFAULT_SDK_VERSION}}
-RN_VERSION=$(jq -r '.dependencies."react-native"' ${THIS_DIR}/../../package.json)
+RN_VERSION="atheer-0.59.8"
 DO_GIT_TAG=${GIT_TAG:-0}
 
 if [[ $THE_MVN_REPO == http* ]]; then
@@ -26,7 +26,7 @@ echo "Using ${MVN_REPO} as the Maven repo"
 
 if [[ $MVN_HTTP == 1 ]]; then
     # Push React Native
-    echo "Pushing React Native ${RN_VERSION} to the Maven repo"
+    echo "Pushing React Native ${RN_VERSION} to the Maven repo ${MVN_REPO}"
     pushd ${THIS_DIR}/../../node_modules/react-native/android/com/facebook/react/react-native/${RN_VERSION}
     mvn \
         deploy:deploy-file \
@@ -46,7 +46,7 @@ else
 
     # First push React Native, if necessary
     if [[ ! -d ${MVN_REPO}/com/facebook/react/react-native/${RN_VERSION} ]]; then
-        echo "Pushing React Native ${RN_VERSION} to the Maven repo"
+        echo "Pushing React Native ${RN_VERSION} to the Maven repo ${MVN_REPO}"
         pushd ${THIS_DIR}/../../node_modules/react-native/android/com/facebook/react/react-native/${RN_VERSION}
         mvn \
             deploy:deploy-file \

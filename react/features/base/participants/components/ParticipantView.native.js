@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { Text, View } from 'react-native';
+import { Text, View, Image } from 'react-native';
 import FastImage from 'react-native-fast-image';
 
 import { translate } from '../../i18n';
@@ -24,6 +24,8 @@ import {
     shouldRenderParticipantVideo
 } from '../functions';
 import styles from './styles';
+
+const DEFAULT_ATHEER_AVATAR_URL = 'https://airsuite.atheerair.com/img/notificationLogo.png';
 
 /**
  * The type of the React {@link Component} props of {@link ParticipantView}.
@@ -127,7 +129,13 @@ type Props = {
     /**
      * Indicates whether zooming (pinch to zoom and/or drag) is enabled.
      */
-    zoomEnabled: boolean
+    zoomEnabled: boolean,
+
+    zoomUnlocked: boolean,
+
+    isLargeVideo: boolean,
+
+    isLocal: boolean
 };
 
 /**
@@ -202,8 +210,13 @@ class ParticipantView extends Component<Props> {
 
         const waitForVideoStarted = false;
 
+        let atheerAvatar = DEFAULT_ATHEER_AVATAR_URL;
+        // If avatar is null, or avatar is default jitsi avatar, replace with atheer avatar
+        //if (!atheerAvatar || atheerAvatar.includes('abotars.jitsi.net')) {
+            //atheerAvatar = DEFAULT_ATHEER_AVATAR_URL;
+        //}
         // Is the avatar to be rendered?
-        const renderAvatar = Boolean(!renderVideo && avatar);
+        const renderAvatar = Boolean(!renderVideo && atheerAvatar);
 
         // If the connection has problems, we will "tint" the video / avatar.
         const connectionProblem
@@ -215,6 +228,8 @@ class ParticipantView extends Component<Props> {
             = this.props.testHintId
                 ? this.props.testHintId
                 : `org.jitsi.meet.Participant#${this.props.participantId}`;
+
+        const zoomEnabled = this.props.zoomEnabled || this.props.isLocal;
 
         return (
             <Container
@@ -236,12 +251,16 @@ class ParticipantView extends Component<Props> {
                         videoTrack = { videoTrack }
                         waitForVideoStarted = { waitForVideoStarted }
                         zOrder = { this.props.zOrder }
-                        zoomEnabled = { this.props.zoomEnabled } /> }
+                        zoomEnabled = { zoomEnabled }
+                        zoomUnlocked = { this.props.zoomUnlocked }
+                        participantId = { this.props.participantId }
+                        isLargeVideo = { this.props.isLargeVideo }
+                        isLocal = { this.props.isLocal } /> }
 
                 { renderAvatar
                     && <Avatar
                         size = { this.props.avatarSize }
-                        uri = { avatar } /> }
+                        uri = { atheerAvatar } /> }
 
                 { useTint
 
@@ -249,9 +268,6 @@ class ParticipantView extends Component<Props> {
                     && <TintedView
                         style = {
                             connectionProblem ? undefined : tintStyle } /> }
-
-                { this.props.useConnectivityInfoLabel
-                    && this._renderConnectionInfo(connectionStatus) }
             </Container>
         );
     }
@@ -279,6 +295,7 @@ function _mapStateToProps(state, ownProps) {
     let avatar;
     let connectionStatus;
     let participantName;
+    let isLocal = false;
 
     if (participant) {
         avatar = getAvatarURL(participant);
@@ -298,8 +315,10 @@ function _mapStateToProps(state, ownProps) {
 
         // ParticipantView knows before Avatar that an avatar URL will be used
         // so it's advisable to prefetch here.
-        avatar && !avatar.startsWith('#')
-            && FastImage.preload([ { uri: avatar } ]);
+        /*avatar && !avatar.startsWith('#')
+            && FastImage.preload([ { uri: avatar } ]);*/
+
+        isLocal = participant.local;
     }
 
     return {
@@ -313,7 +332,8 @@ function _mapStateToProps(state, ownProps) {
             getTrackByMediaTypeAndParticipant(
                 state['features/base/tracks'],
                 MEDIA_TYPE.VIDEO,
-                participantId)
+                participantId),
+        isLocal: isLocal
     };
 }
 

@@ -734,5 +734,8 @@
         "no": "No",
         "label": "LOR",
         "labelToolTip": "Registrazione locale avviata"
+    },
+    "atheer": {
+        "zoomDisabled": "Per questo feed, lo zoom è disabilitato"
     }
 }

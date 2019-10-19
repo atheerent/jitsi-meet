@@ -2,13 +2,22 @@
 
 import React, { Component } from 'react';
 
+import { View, Text } from 'react-native';
 import { ColorSchemeRegistry } from '../../base/color-scheme';
-import { ParticipantView } from '../../base/participants';
+import { ParticipantView,
+        getParticipantById,
+        getParticipantDisplayName } from '../../base/participants';
 import { connect } from '../../base/redux';
 import { DimensionsDetector } from '../../base/responsive-ui';
 import { StyleType } from '../../base/styles';
 
+import { translate } from '../../base/i18n';
+import { Container } from '../../base/react';
+import { Icon } from '../../base/font-icons';
+
 import { AVATAR_SIZE } from './styles';
+
+const logger = require('jitsi-meet-logger').getLogger(__filename);
 
 /**
  * The type of the React {@link Component} props of {@link LargeVideo}.
@@ -22,6 +31,15 @@ type Props = {
      */
     _participantId: string,
 
+    _participantDisplayName: string,
+
+    _fromZoomParticipantId: string,
+    _fromZoomParticipantLevel: float,
+    _toZoomParticipantId: string,
+    _toZoomParticipantLevel: float,
+
+    _videoCallToast: boolean,
+
     /**
      * The color-schemed stylesheet of the feature.
      */
@@ -30,7 +48,7 @@ type Props = {
     /**
      * Callback to invoke when the {@code LargeVideo} is clicked/pressed.
      */
-    onClick: Function,
+    onPress: Function,
 };
 
 /**
@@ -108,6 +126,14 @@ class LargeVideo extends Component<Props, State> {
         this.setState(nextState);
     }
 
+    static setUserName(name) {
+        LargeVideo.userName = name;
+    }
+
+    static getUserName() {
+        return LargeVideo.userName;
+    }
+
     /**
      * Implements React's {@link Component#render()}.
      *
@@ -122,21 +148,58 @@ class LargeVideo extends Component<Props, State> {
         const {
             _participantId,
             _styles,
-            onClick
+            onPress
         } = this.props;
+        const { t } = this.props;
+
+        const displayName = this.props._participantDisplayName;
+        const fromZoomParticipantId = this.props._fromZoomParticipantId;
+        const fromZoomParticipantLevel = this.props._fromZoomParticipantLevel;
+        const toZoomParticipantId = this.props._toZoomParticipantId;
+        const toZoomParticipantLevel = this.props._toZoomParticipantLevel;
+
+        var zoomEnabled = false;
+
+        // Only allow zooming on device.
+        if (displayName && !displayName.includes('Admin')) {
+            zoomEnabled = true;
+        }
+
+        var zoomUnlocked = true;
+
+        // If someone else is zooming, disable zoom.
+        // (But we still need to alow zooming in order to show the zoomed view)
+        if (fromZoomParticipantLevel > 1) {
+            zoomUnlocked = false;
+        }
+
+        // If device user is zooming some other view, disable zoom.
+        if (toZoomParticipantId != _participantId && toZoomParticipantLevel > 1) {
+            zoomUnlocked = false;
+        }
 
         return (
             <DimensionsDetector
                 onDimensionsChanged = { this._onDimensionsChanged }>
                 <ParticipantView
                     avatarSize = { avatarSize }
-                    onPress = { onClick }
+                    onPress = { onPress }
                     participantId = { _participantId }
                     style = { _styles.largeVideo }
                     testHintId = 'org.jitsi.meet.LargeVideo'
                     useConnectivityInfoLabel = { useConnectivityInfoLabel }
                     zOrder = { 0 }
-                    zoomEnabled = { true } />
+                    zoomEnabled = { zoomEnabled }
+                    zoomUnlocked = { zoomUnlocked }
+                    isLargeVideo = { true } />
+                    { this.props._videoCallToast && <Container style = { _styles.zoomToastBackground }>
+                    <Icon
+                        name = 'Disabled-Zooming'
+                        style = { _styles.zoomToastIcon } />
+                    <Text style = { _styles.zoomToastTest }>
+                        { t('atheer.zoomDisabled') }
+                    </Text>
+                </Container> }
             </DimensionsDetector>
         );
     }
@@ -153,10 +216,18 @@ class LargeVideo extends Component<Props, State> {
  * }}
  */
 function _mapStateToProps(state) {
+    var displayName = getParticipantDisplayName(state, state['features/large-video'].participantId);
+
     return {
         _participantId: state['features/large-video'].participantId,
-        _styles: ColorSchemeRegistry.get(state, 'LargeVideo')
+        _styles: ColorSchemeRegistry.get(state, 'LargeVideo'),
+        _participantDisplayName: displayName,
+        _fromZoomParticipantId: state['features/large-video'].zoomParticipantId,
+        _fromZoomParticipantLevel: state['features/large-video'].zoom,
+        _toZoomParticipantId: state['features/large-video'].toZoomParticipantId,
+        _toZoomParticipantLevel: state['features/large-video'].toZoomParticipantLevel,
+        _videoCallToast: state['features/large-video'].videoCallToast
     };
 }
 
-export default connect(_mapStateToProps)(LargeVideo);
+export default translate(connect(_mapStateToProps)(LargeVideo));

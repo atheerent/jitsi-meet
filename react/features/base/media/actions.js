@@ -9,7 +9,9 @@ import {
     SET_VIDEO_AVAILABLE,
     SET_VIDEO_MUTED,
     STORE_VIDEO_TRANSFORM,
-    TOGGLE_CAMERA_FACING_MODE
+    TOGGLE_CAMERA_FACING_MODE,
+    VIDEO_CALL_ZOOM_UPDATED,
+    VIDEO_CALL_TOAST
 } from './actionTypes';
 import { CAMERA_FACING_MODE, VIDEO_MUTISM_AUTHORITY } from './constants';
 
@@ -147,5 +149,20 @@ export function storeVideoTransform(streamId: string, transform: Object) {
 export function toggleCameraFacingMode() {
     return {
         type: TOGGLE_CAMERA_FACING_MODE
+    };
+}
+
+export function sendVideoCallZoom(participantId: string, transform: Object) {
+    return {
+        type: VIDEO_CALL_ZOOM_UPDATED,
+        participantId,
+        transform
+    };
+}
+
+export function videoCallToast(show: boolean) {
+    return {
+        type: VIDEO_CALL_TOAST,
+        show
     };
 }

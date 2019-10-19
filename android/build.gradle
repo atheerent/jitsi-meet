@@ -38,7 +38,7 @@ allprojects {
                 if (details.requested.group == 'com.facebook.react'
                         && details.requested.name == 'react-native') {
                     def file = new File("$rootDir/../node_modules/react-native/package.json")
-                    def version = new JsonSlurper().parseText(file.text).version
+                    def version = "atheer-0.59.8"
                     details.useVersion version
                 }
             }
@@ -58,9 +58,9 @@ allprojects {
                 maven {
                     url rootProject.ext.mavenRepo
                     if (!rootProject.ext.mavenRepo.startsWith("file")) {
-                        credentials {
-                            username rootProject.ext.mavenUser
-                            password rootProject.ext.mavenPassword
+                        credentials (AwsCredentials) {
+                            accessKey rootProject.ext.mavenRepoAccessKey
+                            secretKey rootProject.ext.mavenRepoSecretKey
                         }
                     }
                 }
@@ -160,9 +160,9 @@ ext {
     moduleGroupId = 'com.facebook.react'
 
     // Maven repo where artifacts will be published
-    mavenRepo = System.env.MVN_REPO ?: ""
-    mavenUser = System.env.MVN_USER ?: ""
-    mavenPassword = System.env.MVN_PASSWORD ?: ""
+    mavenRepo = "s3://atheer-maven/releases"
+    mavenRepoAccessKey = System.getenv('ATHEER_MAVEN_REPO_ACCESS_KEY')
+    mavenRepoSecretKey = System.getenv('ATHEER_MAVEN_REPO_SECRET_KEY')
 
     // Glide
     excludeAppGlideModule = true

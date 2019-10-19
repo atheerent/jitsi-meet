@@ -5,8 +5,12 @@ import { ReducerRegistry } from '../base/redux';
 
 import {
     SELECT_LARGE_VIDEO_PARTICIPANT,
-    UPDATE_KNOWN_LARGE_VIDEO_RESOLUTION
+    UPDATE_KNOWN_LARGE_VIDEO_RESOLUTION,
+    VIDEO_CALL_ZOOM
 } from './actionTypes';
+
+import { VIDEO_CALL_ZOOM_UPDATED,
+        VIDEO_CALL_TOAST } from '../base/media';
 
 ReducerRegistry.register('features/large-video', (state = {}, action) => {
     switch (action.type) {
@@ -35,6 +39,28 @@ ReducerRegistry.register('features/large-video', (state = {}, action) => {
         return {
             ...state,
             resolution: action.resolution
+        };
+        
+    case VIDEO_CALL_ZOOM_UPDATED:
+        return {
+            ...state,
+            toZoomParticipantId: action.participantId,
+            toZoomParticipantLevel: action.transform.scale
+        };
+
+    case VIDEO_CALL_ZOOM:
+        return {
+            ...state,
+            zoomParticipantId: action.participant.id,
+            zoom: action.zoom,
+            x: action.x,
+            y: action.y
+        };
+
+    case VIDEO_CALL_TOAST:
+        return {
+            ...state,
+            videoCallToast: action.show
         };
     }
 

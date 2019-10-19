@@ -719,5 +719,8 @@
         "label": "LOR",
         "labelToolTip": "ローカルレコーディング実施中"
     },
+    "atheer": {
+        "zoomDisabled": "このフィードではズームが無効化されています"
+    },
     "\u0005localRecording": {}
 }

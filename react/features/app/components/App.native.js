@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-
+import { NativeModules } from 'react-native';
 import '../../analytics';
 import '../../authentication';
 import { setColorScheme } from '../../base/color-scheme';
@@ -30,6 +30,8 @@ import { AbstractApp } from './AbstractApp';
 import type { Props as AbstractAppProps } from './AbstractApp';
 
 declare var __DEV__;
+
+const { WebRTCModule, DeviceModule } = NativeModules;
 
 const logger = require('jitsi-meet-logger').getLogger(__filename);
 
@@ -100,6 +102,11 @@ export class App extends AbstractApp {
             dispatch(setColorScheme(this.props.colorScheme));
             dispatch(updateFlags(this.props.flags));
             dispatch(updateSettings(this.props.userInfo || {}));
+
+            if(this.props.atheerInfo && this.props.atheerInfo.proxyServerInfo) {
+                logger.log("Calling WebRTCModule.initProxyServerInfo");
+                WebRTCModule.initProxyServerInfo(this.props.atheerInfo.proxyServerInfo.type, this.props.atheerInfo.proxyServerInfo.host, this.props.atheerInfo.proxyServerInfo.port, this.props.atheerInfo.proxyServerInfo.username, this.props.atheerInfo.proxyServerInfo.password);
+            }
         });
     }
 

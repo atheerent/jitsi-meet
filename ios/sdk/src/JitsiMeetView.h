@@ -37,4 +37,6 @@
  */
 - (void)leave;
 
+- (void)sendEventOnly:(NSString *) eventName;
+- (void)sendEvent:(NSString *) eventName withMap :(NSDictionary *)map;
 @end

@@ -224,9 +224,9 @@ publishing {
         maven {
             url rootProject.ext.mavenRepo
             if (!rootProject.ext.mavenRepo.startsWith("file")) {
-                credentials {
-                    username rootProject.ext.mavenUser
-                    password rootProject.ext.mavenPassword
+                credentials (AwsCredentials) {
+                    accessKey rootProject.ext.mavenRepoAccessKey
+                    secretKey rootProject.ext.mavenRepoSecretKey
                 }
             }
         }

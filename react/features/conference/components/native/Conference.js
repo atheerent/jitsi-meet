@@ -5,7 +5,10 @@ import { BackHandler, NativeModules, SafeAreaView, StatusBar, View } from 'react
 
 import { appNavigate } from '../../../app';
 import { PIP_ENABLED, getFeatureFlag } from '../../../base/flags';
-import { getParticipantCount } from '../../../base/participants';
+import {
+        getParticipantCount,
+        hideParticipantTools
+        } from '../../../base/participants';
 import { Container, LoadingIndicator, TintedView } from '../../../base/react';
 import { connect } from '../../../base/redux';
 import {
@@ -36,6 +39,10 @@ import NavigationBar from './NavigationBar';
 import styles from './styles';
 
 import type { AbstractProps } from '../AbstractConference';
+
+import type { Dispatch } from 'redux';
+
+const logger = require('jitsi-meet-logger').getLogger(__filename);
 
 /**
  * The type of the React {@code Component} props of {@link Conference}.
@@ -104,6 +111,8 @@ type Props = AbstractProps & {
      */
     _setToolboxVisible: Function,
 
+    _clearExtendedTools: Function,
+
     /**
      * The indicator which determines whether the Toolbox is visible.
      *
@@ -132,8 +141,8 @@ class Conference extends AbstractConference<Props, *> {
 
         // Bind event handlers so they are only bound once per instance.
         this._onClick = this._onClick.bind(this);
-        this._onHardwareBackPress = this._onHardwareBackPress.bind(this);
         this._setToolboxVisible = this._setToolboxVisible.bind(this);
+        this._clearExtendedTools = this._clearExtendedTools.bind(this);
     }
 
     /**
@@ -144,11 +153,9 @@ class Conference extends AbstractConference<Props, *> {
      * @returns {void}
      */
     componentDidMount() {
-        BackHandler.addEventListener('hardwareBackPress', this._onHardwareBackPress);
-
         // Show the toolbox if we are the only participant; otherwise, the whole
         // UI looks too unpopulated the LargeVideo visible.
-        this.props._participantCount === 1 && this._setToolboxVisible(true);
+        this.props._participantCount === 1 && this._setToolboxVisible(false);
     }
 
     /**
@@ -186,7 +193,6 @@ class Conference extends AbstractConference<Props, *> {
      */
     componentWillUnmount() {
         // Tear handling any hardware button presses for back navigation down.
-        BackHandler.removeEventListener('hardwareBackPress', this._onHardwareBackPress);
     }
 
     /**
@@ -221,22 +227,6 @@ class Conference extends AbstractConference<Props, *> {
                         : <LargeVideo onClick = { this._onClick } />
                 }
 
-                {/*
-                  * If there is a ringing call, show the callee's info.
-                  */
-                    _reducedUI || <CalleeInfoContainer />
-                }
-
-                {/*
-                  * The activity/loading indicator goes above everything, except
-                  * the toolbox/toolbars and the dialogs.
-                  */
-                    _connecting
-                        && <TintedView>
-                            <LoadingIndicator />
-                        </TintedView>
-                }
-
                 <View
                     pointerEvents = 'box-none'
                     style = { styles.toolboxAndFilmstripContainer }>
@@ -244,8 +234,6 @@ class Conference extends AbstractConference<Props, *> {
                     <Labels />
 
                     <Captions onPress = { this._onClick } />
-
-                    { _shouldDisplayTileView || <DisplayNameLabel participantId = { _largeVideoParticipantId } /> }
 
                     {/*
                       * The Toolbox is in a stacking layer bellow the Filmstrip.
@@ -291,33 +279,8 @@ class Conference extends AbstractConference<Props, *> {
      * @returns {void}
      */
     _onClick() {
-        this._setToolboxVisible(!this.props._toolboxVisible);
-    }
-
-    _onHardwareBackPress: () => boolean;
-
-    /**
-     * Handles a hardware button press for back navigation. Enters Picture-in-Picture mode
-     * (if supported) or leaves the associated {@code Conference} otherwise.
-     *
-     * @returns {boolean} Exiting the app is undesired, so {@code true} is always returned.
-     */
-    _onHardwareBackPress() {
-        let p;
-
-        if (this.props._pictureInPictureEnabled) {
-            const { PictureInPicture } = NativeModules;
-
-            p = PictureInPicture.enterPictureInPicture();
-        } else {
-            p = Promise.reject(new Error('PiP not enabled'));
-        }
-
-        p.catch(() => {
-            this.props.dispatch(appNavigate(undefined));
-        });
-
-        return true;
+        this._setToolboxVisible(false);
+        this._clearExtendedTools();
     }
 
     /**
@@ -378,6 +341,10 @@ class Conference extends AbstractConference<Props, *> {
      */
     _setToolboxVisible(visible) {
         this.props.dispatch(setToolboxVisible(visible));
+    }
+
+    _clearExtendedTools() {
+        this.props.dispatch(hideParticipantTools(null));
     }
 }
 

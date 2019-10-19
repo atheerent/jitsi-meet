@@ -13,7 +13,9 @@ import {
     PARTICIPANT_JOINED,
     PARTICIPANT_LEFT,
     PARTICIPANT_UPDATED,
-    PIN_PARTICIPANT
+    PIN_PARTICIPANT,
+    SHOW_PARTICIPANT_TOOLS,
+    HIDE_PARTICIPANT_TOOLS
 } from './actionTypes';
 import {
     getLocalParticipant,
@@ -450,6 +452,24 @@ export function pinParticipant(id) {
     };
 }
 
+export function showParticipantTools(id) {
+    return {
+        type: SHOW_PARTICIPANT_TOOLS,
+        participant: {
+            id
+        }
+    };
+}
+
+export function hideParticipantTools(id) {
+    return {
+        type: HIDE_PARTICIPANT_TOOLS,
+        participant: {
+            id
+        }
+    };
+}
+
 /**
  * An array of names of participants that have joined the conference. The array
  * is replaced with an empty array as notifications are displayed.
@@ -497,10 +517,9 @@ const _throttledNotifyParticipantConnected = throttle(dispatch => {
         };
     }
 
-    if (notificationProps) {
-        dispatch(
-            showNotification(notificationProps, NOTIFICATION_TIMEOUT));
-    }
+    //if (notificationProps) {
+    //    dispatch(showNotification(notificationProps, NOTIFICATION_TIMEOUT));
+    //}
 
     joinedParticipantsNames = [];
 

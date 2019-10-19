@@ -101,21 +101,184 @@ export function appNavigate(uri: ?string) {
             }
         }
 
-        if (getState()['features/base/config'].locationURL !== locationURL) {
-            dispatch(loadConfigError(new Error('Config no longer needed!'), locationURL));
+        logger.log('jitsi received uri: ' + uri);
+        console.log('jitsi received uri', uri);
 
-            return;
+        var userId = uri;
+        if (userId.includes('userid=')) {
+            userId = userId.split('userid=')[1];
+            userId = userId.split('&')[0];
+            console.log('jitsi receive start call with user id', userId);
+            logger.log('jitsi receive start call with user id', userId);
+        } else {
+            userId = undefined;
+        }
+        var orgId = uri;
+        if (orgId.includes('orgid=')) {
+            orgId = orgId.split('orgid=')[1];
+            orgId = orgId.split('&')[0];
+            console.log('jitsi receive start call with org id', orgId);
+            logger.log('jitsi receive start call with org id', orgId);
+        } else {
+            orgId = undefined;
         }
 
-        dispatch(setLocationURL(locationURL));
-        dispatch(setConfig(config));
-        dispatch(setRoom(room));
-
-        // FIXME: unify with web, currently the connection and track creation happens in conference.js.
-        if (room && navigator.product === 'ReactNative') {
-            dispatch(createDesiredLocalTracks());
-            dispatch(connect());
+        var apiurl = uri;
+        if (apiurl.includes('apiurl=')) {
+            apiurl = apiurl.split('apiurl=')[1];
+            apiurl = apiurl.split('&')[0];
+            if (apiurl.includes('#')) {
+                apiurl = apiurl.split('#')[0];
+            }
+            console.log('jitsi receive start call with  api url', apiurl);
+            logger.log('jitsi receive start call with  api url', apiurl);
+        } else {
+            apiurl = undefined;
         }
+
+        var forceP2Poff = false;
+        if (uri.includes('forceP2Poff')) {
+            forceP2Poff = true;
+            if (config) {
+                config.enableP2P = false;
+                config.p2p = {
+                    enabled: false,
+                    preferH264: true,
+                    useStunTurn: true
+                };
+            }
+            console.log('jitsi receive start call with forceP2Poff');
+            logger.log('jitsi receive start call with forceP2Poff');
+        }
+
+        if (navigator.product === 'ReactNative' && apiurl != undefined && orgId != undefined) {
+            fetch(apiurl + 'features/jitsiConfig/org/' + orgId)
+            .then((response) => response.json())
+            .then((responseJson) => {
+                logger.log('jitsi updating config file with org specific file ' + responseJson);
+                if (responseJson != undefined) {
+                    for (let prop in responseJson) {
+                        logger.log('check prop', prop);
+                        config[prop] = responseJson[prop];
+                    }
+                }
+
+                if (forceP2Poff && config) {
+                    config.enableP2P = false;
+                    config.p2p = {
+                        enabled: false,
+                        preferH264: true,
+                        useStunTurn: true
+                    }
+                }
+
+                if (getState()['features/base/config'].locationURL !== locationURL) {
+                    dispatch(loadConfigError(new Error('Config no longer needed!'), locationURL));
+
+                    return;
+                }
+
+                dispatch(setLocationURL(locationURL));
+                dispatch(setConfig(config));
+                dispatch(setRoom(room));
+
+                // FIXME: unify with web, currently the connection and track creation happens in conference.js.
+                if (room && navigator.product === 'ReactNative') {
+                    dispatch(createDesiredLocalTracks());
+                    dispatch(connect());
+                }
+            }).catch(function() {
+                if (getState()['features/base/config'].locationURL !== locationURL) {
+                    dispatch(loadConfigError(new Error('Config no longer needed!'), locationURL));
+
+                    return;
+                }
+
+                dispatch(setLocationURL(locationURL));
+                dispatch(setConfig(config));
+                dispatch(setRoom(room));
+
+                // FIXME: unify with web, currently the connection and track creation happens in conference.js.
+                if (room && navigator.product === 'ReactNative') {
+                    dispatch(createDesiredLocalTracks());
+                    dispatch(connect());
+                }
+            });
+        } else if (apiurl != undefined && userId != undefined) {
+            var xmlHttp = new XMLHttpRequest();
+            xmlHttp.open( 'GET', apiurl + 'features/jitsiConfig/' + userId, false); // false for synchronous request
+            xmlHttp.send( null );
+            if (xmlHttp.responseText != undefined && xmlHttp.responseText != '') {
+                console.log('hao check here??', xmlHttp.responseText);
+                var jsonObj = JSON.parse(xmlHttp.responseText);
+                if (jsonObj != undefined) {
+                    console.log('jitsi updating config file with org specific file', jsonObj);
+                    for (let prop in jsonObj) {
+                        console.log('check prop', prop);
+                        config[prop] = jsonObj[prop];
+                    }
+                }
+
+                if (forceP2Poff && config) {
+                    config.enableP2P = false;
+                    config.p2p = {
+                        enabled: false,
+                        preferH264: true,
+                        useStunTurn: true
+                    }
+                }
+
+                if (getState()['features/base/config'].locationURL !== locationURL) {
+                    dispatch(loadConfigError(new Error('Config no longer needed!'), locationURL));
+
+                    return;
+                }
+
+                dispatch(setLocationURL(locationURL));
+                dispatch(setConfig(config));
+                dispatch(setRoom(room));
+
+                // FIXME: unify with web, currently the connection and track creation happens in conference.js.
+                if (room && navigator.product === 'ReactNative') {
+                    dispatch(createDesiredLocalTracks());
+                    dispatch(connect());
+                }
+            } else {
+                if (getState()['features/base/config'].locationURL !== locationURL) {
+                    dispatch(loadConfigError(new Error('Config no longer needed!'), locationURL));
+
+                    return;
+                }
+
+                dispatch(setLocationURL(locationURL));
+                dispatch(setConfig(config));
+                dispatch(setRoom(room));
+
+                // FIXME: unify with web, currently the connection and track creation happens in conference.js.
+                if (room && navigator.product === 'ReactNative') {
+                    dispatch(createDesiredLocalTracks());
+                    dispatch(connect());
+                }
+            }
+        } else {
+            if (getState()['features/base/config'].locationURL !== locationURL) {
+                dispatch(loadConfigError(new Error('Config no longer needed!'), locationURL));
+
+                return;
+            }
+
+            dispatch(setLocationURL(locationURL));
+            dispatch(setConfig(config));
+            dispatch(setRoom(room));
+
+            // FIXME: unify with web, currently the connection and track creation happens in conference.js.
+            if (room && navigator.product === 'ReactNative') {
+                dispatch(createDesiredLocalTracks());
+                dispatch(connect());
+            }
+        }
+
+
     };
 }
 

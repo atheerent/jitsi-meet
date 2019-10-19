@@ -8,6 +8,8 @@ import { Pressable } from '../../../react';
 import styles from './styles';
 import VideoTransform from './VideoTransform';
 
+const logger = require('jitsi-meet-logger').getLogger(__filename);
+
 /**
  * The type of the React {@code Component} props of {@link Video}.
  */
@@ -51,7 +53,18 @@ type Props = {
     /**
      * Indicates whether zooming (pinch to zoom and/or drag) is enabled.
      */
-    zoomEnabled: boolean
+    zoomEnabled: boolean,
+
+    zoomUnlocked: boolean,
+
+    /*
+    * Need to add the participant id here in order to send out zoom messages
+    */
+    participantId: string,
+
+    isLargeVideo: boolean,
+
+    isLocal: boolean
 };
 
 /**
@@ -86,9 +99,7 @@ export default class Video extends Component<Props> {
             // RTCView
             const style = styles.video;
             const objectFit
-                = zoomEnabled
-                    ? 'contain'
-                    : (style && style.objectFit) || 'cover';
+                = (style && style.objectFit) || 'cover';
             const rtcView
                 = (
                     <RTCView
@@ -101,17 +112,20 @@ export default class Video extends Component<Props> {
 
             // VideoTransform implements "pinch to zoom". As part of "pinch to
             // zoom", it implements onPress, of course.
-            if (zoomEnabled) {
-                return (
-                    <VideoTransform
-                        enabled = { zoomEnabled }
-                        onPress = { onPress }
-                        streamId = { stream.id }
-                        style = { style }>
-                        { rtcView }
-                    </VideoTransform>
-                );
-            }
+            return (
+                <VideoTransform
+                    enabled = { true }
+                    onPress = { onPress }
+                    streamId = { stream.id }
+                    style = { style }
+                    participantId = { this.props.participantId }
+                    zoomEnabled = { this.props.zoomEnabled }
+                    zoomUnlocked = { this.props.zoomUnlocked }
+                    isLargeVideo = { this.props.isLargeVideo }
+                    isLocal = { this.props.isLocal } >
+                    { rtcView }
+                </VideoTransform>
+            );
 
             // XXX Unfortunately, VideoTransform implements a custom press
             // detection which has been observed to be very picky about the

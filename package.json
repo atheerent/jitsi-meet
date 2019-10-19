@@ -63,7 +63,7 @@
     "react-emoji-render": "0.4.6",
     "react-i18next": "7.13.0",
     "react-linkify": "0.2.2",
-    "react-native": "0.59.8",
+    "react-native": "github:atheerent/react-native#atheer_69",
     "react-native-background-timer": "2.1.1",
     "react-native-calendar-events": "1.6.4",
     "react-native-callstats": "3.58.2",
@@ -76,8 +76,9 @@
     "react-native-swipeout": "2.3.6",
     "react-native-vector-icons": "6.0.2",
     "react-native-watch-connectivity": "0.2.0",
-    "react-native-webrtc": "github:jitsi/react-native-webrtc#4064c6f2db4f8b961daaaa8dafc6a896d7cfbc43",
+    "react-native-webrtc": "github:atheerent/react-native-webrtc#atheer_69",
     "react-native-webview": "5.8.1",
+    "react-native-swipe-gestures": "^1.0.3",
     "react-redux": "5.0.7",
     "react-textarea-autosize": "7.1.0",
     "react-transition-group": "2.4.0",
@@ -127,11 +128,10 @@
   "license": "Apache-2.0",
   "scripts": {
     "lint": "eslint . && flow",
-    "validate": "npm ls"
+    "validate": "npm ls",
+    "run-jitsi-meet": "./node_modules/.bin/webpack-dev-server --host $IP"
   },
-  "pre-commit": [
-    "lint"
-  ],
+  "pre-commit": [],
   "browser": {
     "jQuery-Impromptu": "jQuery-Impromptu/src/jquery-impromptu.js"
   }

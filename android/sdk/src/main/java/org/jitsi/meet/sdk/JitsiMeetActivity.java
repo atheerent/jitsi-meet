@@ -25,6 +25,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 
 import com.facebook.react.modules.core.PermissionListener;
+import com.facebook.react.bridge.UiThreadUtil;
 
 import java.util.Map;
 
@@ -87,6 +88,12 @@ public class JitsiMeetActivity extends FragmentActivity
         JitsiMeetOngoingConferenceService.abort(this);
 
         super.onDestroy();
+    }
+
+    @Override
+    public void onPause() {
+        Log.d(TAG, "Pause Called: ");
+        super.onPause();
     }
 
     @Override
@@ -222,5 +229,43 @@ public class JitsiMeetActivity extends FragmentActivity
     @Override
     public void onConferenceWillJoin(Map<String, Object> data) {
         Log.d(TAG, "Conference will join: " + data);
+    }
+
+    @Override
+    public void onMuteMic(Map<String, Object> data) {
+        Log.d(TAG, "Mute Mic: " + data);
+        on("MUTE_MIC", data);
+    }
+
+    @Override
+    public void onToggleFlashlight(Map<String, Object> data) {
+        Log.d(TAG, "Toggle Flashlight: " + data);
+        on("TOGGLE_FLASHLIGHT", data);
+    }
+
+    @Override
+    public void onParticipantJoined(Map<String, Object> data) {
+        Log.d(TAG, "Participant Joined: " + data);
+        on("PARTICIPANT_JOINED", data);
+    }
+
+    @Override
+    public void onParticipantLeft(Map<String, Object> data) {
+        Log.d(TAG, "Participant Left: " + data);
+        on("PARTICIPANT_LEFT", data);
+    }
+
+    @Override
+    public void onVideoCallZoomUpdated(Map<String, Object> data) {
+        Log.d(TAG, "Video Call Zoom Updated: " + data);
+        on("VIDEO_CALL_ZOOM_UPDATED", data);
+    }
+
+    private void on(String name, Map<String, Object> data) {
+        UiThreadUtil.assertOnUiThread();
+
+        // Log with the tag "ReactNative" in order to have the log
+        // visible in react-native log-android as well.
+        Log.d("ReactNative", JitsiMeetViewListener.class.getSimpleName() + " " + name + " " + data);
     }
 }

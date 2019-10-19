@@ -14,8 +14,13 @@ import { shouldDisplayTileView } from '../video-layout';
 
 import {
     SELECT_LARGE_VIDEO_PARTICIPANT,
-    UPDATE_KNOWN_LARGE_VIDEO_RESOLUTION
+    UPDATE_KNOWN_LARGE_VIDEO_RESOLUTION,
+    VIDEO_CALL_ZOOM
 } from './actionTypes';
+
+import LargeVideo from './components/LargeVideo.native';
+
+const logger = require('jitsi-meet-logger').getLogger(__filename);
 
 declare var APP: Object;
 
@@ -55,10 +60,15 @@ export function selectParticipant() {
  *
  * @returns {Function}
  */
-export function selectParticipantInLargeVideo() {
+export function selectParticipantInLargeVideo(forceLocal, forcedParticipantId) {
     return (dispatch: Dispatch<any>, getState: Function) => {
         const state = getState();
-        const participantId = _electParticipantInLargeVideo(state);
+        var participantId;
+        if (forceLocal && forcedParticipantId) {
+            participantId = forcedParticipantId
+        } else {
+            participantId = _electParticipantInLargeVideo(state, forceLocal);
+        }
         const largeVideo = state['features/large-video'];
 
         if (participantId !== largeVideo.participantId) {
@@ -85,6 +95,18 @@ export function updateKnownLargeVideoResolution(resolution: number) {
     return {
         type: UPDATE_KNOWN_LARGE_VIDEO_RESOLUTION,
         resolution
+    };
+}
+
+export function videoCallZoom(id, zoom, x, y) {
+    return {
+        type: VIDEO_CALL_ZOOM,
+        participant: {
+            id
+        },
+        zoom,
+        x,
+        y
     };
 }
 
@@ -115,13 +137,19 @@ function _electLastVisibleRemoteVideo(tracks) {
  * @private
  * @returns {(string|undefined)}
  */
-function _electParticipantInLargeVideo(state) {
+function _electParticipantInLargeVideo(state, forceLocal) {
     // 1. If a participant is pinned, they will be shown in the LargeVideo (
     //    regardless of whether they are local or remote).
     const participants = state['features/base/participants'];
-    let participant = participants.find(p => p.pinned);
+    var participant = participants.find(p => p.pinned);
     let id = participant && participant.id;
 
+    if (forceLocal) {
+        participant = participants.find(p => p.local);
+        id = participant && participant.id;
+        return id;
+    }
+    
     if (!id) {
         // 2. No participant is pinned so get the dominant speaker. But the
         //    local participant won't be displayed in LargeVideo even if she is

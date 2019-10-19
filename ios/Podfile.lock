@@ -97,7 +97,7 @@ PODS:
     - SDWebImage/GIF
   - react-native-keep-awake (4.0.0):
     - React
-  - react-native-webrtc (1.69.1):
+  - react-native-webrtc (1.69.2):
     - React
   - react-native-webview (5.8.1):
     - React
@@ -203,7 +203,7 @@ DEPENDENCIES:
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 SPEC REPOS:
-  https://github.com/cocoapods/specs.git:
+  https://github.com/CocoaPods/Specs.git:
     - Amplitude-iOS
     - boost-for-react-native
     - Crashlytics
@@ -288,7 +288,7 @@ SPEC CHECKSUMS:
   react-native-calendar-events: ee9573e355711ac679e071be70789542431f4ce3
   react-native-fast-image: 47487b71169aea34868e7b38bf870b6b3f2157c5
   react-native-keep-awake: eba3137546b10003361b37c761f6c429b59814ae
-  react-native-webrtc: 90a847d19deb2d7323fef8cc89ca12b8995fbc90
+  react-native-webrtc: 541532f2a980f99f4d83dcfb93aec042d5b51027
   react-native-webview: a95842e3f351a6d2c8bc8bcc9eab689c7e7e5ad4
   RNCAsyncStorage: 8e31405a9f12fbf42c2bb330e4560bfd79c18323
   RNGoogleSignin: d030c6c6591db24c3cee649f64c7babf0a1699a0
@@ -300,4 +300,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: b55338cc43312051ed83f8d9c6aadbd8c9402e6a
 
-COCOAPODS: 1.7.2
+COCOAPODS: 1.8.3

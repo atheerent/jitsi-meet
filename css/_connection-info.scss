@@ -16,8 +16,14 @@
      * InlineDialog.
      */
     margin: -15px;
+    background-color: #ffffff;
+    border-radius: 2px;
+    min-width: 220px;
+    opacity: 0.9 !important;
 
     > table {
+        color:#514c47;
+        padding: 4px 12px 10px 12px !important;
         white-space: nowrap;
         @extend %connection-info;
     }
@@ -50,5 +56,73 @@
         margin: 10px auto;
         text-align: center;
         width: 90px;
+        text-decoration: none;
+        text-transform: uppercase;
+        color: #298786 !important;
+        font-weight: bold;
+        margin-top: 0px !important;
+        margin-bottom: 0px !important;
+        padding-bottom: 5px;
     }
+}
+
+.bandwidth-indicator {
+    font-weight: normal !important;
+}
+
+.connection-info-top-bar {
+    height: 6px;
+    width:100%;
+}
+
+.connection-info-title-div {
+    display: flex;
+    margin-top: 12px;
+    margin-left: 15px;
+}
+
+.connection-info-note {
+    display: flex;
+    color: #808184 !important;
+    font-size: 10px !important;
+    justify-content: center;
+    margin-bottom: 10px;
+    cursor: pointer;
+
+    i {
+        margin-right: 5px !important;
+    }
+
+    .note-tooltip {
+        position: absolute;
+        right: 170px;
+        border-radius: 2px;
+        background-color: #727272;
+        opacity: 0.9;
+        width: 285px;
+        color: white;
+        padding: 15px;
+        display: none;
+        font-size: 10px !important;
+    }
+    .hide-note-tooltip {
+        display: none;
+    }
+}
+
+.connection-info-note:hover .note-tooltip {
+    display: block !important;
+}
+
+.connection-info-title {
+    font-weight: bold;
+    color: #514c47 !important;
+    align-content: center;
+    margin-top: 4px;
+    margin-left: 10px;
+}
+
+:focus{
+    outline: none !important;
+    outline: 0px !important;
 }

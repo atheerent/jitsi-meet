@@ -30,6 +30,14 @@ import { VIDEO_CONTAINER_TYPE } from './VideoContainer';
 
 import LocalVideo from './LocalVideo';
 
+import {
+    changeFlashlightStatus,
+    iframeMessages,
+    getUser,
+    disableFlashlight,
+    enableFlashlight
+} from '../../../atheer';
+
 const remoteVideos = {};
 let localVideoThumbnail = null;
 
@@ -143,6 +151,12 @@ const VideoLayout = {
         this.registerListeners();
     },
 
+    selectUserThumbnail(participantId, force) {
+        getAllThumbnails().forEach(thumbnail =>
+            thumbnail.focus(participantId === thumbnail.getId()));
+        this.updateLargeVideo(participantId, force);
+    },
+
     /**
      * Registering listeners for UI events in Video layout component.
      *
@@ -209,7 +223,8 @@ const VideoLayout = {
      */
     mucJoined() {
         if (largeVideo && !largeVideo.id) {
-            this.updateLargeVideo(getLocalParticipant().id, true);
+            var myUserId = APP.conference.getMyUserId();
+            this.selectUserThumbnail(myUserId, true);
         }
 
         // FIXME: replace this call with a generic update call once SmallVideo
@@ -271,7 +286,7 @@ const VideoLayout = {
             newId = this.electLastVisibleVideo();
         }
 
-        this.updateLargeVideo(newId);
+        this.selectUserThumbnail(newId);
     },
 
     electLastVisibleVideo() {
@@ -363,7 +378,7 @@ const VideoLayout = {
         const participant = APP.conference.getParticipantById(participantId);
 
         if (participant
-                && !participant.getTracksByMediaType(mediaType).length) {
+            && !participant.getTracksByMediaType(mediaType).length) {
             if (mediaType === 'audio') {
                 APP.UI.setAudioMuted(participantId, true);
             } else if (mediaType === 'video') {
@@ -421,23 +436,21 @@ const VideoLayout = {
             return;
         }
 
-        getAllThumbnails().forEach(thumbnail =>
-            thumbnail.focus(pinnedParticipantID === thumbnail.getId()));
-
         if (pinnedParticipantID) {
-            this.updateLargeVideo(pinnedParticipantID);
+            this.selectUserThumbnail(pinnedParticipantID);
         } else {
             const currentDominantSpeakerID
                 = getCurrentRemoteDominantSpeakerID();
 
             if (currentDominantSpeakerID) {
-                this.updateLargeVideo(currentDominantSpeakerID);
+                this.selectUserThumbnail(currentDominantSpeakerID);
             } else {
                 // if there is no currentDominantSpeakerID, it can also be
                 // that local participant is the dominant speaker
                 // we should act as a participant has left and was on large
                 // and we should choose somebody (electLastVisibleVideo)
-                this.updateLargeVideo(this.electLastVisibleVideo());
+                var lastVisibleVideoId = this.electLastVisibleVideo();
+                this.selectUserThumbnail(lastVisibleVideoId);
             }
         }
     },
@@ -547,7 +560,7 @@ const VideoLayout = {
                video source with the new stream */
             || this.isCurrentlyOnLarge(resourceJid)) {
 
-            this.updateLargeVideo(resourceJid, true);
+            this.selectUserThumbnail(resourceJid, true);
         }
     },
 
@@ -592,8 +605,8 @@ const VideoLayout = {
      * Resizes thumbnails.
      */
     resizeThumbnails(
-            forceUpdate = false,
-            onComplete = null) {
+        forceUpdate = false,
+        onComplete = null) {
         const { localVideo, remoteVideo }
             = Filmstrip.calculateThumbnailSize();
 
@@ -648,7 +661,7 @@ const VideoLayout = {
 
         if (this.isCurrentlyOnLarge(id)) {
             // large video will show avatar instead of muted stream
-            this.updateLargeVideo(id, true);
+            this.selectUserThumbnail(id, true);
         }
     },
 
@@ -687,7 +700,7 @@ const VideoLayout = {
         // since we don't want to switch to local video.
         if (!interfaceConfig.filmStripOnly && !this.getPinnedId()
             && !this.getCurrentlyOnLargeContainer().stayOnStage()) {
-            this.updateLargeVideo(id);
+            this.selectUserThumbnail(id);
         }
     },
 
@@ -759,7 +772,7 @@ const VideoLayout = {
         if (remoteVideo) {
             remoteVideo.updateView();
             if (remoteVideo.isCurrentlyOnLargeVideo()) {
-                this.updateLargeVideo(id);
+                this.selectUserThumbnail(id);
             }
         }
     },
@@ -836,7 +849,7 @@ const VideoLayout = {
         smallVideo.setVideoType(newVideoType);
 
         if (this.isCurrentlyOnLarge(id)) {
-            this.updateLargeVideo(id, true);
+            this.selectUserThumbnail(id, true);
         }
     },
 
@@ -848,8 +861,8 @@ const VideoLayout = {
      * @param forceUpdate indicates that hidden thumbnails will be shown
      */
     resizeVideoArea(
-            forceUpdate = false,
-            animate = false) {
+        forceUpdate = false,
+        animate = false) {
         // Resize the thumbnails first.
         this.resizeThumbnails(forceUpdate);
 
@@ -917,7 +930,7 @@ const VideoLayout = {
         const displayedUserId = this.getLargeVideoID();
 
         if (displayedUserId) {
-            this.updateLargeVideo(displayedUserId, true);
+            this.selectUserThumbnail(displayedUserId, true);
         }
 
         Object.keys(remoteVideos).forEach(video => {
@@ -936,8 +949,8 @@ const VideoLayout = {
         const smallVideo = this.getSmallVideo(id);
 
         if (isOnLarge && !forceUpdate
-                && LargeVideoManager.isVideoContainer(currentContainerType)
-                && smallVideo) {
+            && LargeVideoManager.isVideoContainer(currentContainerType)
+            && smallVideo) {
             const currentStreamId = currentContainer.getStreamID();
             const newStreamId
                 = smallVideo.videoStream
@@ -1200,9 +1213,60 @@ const VideoLayout = {
      */
     _updateLargeVideoIfDisplayed(participantId, force = false) {
         if (this.isCurrentlyOnLarge(participantId)) {
-            this.updateLargeVideo(participantId, force);
+            this.selectUserThumbnail(participantId, force);
         }
     }
 };
+
+window.addEventListener("message", onMessage, false);
+
+function onMessage(event) {
+    var receivedData;
+    if (!event.data) {
+        console.error('Message event contains no readable data.');
+        return;
+    }
+    if (typeof event.data === 'object') {
+        receivedData = event.data;
+    } else {
+        try {
+            receivedData = JSON.parse(event.data);
+        } catch (e) {
+            receivedData = {};
+            return;
+        }
+    }
+    if (receivedData.action === iframeMessages.flashlightStatus) {
+        const user = getUser(receivedData.data.userHash, APP.store.getState()['features/base/participants']);
+        const id = user.id ? user.id : user.getId();
+        changeFlashlightStatus(id, receivedData.data.status);
+
+        const remoteVideo = remoteVideos[id];
+        if (!remoteVideo) {
+            return;
+        }
+        remoteVideo.updateRemoteVideoMenu();
+    } else if (receivedData.action === iframeMessages.enableFlashlight) {
+        const user = getUser(receivedData.data.userHash, APP.store.getState()['features/base/participants']);
+        const id = user.id ? user.id : user.getId();
+        enableFlashlight(id);
+
+        const remoteVideo = remoteVideos[id];
+        if (!remoteVideo) {
+            return;
+        }
+        remoteVideo.updateRemoteVideoMenu();
+    } else if (receivedData.action === iframeMessages.disableFlashlight) {
+        const user = getUser(receivedData.data.userHash, APP.store.getState()['features/base/participants']);
+        const id = user.id ? user.id : user.getId();
+        disableFlashlight(id);
+
+        const remoteVideo = remoteVideos[id];
+        if (!remoteVideo) {
+            return;
+        }
+        remoteVideo.updateRemoteVideoMenu();
+    }
+}
 
 export default VideoLayout;

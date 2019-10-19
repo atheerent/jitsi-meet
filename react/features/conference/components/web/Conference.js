@@ -4,6 +4,7 @@ import _ from 'lodash';
 import React from 'react';
 
 import VideoLayout from '../../../../../modules/UI/videolayout/VideoLayout';
+import { setAudioOnly, setPreferredReceiverVideoQuality } from '../../../base/conference';
 
 import { obtainConfig } from '../../../base/config';
 import { connect, disconnect } from '../../../base/connection';
@@ -24,6 +25,14 @@ import {
 
 import { maybeShowSuboptimalExperienceNotification } from '../../functions';
 
+import { MEDIA_TYPE, VIDEO_MUTISM_AUTHORITY, setVideoMuted } from '../../../base/media';
+import { iframeMessages, sendMessage, displayNamePrefix, displayNameSplit, getLastSelectedId, getUser } from '../../../../../atheer';
+import { appNavigate } from '../../../app';
+import { isLocalTrackMuted } from '../../../base/tracks';
+import { updateSettings } from '../../../base/settings/actions';
+import { setAudioMuted } from '../../../base/media/actions';
+import { getLocalParticipant, getPinnedParticipant, pinParticipant } from '../../../base/participants';
+
 import Labels from './Labels';
 import { default as Notice } from './Notice';
 import { default as Subject } from './Subject';
@@ -33,6 +42,7 @@ import {
 } from '../AbstractConference';
 
 import type { AbstractProps } from '../AbstractConference';
+import { toggleScreensharing } from '../../../base/tracks';
 
 declare var APP: Object;
 declare var config: Object;
@@ -66,6 +76,8 @@ const LAYOUT_CLASSNAMES = {
     [LAYOUTS.VERTICAL_FILMSTRIP_VIEW]: 'vertical-filmstrip'
 };
 
+var audioOnly = false;
+
 /**
  * The type of the React {@code Component} props of {@link Conference}.
  */
@@ -81,6 +93,16 @@ type Props = AbstractProps & {
      * application layout.
      */
     _layoutClassName: string,
+
+    /** 
+    * Whether video is currently muted or not.
+    */
+    _videoMuted: boolean;
+
+    _audioMuted: boolean;
+
+    _conference: Object;
+    _localUser: Object;
 
     dispatch: Function,
     t: Function
@@ -102,6 +124,8 @@ class Conference extends AbstractConference<Props, *> {
      */
     constructor(props) {
         super(props);
+        this.onMessage = this.onMessage.bind(this);
+        sendMessage(iframeMessages.initialized);
 
         // Throttle and bind this component's mousemove handler to prevent it
         // from firing too often.
@@ -125,6 +149,7 @@ class Conference extends AbstractConference<Props, *> {
      */
     componentDidMount() {
         const { configLocation } = config;
+        window.onmessage = this.onMessage;
 
         if (configLocation) {
             obtainConfig(configLocation, this.props._room)
@@ -148,6 +173,97 @@ class Conference extends AbstractConference<Props, *> {
         } else {
             this._start();
         }
+    }
+    /**
+      * Indicates if video is currently muted ot nor.
+      * @override
+      * @protected
+      * @returns {boolean}
+      */
+
+    _isVideoMuted() {
+        return this.props._videoMuted;
+    }
+
+    _isAudioMuted() {
+        return this.props._audioMuted;
+    }
+
+    onMessage(event) {
+        var receivedData;
+        if (!event.data) {
+            console.error('Message event contains no readable data.');
+            return;
+        }
+        if (typeof event.data === 'object') {
+            receivedData = event.data;
+        } else {
+            try {
+                receivedData = JSON.parse(event.data);
+            } catch (e) {
+                receivedData = {};
+                return;
+            }
+        }
+        if (receivedData.action === iframeMessages.toggleCamera) {
+            this.props.dispatch(setVideoMuted(!this._isVideoMuted(), VIDEO_MUTISM_AUTHORITY.USER, /* ensureTrack */ true));
+        } else if (receivedData.action === iframeMessages.toggleMic) {
+            this.props.dispatch(setAudioMuted(!this._isAudioMuted(), /* ensureTrack */ true));
+        } else if (receivedData.action === iframeMessages.startCall) {
+            var currentUser = receivedData.data.currentUser;
+            var lastName = currentUser.lastName && currentUser.lastName !== 'null' ? ' ' + currentUser.lastName : '';
+            this.props.dispatch(updateSettings({
+                avatarURL: currentUser.image,
+                displayName: displayNamePrefix + displayNameSplit + currentUser.userHash + displayNameSplit + currentUser.name + lastName
+            }));
+        } else if (receivedData.action === iframeMessages.endCall) {
+            if (navigator.product === 'ReactNative') {
+                this.props.dispatch(appNavigate(undefined));
+            } else {
+                this.props.dispatch(disconnect(true));
+            }
+        } else if (receivedData.action === iframeMessages.setPreferredReceiverVideoQuality) {
+            if (receivedData.data === 0) {
+                audioOnly = true;
+                this.props.dispatch(setAudioOnly(true));
+            } else {
+                this.props.dispatch(setPreferredReceiverVideoQuality(receivedData.data));
+                if (audioOnly) {
+                    audioOnly = false;
+                    this.props.dispatch(setAudioOnly(false));
+                }
+            }
+        } else if (receivedData.action === iframeMessages.startHosting) {
+            var userHash = receivedData.data.user.userHash;
+            var localName = this.props._localUser.name ? this.props._localUser.name : this.props._localUser.getDisplayName();
+            var user = localName.includes(userHash) ? this.props._localUser :
+                getUser(userHash, this.props._conference.conference.getParticipants());
+            var id = user.id ? user.id : user.getId();
+            this.pinUser(id);
+            if (localName.includes(userHash)) {
+                this.props.dispatch(toggleScreensharing());
+            }
+        } else if (receivedData.action === iframeMessages.stopHosting) {
+            var userHash = receivedData.data.user.userHash;
+            var localName = this.props._localUser.name ? this.props._localUser.name : this.props._localUser.getDisplayName();
+            this.pinUser(getLastSelectedId());
+            if (localName.includes(userHash)) {
+                this.props.dispatch(toggleScreensharing());
+            }
+        } else if (receivedData.action === iframeMessages.cancelHosting) {
+            this.pinUser(getLastSelectedId());
+        }
+    }
+
+    pinUser(id) {
+        this.props._conference.conference.selectParticipant(id);
+        const pinnedParticipant
+            = getPinnedParticipant(APP.store.getState()) || {};
+        const participantIdToPin
+            = pinnedParticipant && pinnedParticipant.id === id
+                ? null : id;
+
+        APP.store.dispatch(pinParticipant(participantIdToPin));
     }
 
     /**
@@ -200,27 +316,27 @@ class Conference extends AbstractConference<Props, *> {
         } = interfaceConfig;
         const hideVideoQualityLabel
             = filmstripOnly
-                || VIDEO_QUALITY_LABEL_DISABLED
-                || this.props._iAmRecorder;
+            || VIDEO_QUALITY_LABEL_DISABLED
+            || this.props._iAmRecorder;
 
         return (
             <div
-                className = { this.props._layoutClassName }
-                id = 'videoconference_page'
-                onMouseMove = { this._onShowToolbar }>
+                className={this.props._layoutClassName}
+                id='videoconference_page'
+                onMouseMove={this._onShowToolbar}>
                 <Notice />
                 <Subject />
-                <div id = 'videospace'>
+                <div id='videospace'>
                     <LargeVideo />
-                    { hideVideoQualityLabel
-                        || <Labels /> }
-                    <Filmstrip filmstripOnly = { filmstripOnly } />
+                    {hideVideoQualityLabel
+                        || <Labels />}
+                    <Filmstrip filmstripOnly={filmstripOnly} />
                 </div>
 
-                { filmstripOnly || <Toolbox /> }
-                { filmstripOnly || <Chat /> }
+                {filmstripOnly || <Toolbox />}
+                {filmstripOnly || <Chat />}
 
-                { this.renderNotificationsContainer() }
+                {this.renderNotificationsContainer()}
 
                 <CalleeInfoContainer />
             </div>
@@ -289,7 +405,11 @@ function _mapStateToProps(state) {
     return {
         ...abstractMapStateToProps(state),
         _iAmRecorder: state['features/base/config'].iAmRecorder,
-        _layoutClassName: LAYOUT_CLASSNAMES[currentLayout]
+        _layoutClassName: LAYOUT_CLASSNAMES[currentLayout],
+        _videoMuted: isLocalTrackMuted(state['features/base/tracks'], MEDIA_TYPE.VIDEO),
+        _audioMuted: isLocalTrackMuted(state['features/base/tracks'], MEDIA_TYPE.AUDIO),
+        _conference: state['features/base/conference'],
+        _localUser: getLocalParticipant(state)
     };
 }
 

@@ -1,6 +1,7 @@
 /* @flow */
 
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { translate } from '../../../base/i18n';
 import { connect } from '../../../base/redux';
@@ -11,6 +12,8 @@ import AbstractMuteButton, {
 } from '../AbstractMuteButton';
 
 import RemoteVideoMenuButton from './RemoteVideoMenuButton';
+import { muteRemoteParticipant } from '../../../base/participants/actions';
+import { iframeMessages, sendMessage, getUserHashByName } from '../../../../../atheer';
 
 /**
  * Implements a React {@link Component} which displays a button for audio muting
@@ -23,6 +26,40 @@ import RemoteVideoMenuButton from './RemoteVideoMenuButton';
  * {@code AbstractButton} base component, this can be fully removed.
  */
 class MuteButton extends AbstractMuteButton {
+    /**
+     * {@code MuteButton} component's property types.
+     *
+     * @static
+    */
+    static propTypes = {
+        /**
+         * Invoked to send a request for muting the participant with the passed
+         * in participantID.
+          */
+        dispatch: PropTypes.func,
+
+        /**
+         * Whether or not the participant is currently audio muted.
+         */
+        isAudioMuted: PropTypes.bool,
+
+        /**
+         * Callback to invoke when {@code MuteButton} is clicked.
+         */
+        onClick: PropTypes.func,
+
+        /**
+         * The ID of the participant linked to the onClick callback.
+         */
+        participantID: PropTypes.string,
+
+        participantName: PropTypes.string,
+
+        /**
+         * Invoked to obtain translated strings.
+         */
+        t: PropTypes.func
+    };
     /**
      * Instantiates a new {@code Component}.
      *
@@ -61,7 +98,13 @@ class MuteButton extends AbstractMuteButton {
         );
     }
 
-    _handleClick: () => void
+    _handleClick = () => {
+        const { dispatch, onClick, participantID, participantName } = this.props;
+
+        sendMessage(iframeMessages.muteMic,{ 
+            userHash: getUserHashByName(participantName)
+        });
+    }
 }
 
 export default translate(connect(_mapStateToProps)(MuteButton));

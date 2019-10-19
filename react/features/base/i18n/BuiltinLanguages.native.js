@@ -7,6 +7,18 @@ import i18next from 'i18next';
  */
 const _LANGUAGES = {
 
+    // Greek
+    'el': {
+        languages: require('../../../../lang/languages-el'),
+        main: require('../../../../lang/main-el')
+    },
+
+    // Japanese
+    'ja': {
+        languages: require('../../../../lang/languages-ja'),
+        main: require('../../../../lang/main-ja')
+    },
+      
     // Bulgarian
     'bg': {
         languages: require('../../../../lang/languages-bg'),

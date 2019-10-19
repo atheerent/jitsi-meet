@@ -50,7 +50,7 @@ function RemoteVideo(user, VideoLayout, emitter) {
     this._audioStreamElement = null;
     this._supportsRemoteControl = false;
     this.statsPopoverLocation = interfaceConfig.VERTICAL_FILMSTRIP
-        ? 'left bottom' : 'top center';
+        ? 'left top' : 'top center';
     this.addRemoteVideoContainer();
     this.updateIndicators();
     this.updateDisplayName();
@@ -94,7 +94,7 @@ function RemoteVideo(user, VideoLayout, emitter) {
 RemoteVideo.prototype = Object.create(SmallVideo.prototype);
 RemoteVideo.prototype.constructor = RemoteVideo;
 
-RemoteVideo.prototype.addRemoteVideoContainer = function() {
+RemoteVideo.prototype.addRemoteVideoContainer = function () {
     this.container = RemoteVideo.createContainer(this.videoSpanId);
     this.$container = $(this.container);
 
@@ -118,7 +118,7 @@ RemoteVideo.prototype.addRemoteVideoContainer = function() {
  * @private
  * NOTE: extends SmallVideo's method
  */
-RemoteVideo.prototype._isHovered = function() {
+RemoteVideo.prototype._isHovered = function () {
     const isHovered = SmallVideo.prototype._isHovered.call(this)
         || this.popupMenuIsHovered;
 
@@ -132,7 +132,7 @@ RemoteVideo.prototype._isHovered = function() {
  * @returns {Element|*} the constructed element, containing popup menu items
  * @private
  */
-RemoteVideo.prototype._generatePopupContent = function() {
+RemoteVideo.prototype._generatePopupContent = function () {
     if (interfaceConfig.filmStripOnly) {
         return;
     }
@@ -170,6 +170,7 @@ RemoteVideo.prototype._generatePopupContent = function() {
         ? undefined : this._setAudioVolume;
     const { isModerator } = APP.conference;
     const participantID = this.id;
+    const participantName = this.user.getDisplayName();
 
     const currentLayout = getCurrentLayout(APP.store.getState());
     let remoteMenuPosition;
@@ -183,27 +184,28 @@ RemoteVideo.prototype._generatePopupContent = function() {
     }
 
     ReactDOM.render(
-        <Provider store = { APP.store }>
-            <I18nextProvider i18n = { i18next }>
-                <AtlasKitThemeProvider mode = 'dark'>
+        <Provider store={APP.store}>
+            <I18nextProvider i18n={i18next}>
+                <AtlasKitThemeProvider mode=''>
                     <RemoteVideoMenuTriggerButton
-                        initialVolumeValue = { initialVolumeValue }
-                        isAudioMuted = { this.isAudioMuted }
-                        isModerator = { isModerator }
-                        menuPosition = { remoteMenuPosition }
+                        initialVolumeValue={initialVolumeValue}
+                        isAudioMuted={this.isAudioMuted}
+                        isModerator={isModerator}
+                        menuPosition={remoteMenuPosition}
                         onMenuDisplay
-                            = {this._onRemoteVideoMenuDisplay.bind(this)}
-                        onRemoteControlToggle = { onRemoteControlToggle }
-                        onVolumeChange = { onVolumeChange }
-                        participantID = { participantID }
-                        remoteControlState = { remoteControlState } />
+                        ={this._onRemoteVideoMenuDisplay.bind(this)}
+                        onRemoteControlToggle={onRemoteControlToggle}
+                        onVolumeChange={onVolumeChange}
+                        participantID={participantID}
+                        participantName={participantName}
+                        remoteControlState={remoteControlState} />
                 </AtlasKitThemeProvider>
             </I18nextProvider>
         </Provider>,
         remoteVideoMenuContainer);
 };
 
-RemoteVideo.prototype._onRemoteVideoMenuDisplay = function() {
+RemoteVideo.prototype._onRemoteVideoMenuDisplay = function () {
     this.updateRemoteVideoMenu();
 };
 
@@ -213,7 +215,7 @@ RemoteVideo.prototype._onRemoteVideoMenuDisplay = function() {
  * @param {boolean} isActive - The new remote control active status.
  * @returns {void}
  */
-RemoteVideo.prototype.setRemoteControlActiveStatus = function(isActive) {
+RemoteVideo.prototype.setRemoteControlActiveStatus = function (isActive) {
     this._isRemoteControlSessionActive = isActive;
     this.updateRemoteVideoMenu();
 };
@@ -223,7 +225,7 @@ RemoteVideo.prototype.setRemoteControlActiveStatus = function(isActive) {
  * depending on the remote control is supported or not.
  * @param {boolean} isSupported
  */
-RemoteVideo.prototype.setRemoteControlSupport = function(isSupported = false) {
+RemoteVideo.prototype.setRemoteControlSupport = function (isSupported = false) {
     if (this._supportsRemoteControl === isSupported) {
         return;
     }
@@ -234,48 +236,52 @@ RemoteVideo.prototype.setRemoteControlSupport = function(isSupported = false) {
 /**
  * Requests permissions for remote control session.
  */
-RemoteVideo.prototype._requestRemoteControlPermissions = function() {
+RemoteVideo.prototype._requestRemoteControlPermissions = function () {
     APP.remoteControl.controller.requestPermissions(
         this.id, this.VideoLayout.getLargeVideoWrapper()).then(result => {
-        if (result === null) {
-            return;
-        }
-        this.updateRemoteVideoMenu();
-        APP.UI.messageHandler.notify(
-            'dialog.remoteControlTitle',
-            result === false ? 'dialog.remoteControlDeniedMessage'
-                : 'dialog.remoteControlAllowedMessage',
-            { user: this.user.getDisplayName()
-                || interfaceConfig.DEFAULT_REMOTE_DISPLAY_NAME }
-        );
-        if (result === true) {
-            // the remote control permissions has been granted
-            // pin the controlled participant
-            const pinnedParticipant
-                = getPinnedParticipant(APP.store.getState()) || {};
-            const pinnedId = pinnedParticipant.id;
-
-            if (pinnedId !== this.id) {
-                APP.store.dispatch(pinParticipant(this.id));
+            if (result === null) {
+                return;
             }
-        }
-    }, error => {
-        logger.error(error);
-        this.updateRemoteVideoMenu();
-        APP.UI.messageHandler.notify(
-            'dialog.remoteControlTitle',
-            'dialog.remoteControlErrorMessage',
-            { user: this.user.getDisplayName()
-                || interfaceConfig.DEFAULT_REMOTE_DISPLAY_NAME }
-        );
-    });
+            this.updateRemoteVideoMenu();
+            APP.UI.messageHandler.notify(
+                'dialog.remoteControlTitle',
+                result === false ? 'dialog.remoteControlDeniedMessage'
+                    : 'dialog.remoteControlAllowedMessage',
+                {
+                    user: this.user.getDisplayName()
+                        || interfaceConfig.DEFAULT_REMOTE_DISPLAY_NAME
+                }
+            );
+            if (result === true) {
+                // the remote control permissions has been granted
+                // pin the controlled participant
+                const pinnedParticipant
+                    = getPinnedParticipant(APP.store.getState()) || {};
+                const pinnedId = pinnedParticipant.id;
+
+                if (pinnedId !== this.id) {
+                    APP.store.dispatch(pinParticipant(this.id));
+                }
+            }
+        }, error => {
+            logger.error(error);
+            this.updateRemoteVideoMenu();
+            APP.UI.messageHandler.notify(
+                'dialog.remoteControlTitle',
+                'dialog.remoteControlErrorMessage',
+                {
+                    user: this.user.getDisplayName()
+                        || interfaceConfig.DEFAULT_REMOTE_DISPLAY_NAME
+                }
+            );
+        });
     this.updateRemoteVideoMenu();
 };
 
 /**
  * Stops remote control session.
  */
-RemoteVideo.prototype._stopRemoteControl = function() {
+RemoteVideo.prototype._stopRemoteControl = function () {
     // send message about stopping
     APP.remoteControl.controller.stop();
     this.updateRemoteVideoMenu();
@@ -286,7 +292,7 @@ RemoteVideo.prototype._stopRemoteControl = function() {
  *
  * @param {int} newVal - The value to set the slider to.
  */
-RemoteVideo.prototype._setAudioVolume = function(newVal) {
+RemoteVideo.prototype._setAudioVolume = function (newVal) {
     if (this._audioStreamElement) {
         this._audioStreamElement.volume = newVal;
     }
@@ -297,7 +303,7 @@ RemoteVideo.prototype._setAudioVolume = function(newVal) {
  *
  * @param isMuted the new muted state to update to
  */
-RemoteVideo.prototype.updateRemoteVideoMenu = function(isMuted) {
+RemoteVideo.prototype.updateRemoteVideoMenu = function (isMuted) {
 
     if (typeof isMuted !== 'undefined') {
         this.isAudioMuted = isMuted;
@@ -310,7 +316,7 @@ RemoteVideo.prototype.updateRemoteVideoMenu = function(isMuted) {
  * @inheritDoc
  * @override
  */
-RemoteVideo.prototype.setVideoMutedView = function(isMuted) {
+RemoteVideo.prototype.setVideoMutedView = function (isMuted) {
     SmallVideo.prototype.setVideoMutedView.call(this, isMuted);
 
     // Update 'mutedWhileDisconnected' flag
@@ -323,7 +329,7 @@ RemoteVideo.prototype.setVideoMutedView = function(isMuted) {
  *
  * @private
  */
-RemoteVideo.prototype._figureOutMutedWhileDisconnected = function() {
+RemoteVideo.prototype._figureOutMutedWhileDisconnected = function () {
     const isActive = this.isConnectionActive();
 
     if (!isActive && this.isVideoMuted) {
@@ -340,7 +346,7 @@ RemoteVideo.prototype._figureOutMutedWhileDisconnected = function() {
  * @param stream the MediaStream
  * @param isVideo <tt>true</tt> if given <tt>stream</tt> is a video one.
  */
-RemoteVideo.prototype.removeRemoteStreamElement = function(stream) {
+RemoteVideo.prototype.removeRemoteStreamElement = function (stream) {
     if (!this.container) {
         return false;
     }
@@ -357,7 +363,7 @@ RemoteVideo.prototype.removeRemoteStreamElement = function(stream) {
     }
 
     logger.info(`${isVideo ? 'Video' : 'Audio'
-    } removed ${this.id}`, select);
+        } removed ${this.id}`, select);
 
 
     if (stream === this.videoStream) {
@@ -374,7 +380,7 @@ RemoteVideo.prototype.removeRemoteStreamElement = function(stream) {
  * @return {boolean} <tt>true</tt> if the user's connection is fine or
  * <tt>false</tt> otherwise.
  */
-RemoteVideo.prototype.isConnectionActive = function() {
+RemoteVideo.prototype.isConnectionActive = function () {
     return this.user.getConnectionStatus()
         === JitsiParticipantConnectionStatus.ACTIVE;
 };
@@ -392,7 +398,7 @@ RemoteVideo.prototype.isConnectionActive = function() {
  * @inheritdoc
  * @override
  */
-RemoteVideo.prototype.isVideoPlayable = function() {
+RemoteVideo.prototype.isVideoPlayable = function () {
     const connectionState
         = APP.conference.getParticipantConnectionStatus(this.id);
 
@@ -400,13 +406,13 @@ RemoteVideo.prototype.isVideoPlayable = function() {
         && this.hasVideoStarted()
         && (connectionState === JitsiParticipantConnectionStatus.ACTIVE
             || (connectionState === JitsiParticipantConnectionStatus.INTERRUPTED
-                    && !this.mutedWhileDisconnected));
+                && !this.mutedWhileDisconnected));
 };
 
 /**
  * @inheritDoc
  */
-RemoteVideo.prototype.updateView = function() {
+RemoteVideo.prototype.updateView = function () {
     this.$container.toggleClass('audio-only', APP.conference.isAudioOnly());
 
     this.updateConnectionStatusIndicator();
@@ -419,7 +425,7 @@ RemoteVideo.prototype.updateView = function() {
 /**
  * Updates the UI to reflect user's connectivity status.
  */
-RemoteVideo.prototype.updateConnectionStatusIndicator = function() {
+RemoteVideo.prototype.updateConnectionStatusIndicator = function () {
     const connectionStatus = this.user.getConnectionStatus();
 
     logger.debug(`${this.id} thumbnail connection status: ${connectionStatus}`);
@@ -443,35 +449,39 @@ RemoteVideo.prototype.updateConnectionStatusIndicator = function() {
 /**
  * Removes RemoteVideo from the page.
  */
-RemoteVideo.prototype.remove = function() {
+RemoteVideo.prototype.remove = function () {
     SmallVideo.prototype.remove.call(this);
 
     this.removePresenceLabel();
     this.removeRemoteVideoMenu();
 };
 
-RemoteVideo.prototype.waitForPlayback = function(streamElement, stream) {
+RemoteVideo.prototype.waitForPlayback = function (streamElement, stream) {
 
     const webRtcStream = stream.getOriginalStream();
     const isVideo = stream.isVideoTrack();
 
-    if (!isVideo || webRtcStream.id === 'mixedmslabel') {
+    if (!isVideo ) {
         return;
     }
 
     const self = this;
 
     // Triggers when video playback starts
-    const onPlayingHandler = function() {
+    /*const onPlayingHandler = function () {
         self.wasVideoPlayed = true;
         self.VideoLayout.remoteVideoActive(streamElement, self.id);
         streamElement.onplaying = null;
 
         // Refresh to show the video
         self.updateView();
-    };
+    };*/
 
-    streamElement.onplaying = onPlayingHandler;
+    self.wasVideoPlayed = true;
+    self.VideoLayout.remoteVideoActive(streamElement, self.id);
+    streamElement.onplaying = null;
+
+    self.updateView();
 };
 
 /**
@@ -480,11 +490,11 @@ RemoteVideo.prototype.waitForPlayback = function(streamElement, stream) {
  * @returns {boolean} true if this RemoteVideo has a video stream for which
  * the playback has been started.
  */
-RemoteVideo.prototype.hasVideoStarted = function() {
+RemoteVideo.prototype.hasVideoStarted = function () {
     return this.wasVideoPlayed;
 };
 
-RemoteVideo.prototype.addRemoteStreamElement = function(stream) {
+RemoteVideo.prototype.addRemoteStreamElement = function (stream) {
     if (!this.container) {
         return;
     }
@@ -505,8 +515,6 @@ RemoteVideo.prototype.addRemoteStreamElement = function(stream) {
 
     // Put new stream element always in front
     UIUtils.prependChild(this.container, streamElement);
-
-    $(streamElement).hide();
 
     // If the container is currently visible
     // we attach the stream to the element.
@@ -530,17 +538,18 @@ RemoteVideo.prototype.addRemoteStreamElement = function(stream) {
  *
  * @returns {void}
  */
-RemoteVideo.prototype.updateDisplayName = function() {
+RemoteVideo.prototype.updateDisplayName = function () {
     if (!this.container) {
         logger.warn(`Unable to set displayName - ${this.videoSpanId
-        } does not exist`);
+            } does not exist`);
 
         return;
     }
 
     this._renderDisplayName({
         elementID: `${this.videoSpanId}_name`,
-        participantID: this.id
+        participantID: this.id,
+        participantName: this.user.getDisplayName()
     });
 };
 
@@ -550,7 +559,7 @@ RemoteVideo.prototype.updateDisplayName = function() {
  *
  * @param videoElementId the id of local or remote video element.
  */
-RemoteVideo.prototype.removeRemoteVideoMenu = function() {
+RemoteVideo.prototype.removeRemoteVideoMenu = function () {
     const menuSpan = this.$container.find('.remotevideomenu');
 
     if (menuSpan.length) {
@@ -565,17 +574,17 @@ RemoteVideo.prototype.removeRemoteVideoMenu = function() {
  *
  * @return {void}
  */
-RemoteVideo.prototype.addPresenceLabel = function() {
+RemoteVideo.prototype.addPresenceLabel = function () {
     const presenceLabelContainer
         = this.container.querySelector('.presence-label-container');
 
     if (presenceLabelContainer) {
         ReactDOM.render(
-            <Provider store = { APP.store }>
-                <I18nextProvider i18n = { i18next }>
+            <Provider store={APP.store}>
+                <I18nextProvider i18n={i18next}>
                     <PresenceLabel
-                        participantID = { this.id }
-                        className = 'presence-label' />
+                        participantID={this.id}
+                        className='presence-label' />
                 </I18nextProvider>
             </Provider>,
             presenceLabelContainer);
@@ -587,7 +596,7 @@ RemoteVideo.prototype.addPresenceLabel = function() {
  *
  * @return {void}
  */
-RemoteVideo.prototype.removePresenceLabel = function() {
+RemoteVideo.prototype.removePresenceLabel = function () {
     const presenceLabelContainer
         = this.container.querySelector('.presence-label-container');
 
@@ -596,7 +605,7 @@ RemoteVideo.prototype.removePresenceLabel = function() {
     }
 };
 
-RemoteVideo.createContainer = function(spanId) {
+RemoteVideo.createContainer = function (spanId) {
     const container = document.createElement('span');
 
     container.id = spanId;

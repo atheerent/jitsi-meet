@@ -104,7 +104,7 @@ export function createStyleSheet(
 export function fixAndroidViewClipping<T: StyleSheet>(styles: T): T {
     if (Platform.OS === 'android') {
         styles.borderColor = ColorPalette.appBackground;
-        styles.borderWidth = 1;
+        styles.borderWidth = 0; // remove the thin border around JitsiView
     }
 
     return styles;

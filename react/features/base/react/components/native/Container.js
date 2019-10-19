@@ -10,6 +10,8 @@ import {
 import AbstractContainer from '../AbstractContainer';
 import type { Props as AbstractProps } from '../AbstractContainer';
 
+const logger = require('jitsi-meet-logger').getLogger(__filename);
+
 type Props = AbstractProps & {
 
     /**
@@ -36,8 +38,9 @@ export default class Container<P: Props> extends AbstractContainer<P> {
             accessibilityLabel,
             accessible,
             onClick,
+            onPress,
             onLongPress,
-            touchFeedback = Boolean(onClick || onLongPress),
+            touchFeedback = false,
             underlayColor,
             visible = true,
             ...props
@@ -62,7 +65,7 @@ export default class Container<P: Props> extends AbstractContainer<P> {
             const touchableProps = {
                 accessibilityLabel,
                 accessible,
-                onLongPress,
+                onLongPress: onPress,
                 onPress: onClick
             };
 

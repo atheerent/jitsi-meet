@@ -1,5 +1,5 @@
 // @flow
-
+import { NativeEventEmitter, NativeModules } from 'react-native';
 import {
     CONFERENCE_FAILED,
     CONFERENCE_JOINED,
@@ -10,6 +10,18 @@ import {
     forEachConference,
     isRoomValid
 } from '../../base/conference';
+import {
+    PARTICIPANT_JOINED,
+    PARTICIPANT_LEFT
+} from '../../base/participants'
+import { MUTE_MIC,
+        TOGGLE_FLASHLIGHT,
+        setGlassUi,
+        setFilmstripVisible,
+        setFilmstripForceHidden,
+        updateFlashlightStatus,
+        enableFlashlight,
+        disableFlashlight } from '../../filmstrip'
 import { LOAD_CONFIG_ERROR } from '../../base/config';
 import {
     CONNECTION_DISCONNECTED,
@@ -20,6 +32,8 @@ import {
 import { MiddlewareRegistry } from '../../base/redux';
 import { toURLString } from '../../base/util';
 import { ENTER_PICTURE_IN_PICTURE } from '../picture-in-picture';
+import { appNavigate } from '../../app/actions';
+import { disconnect } from '../../base/connection';
 
 import { sendEvent } from './functions';
 
@@ -28,6 +42,149 @@ import { sendEvent } from './functions';
  * has ended either by user request or because an error was produced.
  */
 const CONFERENCE_TERMINATED = 'CONFERENCE_TERMINATED';
+
+import { STORE_VIDEO_TRANSFORM, VIDEO_CALL_ZOOM_UPDATED } from '../../base/media';
+import { selectParticipantInLargeVideo,
+        videoCallZoom } from '../../large-video';
+
+const logger = require('jitsi-meet-logger').getLogger(__filename);
+const displayNameSplit = ':';
+
+var userHashDict = {};
+var jitsiHashDict = {};
+
+var Store: Object;
+
+var RCTDeviceEventEmitter = require('RCTDeviceEventEmitter');
+
+var IsGlass = false;
+
+const { RNEventEmitter } = NativeModules;
+
+const emitter = new NativeEventEmitter(RNEventEmitter);
+
+emitter.addListener(
+    'hangUp',
+    (data) => {
+    logger.log('receive hangup in emitter');
+    if (Store) {
+        Store.dispatch(disconnect(true));
+    }
+});
+
+RCTDeviceEventEmitter.addListener('showRemoteView', function(data) {
+    Object.keys(data).forEach((key) => {
+        if (key == 'userHash') {
+            var jitsiId = _getJitsiParticipantId(data[key]);
+            if (IsGlass) {
+                Store.dispatch(setFilmstripVisible(true));
+                if (jitsiId && !jitsiId.includes('localuser')) {
+                    Store.dispatch(selectParticipantInLargeVideo(true, jitsiId));
+                } else {
+                    Store.dispatch(selectParticipantInLargeVideo(true));
+                }
+            } else {
+                Store.dispatch(setFilmstripForceHidden(false));
+                Store.dispatch(selectParticipantInLargeVideo(false));
+            }
+
+        }
+    });
+});
+
+RCTDeviceEventEmitter.addListener('hideRemoteView', function() {
+    if (IsGlass) {
+        Store.dispatch(setFilmstripVisible(false));
+    } else {
+        Store.dispatch(setFilmstripForceHidden(true));
+    }
+    Store.dispatch(selectParticipantInLargeVideo(IsGlass));
+});
+
+RCTDeviceEventEmitter.addListener('setGlassUI', function() {
+    IsGlass = true;
+    Store.dispatch(setFilmstripVisible(false));
+    Store.dispatch(setGlassUi(true));
+    Store.dispatch(selectParticipantInLargeVideo(true));
+});
+
+emitter.addListener(
+    'videoCallZoom',
+    (data) => {
+    if (Store) {
+        var userhash = null;
+        var zoom = null;
+        var x = null;
+        var y = null;
+        if (data != null) {
+            Object.keys(data).forEach((key) => {
+                if (key === 'userhash') {
+                    logger.log('Event:videoCallZoom userhash=' + data[key]);
+                    userhash = _getJitsiParticipantId(data[key]);
+                } else if (key === 'zoom') {
+                    logger.log('Event:videoCallZoom zoom=' + data[key]);
+                    zoom = data[key];
+                } else if (key === 'x') {
+                    logger.log('Event:videoCallZoom x=' + data[key]);
+                    x = data[key];
+                } else if (key === 'y') {
+                    logger.log('Event:videoCallZoom y=' + data[key]);
+                    y = data[key];
+                }
+            });
+            Store.dispatch(videoCallZoom(userhash, zoom, x, y));
+        }
+    }
+});
+
+emitter.addListener(
+    'disableFlashlight',
+    (data) => {
+    if (Store && data != null) {
+        var userhash = null;
+        Object.keys(data).forEach((key) => {
+            if (key === 'userhash') {
+                logger.log('Event:disableFlashlight userhash=' + data[key]);
+                userhash = _getJitsiParticipantId(data[key]);
+            }
+        });
+        Store.dispatch(disableFlashlight(userhash));
+    }
+});
+
+emitter.addListener(
+    'enableFlashlight',
+    (data) => {
+    if (Store && data != null) {
+        var userhash = null;
+        Object.keys(data).forEach((key) => {
+            if (key === 'userhash') {
+                logger.log('Event:enableFlashlight userhash=' + data[key]);
+                userhash = _getJitsiParticipantId(data[key]);
+            }
+        });
+        Store.dispatch(enableFlashlight(userhash));
+    }
+});
+
+emitter.addListener(
+    'updateFlashlightStatus',
+    (data) => {
+    if (Store && data != null) {
+        var userhash = null;
+        var flashlightStatus = null;
+        Object.keys(data).forEach((key) => {
+            if (key === 'userhash') {
+                logger.log('Event:updateFlashlightStatus userhash=' + data[key]);
+                userhash = _getJitsiParticipantId(data[key]);
+            } else if (key === 'flashlightStatus') {
+                logger.log('Event:updateFlashlightStatus flashlightStatus=' + data[key]);
+                flashlightStatus = data[key];
+            }
+        });
+        Store.dispatch(updateFlashlightStatus(userhash, flashlightStatus));
+    }
+});
 
 /**
  * Middleware that captures Redux actions and uses the ExternalAPI module to
@@ -62,8 +219,10 @@ MiddlewareRegistry.register(store => next => action => {
         break;
     }
 
-    case CONFERENCE_JOINED:
     case CONFERENCE_LEFT:
+        jitsiHashDict = [];
+        userHashDict = [];
+    case CONFERENCE_JOINED:
     case CONFERENCE_WILL_JOIN:
         _sendConferenceEvent(store, action);
         break;
@@ -98,6 +257,56 @@ MiddlewareRegistry.register(store => next => action => {
         sendEvent(store, type, /* data */ {});
         break;
 
+    case MUTE_MIC:
+        sendEvent(store, type,
+        /* data */ {
+            userhash: _getAtheerUserhash(userHashDict[action.participant.id])
+        });
+        break;
+
+    case TOGGLE_FLASHLIGHT:
+        sendEvent(store, type,
+        /* data */ {
+            userhash: _getAtheerUserhash(userHashDict[action.participant.id])
+        });
+        break;
+
+    case PARTICIPANT_JOINED:
+        userHashDict[action.participant.id] = action.participant.name;
+        jitsiHashDict[action.participant.name] = action.participant.id;
+        sendEvent(store, type,
+        /* data */ {
+            participantId: action.participant.id,
+            userhash: _getAtheerUserhash(action.participant.name)
+        });
+        break;
+
+    case PARTICIPANT_LEFT:
+        sendEvent(store, type,
+        /* data */ {
+            participantId: action.participant.id,
+            userhash: _getAtheerUserhash(userHashDict[action.participant.id])
+        });
+        break;
+
+    case VIDEO_CALL_ZOOM_UPDATED:
+        var posX = action.transform.posX;
+        if (!posX) {
+            posX = 0.5;
+        }
+        var posY = action.transform.posY;
+        if (!posY) {
+            posY = 0.5;
+        }
+        sendEvent(store, type,
+        /* data */ {
+            userhash: _getAtheerUserhash(userHashDict[action.participantId]),
+            zoom: action.transform.scale.toString(),
+            x: posX.toString(),
+            y: posY.toString()
+        });
+        break;
+
     case LOAD_CONFIG_ERROR: {
         const { error, locationURL } = action;
 
@@ -112,6 +321,7 @@ MiddlewareRegistry.register(store => next => action => {
     }
 
     case SET_ROOM:
+        Store = store;
         _maybeTriggerEarlyConferenceWillJoin(store, action);
         break;
     }
@@ -296,4 +506,24 @@ function _swallowEvent(store, action, data) {
     default:
         return false;
     }
+}
+
+// TODO(Hao): Remove this function once Web jitsi and Android jitsi is merged
+function _getAtheerUserhash(fullUsername) {
+    if (!fullUsername || fullUsername == undefined) {
+        return;
+    }
+    var splitParts = fullUsername.split(displayNameSplit);
+    if (splitParts.length > 1) {
+        return splitParts[1];
+    }
+}
+
+function _getJitsiParticipantId(atheerUserhash) {
+    for (var key in jitsiHashDict) {
+        if (_getAtheerUserhash(key) == atheerUserhash) {
+            return jitsiHashDict[key];
+        }
+    }
+    return 'localuser';
 }

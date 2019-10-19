@@ -25,6 +25,9 @@ class PageReloadOverlay extends AbstractPageReloadOverlay<Props> {
      * @returns {ReactElement}
      */
     render() {
+        // Hide Jitsi Meet UI (Reload page) from showing during video call
+        return null;
+        
         const { isNetworkFailure, t } = this.props;
         const { message, timeLeft, title } = this.state;
 

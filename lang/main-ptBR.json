@@ -775,5 +775,8 @@
         "sendFeedback": "Enviar comentários",
         "terms": "Termos",
         "title": "Videoconferências mais seguras, flexíveis e totalmente gratuitas"
+    },
+    "atheer": {
+        "zoomDisabled": "O zoom está desativado neste feed"
     }
 }

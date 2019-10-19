@@ -737,5 +737,8 @@
         "label": "录音",
         "labelToolTip": "本地录音被占用"
     },
+    "atheer": {
+        "zoomDisabled": "此資訊流中縮放已禁用"
+    },
     "\u0005localRecording": {}
 }

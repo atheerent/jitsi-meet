@@ -11,7 +11,7 @@ import {
 } from '../../../base/participants';
 import { updateSettings } from '../../../base/settings';
 
-import { appendSuffix } from '../../functions';
+import { getDisplayName } from '../../../../../atheer';
 
 /**
  * The type of the React {@code Component} props of {@link DisplayName}.
@@ -146,35 +146,17 @@ class DisplayName extends Component<Props, State> {
     render() {
         const {
             _nameToDisplay,
-            allowEditing,
-            displayNameSuffix,
-            elementID,
-            t
+            elementID 
         } = this.props;
 
-        if (allowEditing && this.state.isEditing) {
-            return (
-                <input
-                    autoFocus = { true }
-                    className = 'editdisplayname'
-                    id = 'editDisplayName'
-                    onBlur = { this._onSubmit }
-                    onChange = { this._onChange }
-                    onKeyDown = { this._onKeyDown }
-                    placeholder = { t('defaultNickname') }
-                    ref = { this._setNameInputRef }
-                    spellCheck = { 'false' }
-                    type = 'text'
-                    value = { this.state.editDisplayNameValue } />
-            );
-        }
+        
 
         return (
             <span
                 className = 'displayname'
                 id = { elementID }
                 onClick = { this._onStartEditing }>
-                { appendSuffix(_nameToDisplay, displayNameSuffix) }
+                { getDisplayName(_nameToDisplay) }
             </span>
         );
     }
@@ -220,6 +202,8 @@ class DisplayName extends Component<Props, State> {
      * @returns {void}
      */
     _onStartEditing() {
+        // Disable Editing of current user name
+        return;
         if (this.props.allowEditing) {
             this.setState({
                 isEditing: true,

@@ -1,6 +1,6 @@
 // @flow
 
-export { default as KickButton } from './KickButton';
+export { default as FlashlightButton } from './FlashLightButton';
 export {
     default as KickRemoteParticipantDialog
 } from './KickRemoteParticipantDialog';

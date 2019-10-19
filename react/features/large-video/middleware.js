@@ -18,6 +18,14 @@ import {
 
 import { selectParticipant, selectParticipantInLargeVideo } from './actions';
 
+var RCTDeviceEventEmitter = require('RCTDeviceEventEmitter');
+
+var IsGlass = false;
+
+RCTDeviceEventEmitter.addListener('setGlassUI', function() {
+    IsGlass = true;
+});
+
 /**
  * Middleware that catches actions related to participants and tracks and
  * dispatches an action to select a participant depicted by LargeVideo.
@@ -30,12 +38,6 @@ MiddlewareRegistry.register(store => next => action => {
 
     switch (action.type) {
     case DOMINANT_SPEAKER_CHANGED: {
-        const localParticipant = getLocalParticipant(store.getState());
-
-        if (localParticipant && localParticipant.id !== action.participant.id) {
-            store.dispatch(selectParticipantInLargeVideo());
-        }
-
         break;
     }
 
@@ -44,7 +46,7 @@ MiddlewareRegistry.register(store => next => action => {
     case PIN_PARTICIPANT:
     case TRACK_ADDED:
     case TRACK_REMOVED:
-        store.dispatch(selectParticipantInLargeVideo());
+        store.dispatch(selectParticipantInLargeVideo(IsGlass));
         break;
 
     case CONFERENCE_JOINED:
@@ -55,6 +57,9 @@ MiddlewareRegistry.register(store => next => action => {
         break;
 
     case TRACK_UPDATED:
+        if (IsGlass) {
+            break;
+        }
         // In order to minimize re-calculations, we need to select participant
         // only if the videoType of the current participant rendered in
         // LargeVideo has changed.

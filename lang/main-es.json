@@ -503,5 +503,8 @@
         "invite": "Invitar en __app__",
         "title": "Información de acceso a llamadas",
         "tooltip": "Obtener información de acceso de la reunión"
+    },
+    "atheer": {
+        "zoomDisabled": "Zoom desactivado en este feed"
     }
 }

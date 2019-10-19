@@ -70,6 +70,8 @@ class VolumeSlider extends Component<Props, State> {
      * @returns {ReactElement}
      */
     render() {
+        // Disabling Jitsi's volume control
+        return null;
         return (
             <li className = 'popupmenu__item'>
                 <div className = 'popupmenu__contents'>

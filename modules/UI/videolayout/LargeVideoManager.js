@@ -8,7 +8,9 @@ import { Provider } from 'react-redux';
 import { i18next } from '../../../react/features/base/i18n';
 import {
     Avatar,
-    getAvatarURLByParticipantId
+    getAvatarURLByParticipantId,
+    getParticipantById
+
 } from '../../../react/features/base/participants';
 import { PresenceLabel } from '../../../react/features/presence-status';
 /* eslint-enable no-unused-vars */
@@ -27,6 +29,7 @@ import UIUtil from '../util/UIUtil';
 import { VideoContainer, VIDEO_CONTAINER_TYPE } from './VideoContainer';
 
 import AudioLevels from '../audio_levels/AudioLevels';
+import { iframeMessages, sendMessage, getUserHash, getDisplayName } from '../../../atheer';
 
 const DESKTOP_CONTAINER_TYPE = 'desktop';
 
@@ -229,14 +232,14 @@ export default class LargeVideoManager {
                 = APP.conference.getParticipantConnectionStatus(id);
             const isVideoRenderable
                 = !isVideoMuted
-                    && (APP.conference.isLocalId(id)
-                        || connectionStatus
-                                === JitsiParticipantConnectionStatus.ACTIVE
-                        || wasUsersImageCached);
+                && (APP.conference.isLocalId(id)
+                    || connectionStatus
+                    === JitsiParticipantConnectionStatus.ACTIVE
+                    || wasUsersImageCached);
 
             const showAvatar
                 = isVideoContainer
-                    && (APP.conference.isAudioOnly() || !isVideoRenderable);
+                && (APP.conference.isAudioOnly() || !isVideoRenderable);
 
             let promise;
 
@@ -262,13 +265,13 @@ export default class LargeVideoManager {
 
             const isConnectionInterrupted
                 = APP.conference.getParticipantConnectionStatus(id)
-                    === JitsiParticipantConnectionStatus.INTERRUPTED;
+                === JitsiParticipantConnectionStatus.INTERRUPTED;
             let messageKey = null;
 
             if (isConnectionInterrupted) {
                 messageKey = 'connection.USER_CONNECTION_INTERRUPTED';
             } else if (connectionStatus
-                    === JitsiParticipantConnectionStatus.INACTIVE) {
+                === JitsiParticipantConnectionStatus.INACTIVE) {
                 messageKey = 'connection.LOW_BANDWIDTH';
             }
 
@@ -278,12 +281,12 @@ export default class LargeVideoManager {
             // an "active" connection.
             const overrideAndHide
                 = APP.conference.isAudioOnly()
-                    || APP.conference.isConnectionInterrupted();
+                || APP.conference.isConnectionInterrupted();
 
             this.updateParticipantConnStatusIndication(
-                    id,
-                    !overrideAndHide && isConnectionInterrupted,
-                    !overrideAndHide && messageKey);
+                id,
+                !overrideAndHide && isConnectionInterrupted,
+                !overrideAndHide && messageKey);
 
             // Change the participant id the presence label is listening to.
             this.updatePresenceLabel(id);
@@ -315,9 +318,9 @@ export default class LargeVideoManager {
      * @private
      */
     updateParticipantConnStatusIndication(
-            id,
-            showProblemsIndication,
-            messageKey) {
+        id,
+        showProblemsIndication,
+        messageKey) {
         // Apply grey filter on the large video
         this.videoContainer.showRemoteConnectionProblemIndicator(
             showProblemsIndication);
@@ -325,7 +328,7 @@ export default class LargeVideoManager {
         if (messageKey) {
             // Get user's display name
             const displayName
-                = APP.conference.getParticipantDisplayName(id);
+                = getDisplayName(APP.conference.getParticipantDisplayName(id));
 
             this._setRemoteConnectionMessage(
                 messageKey,
@@ -358,6 +361,11 @@ export default class LargeVideoManager {
         this.newStreamData.id = userID;
         this.newStreamData.stream = stream;
         this.newStreamData.videoType = videoType;
+
+        const remoteParticipant = getParticipantById(APP.store.getState(), userID);
+        sendMessage(iframeMessages.onSelectionChange, {
+            userHash: getUserHash(remoteParticipant)
+        });
 
         this.scheduleLargeVideoUpdate();
 
@@ -410,8 +418,8 @@ export default class LargeVideoManager {
         if (avatarUrl) {
             ReactDOM.render(
                 <Avatar
-                    id = "dominantSpeakerAvatar"
-                    uri = { avatarUrl } />,
+                    id="dominantSpeakerAvatar"
+                    uri={avatarUrl} />,
                 this._dominantSpeakerAvatarContainer
             );
         } else {
@@ -451,11 +459,11 @@ export default class LargeVideoManager {
 
         if (presenceLabelContainer.length) {
             ReactDOM.render(
-                <Provider store = { APP.store }>
-                    <I18nextProvider i18n = { i18next }>
+                <Provider store={APP.store}>
+                    <I18nextProvider i18n={i18next}>
                         <PresenceLabel
-                            participantID = { id }
-                            className = 'presence-label' />
+                            participantID={id}
+                            className='presence-label' />
                     </I18nextProvider>
                 </Provider>,
                 presenceLabelContainer.get(0));
@@ -517,6 +525,11 @@ export default class LargeVideoManager {
      * the user's connection is either interrupted or inactive.
      */
     showRemoteConnectionMessage(show) {
+        // Hide Jitsi Meet UI (Messages for remote user) from showing during video call
+        if (true) {
+            return;
+        }
+
         if (typeof show !== 'boolean') {
             const connStatus
                 = APP.conference.getParticipantConnectionStatus(this.id);
@@ -525,7 +538,7 @@ export default class LargeVideoManager {
             show = !APP.conference.isLocalId(this.id)
                 && (connStatus === JitsiParticipantConnectionStatus.INTERRUPTED
                     || connStatus
-                        === JitsiParticipantConnectionStatus.INACTIVE);
+                    === JitsiParticipantConnectionStatus.INACTIVE);
         }
 
         if (show) {

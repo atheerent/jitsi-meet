@@ -33,9 +33,10 @@ export default class RemoteVideoMenu extends Component<Props> {
      * @returns {ReactElement}
      */
     render() {
+        const cssClass = this.props.children.length === 1 ? 'popupmenu one-item-menu' : 'popupmenu ';
         return (
             <ul
-                className = 'popupmenu'
+                className={cssClass}
                 id = { this.props.id }>
                 { this.props.children }
             </ul>

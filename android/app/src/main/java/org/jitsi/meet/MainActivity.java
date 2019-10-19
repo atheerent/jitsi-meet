@@ -25,15 +25,31 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.KeyEvent;
 
+import com.facebook.react.modules.network.NetworkingModule;
+import com.facebook.react.modules.websocket.WebSocketModule;
+
+import org.jitsi.meet.sdk.AtheerInfo;
 import org.jitsi.meet.sdk.JitsiMeet;
 import org.jitsi.meet.sdk.JitsiMeetActivity;
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
-import org.jitsi.meet.sdk.JitsiMeetUserInfo;
+import org.jitsi.meet.sdk.ProxyServerInfo;
+import org.jitsi.meet.sdk.RemoteVideoInfo;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
+import java.net.Proxy;
 import java.net.URL;
 import java.util.Map;
+
+import okhttp3.Authenticator;
+import okhttp3.Credentials;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.Route;
+
 
 /**
  * The one and only Activity that the Jitsi Meet app needs. The
@@ -43,6 +59,7 @@ import java.util.Map;
  * launched will result in {@link MainActivity#onNewIntent(Intent)} being called.
  */
 public class MainActivity extends JitsiMeetActivity {
+
     /**
      * The request code identifying requests for the permission to draw on top
      * of other apps. The value must be 16-bit and is arbitrarily chosen here.
@@ -87,11 +104,67 @@ public class MainActivity extends JitsiMeetActivity {
 
     @Override
     protected void initialize() {
+        Log.d(this.getClass().getSimpleName(), "initialize");
+
+        boolean enableProxy = false;
+
+        RemoteVideoInfo remoteVideoInfo = new RemoteVideoInfo();
+        remoteVideoInfo.setWidth("100");
+        remoteVideoInfo.setHeight("80");
+
+        AtheerInfo atheerInfo = new AtheerInfo();
+        atheerInfo.setRemoteVideoInfo(remoteVideoInfo);
+
+        if(enableProxy) {
+            ProxyServerInfo proxyServerInfo = new ProxyServerInfo();
+            proxyServerInfo.setType("HTTPS");
+            proxyServerInfo.setHost("10.0.0.42");
+            proxyServerInfo.setPort("3120");
+            proxyServerInfo.setUsername("proxy");
+            proxyServerInfo.setPassword("hamid123");
+
+            atheerInfo.setProxyServerInfo(proxyServerInfo);
+
+            Authenticator proxyAuthenticator = new Authenticator() {
+                @Override public Request authenticate(Route route, Response response) throws IOException {
+                    String credential = Credentials.basic("proxy", "hamid123");
+                    return response.request().newBuilder()
+                            .header("Proxy-Authorization", credential)
+                            .build();
+                }
+            };
+
+            NetworkingModule.setCustomClientBuilder(
+                    new NetworkingModule.CustomClientBuilder() {
+
+                        @Override
+                        public void apply(OkHttpClient.Builder builder) {
+                            Log.d(this.getClass().getSimpleName(), "Calling NetworkingModule Custom Client Builder");
+                            builder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("10.0.0.42", 3120)));
+                            builder.proxyAuthenticator(proxyAuthenticator);
+                        }
+                    });
+
+            WebSocketModule.setCustomClientBuilder(
+                    new WebSocketModule.CustomClientBuilder() {
+                        @Override
+                        public void apply(OkHttpClient.Builder builder) {
+                            Log.d(this.getClass().getSimpleName(), "Calling WebSocketModule Custom Client Builder");
+                            builder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("10.0.0.42", 3120)));
+                            builder.proxyAuthenticator(proxyAuthenticator);
+                        }
+                    });
+        }
+
         // Set default options
         JitsiMeetConferenceOptions defaultOptions
             = new JitsiMeetConferenceOptions.Builder()
                 .setWelcomePageEnabled(true)
-                .setServerURL(buildURL("https://meet.jit.si"))
+                .setServerURL(buildURL("https://meet.jit.atheerair.com"))
+                .setAtheerInfo(atheerInfo)
+                .setFeatureFlag("pip.enabled", true)
+                .setFeatureFlag("calendar.enabled", false)
+                .setFeatureFlag("chat.enabled", false)
                 .build();
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
 

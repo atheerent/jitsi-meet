@@ -8,8 +8,12 @@ import { connect } from '../../../redux';
 
 import type { PanResponderInstance } from 'PanResponder';
 
-import { storeVideoTransform } from '../../actions';
+import { storeVideoTransform,
+        sendVideoCallZoom,
+        videoCallToast } from '../../actions';
 import styles from './styles';
+
+const logger = require('jitsi-meet-logger').getLogger(__filename);
 
 /**
  * The default/initial transform (= no transform).
@@ -33,12 +37,12 @@ const MIN_SCALE = 1;
  * ViewPort (hint) support is added to the LargeVideo component then this
  * contant will not be necessary anymore.
  */
-const MAX_OFFSET = 100;
+const MAX_OFFSET = 0;
 
 /**
  * The max allowed scale (magnification) multiplier.
  */
-const MAX_SCALE = 5;
+const MAX_SCALE = 2;
 
 /**
  * The threshold to allow the fingers move before we consider a gesture a
@@ -51,6 +55,8 @@ const MOVE_THRESHOLD_DISMISSES_TOUCH = 5;
  * trigger onPress (unless long tap gesture support is added in the future).
  */
 const TAP_TIMEOUT_MS = 400;
+
+const VIDEO_TOAST_MS = 3000;
 
 /**
  * Type of a transform object this component is capable of handling.
@@ -97,7 +103,34 @@ type Props = {
     /**
      * Action to dispatch when the component is unmounted.
      */
-    _onUnmount: Function
+    _onUnmount: Function,
+
+    _onSendTransform: Function,
+
+    _onVideoCallToast: Function,
+
+    /*
+    * Need to add the participant id here in order to send out zoom messages
+    */
+    participantId: string,
+
+    isLargeVideo: boolean,
+
+    isLocal: boolean,
+
+    _targetZoomScale: float,
+
+    _targetZoomPosX: float,
+
+    _targetZoomPosY: float,
+
+    _targetZoomUserhash: string,
+
+    zoomUnlocked: boolean,
+
+    storedScreenWidth: float,
+
+    storedScreenHeight: float
 };
 
 type State = {
@@ -197,6 +230,48 @@ class VideoTransform extends Component<Props, State> {
         if (prevProps.streamId !== this.props.streamId) {
             this._storeTransform(prevProps.streamId, prevState.transform);
             this._restoreTransform(this.props.streamId);
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.state && this.state.layout) {
+            this.props.storedScreenWidth = this.state.layout.width;
+            this.props.storedScreenHeight = this.state.layout.height;
+        }
+
+        if (this.props.isLargeVideo &&
+            ((this.props._targetZoomUserhash == this.props.participantId) || (this.props.isLocal && this.props._targetZoomUserhash == 'localuser'))) {
+            var newScale = this.state.transform.scale;
+            var newTranslationX = this.state.transform.translateX;
+            var newTranslationY = this.state.transform.translateY;
+            var zoomChanged = false;
+
+            if (this.props._targetZoomScale != prevProps._targetZoomScale) {
+                if (this.props._targetZoomScale >= 1) {
+                    zoomChanged = true;
+                    newScale = this.props._targetZoomScale;
+                }
+            }
+
+            if (this.props._targetZoomPosX != prevProps._targetZoomPosX) {
+                zoomChanged = true;
+                newTranslationX = (0.5 - this.props._targetZoomPosX) * this.state.layout.width;
+            }
+
+            if (this.props._targetZoomPosY != prevProps._targetZoomPosY) {
+                zoomChanged = true;
+                newTranslationY = (0.5 - this.props._targetZoomPosY) * this.state.layout.height;
+            }
+
+            if (zoomChanged) {
+                this.setState({
+                    transform: {
+                        scale: newScale,
+                        translateX: newTranslationX,
+                        translateY: newTranslationY
+                    }
+                });
+            }
         }
     }
 
@@ -455,7 +530,9 @@ class VideoTransform extends Component<Props, State> {
                 transform: {
                     scale: newScale,
                     translateX: Math.round(newTranslateX),
-                    translateY: Math.round(newTranslateY)
+                    translateY: Math.round(newTranslateY),
+                    posX: 0.5 - newTranslateX * 1.0 / layout.width,
+                    posY: 0.5 - newTranslateY * 1.0 / layout.height
                 }
             });
         }
@@ -483,6 +560,15 @@ class VideoTransform extends Component<Props, State> {
      * @returns {void}
      */
     _onGesture(type, value) {
+        if (!this.props.zoomEnabled) {
+            this._videoCallToast(true);
+            let that = this;
+            setTimeout(() => { this._videoCallToast(false) }, VIDEO_TOAST_MS);
+            return;
+        }
+        if (!this.props.zoomUnlocked) {
+            return;
+        }
         let transform;
 
         switch (type) {
@@ -492,12 +578,14 @@ class VideoTransform extends Component<Props, State> {
                 translateX: value.x,
                 translateY: value.y
             };
+            this._sendTransform();
             break;
         case 'scale':
             transform = {
                 ...DEFAULT_TRANSFORM,
                 scale: value
             };
+            this._sendTransform();
             break;
 
         case 'press': {
@@ -656,6 +744,27 @@ class VideoTransform extends Component<Props, State> {
     _restoreTransform(streamId) {
         const savedTransform = this._getSavedTransform(streamId);
 
+        if (((this.props._targetZoomUserhash == this.props.participantId) || (this.props.isLocal && this.props._targetZoomUserhash == 'localuser')) &&
+                this.props._targetZoomScale && this.props._targetZoomScale > 1) {
+            var restoreScale = this.props._targetZoomScale;
+            var restoreTranslationX = 0;
+            var restoreTranslationY = 0;
+            if (this.props._targetZoomPosX && this.props.storedScreenWidth) {
+                restoreTranslationX = (0.5 - this.props._targetZoomPosX) * this.props.storedScreenWidth;
+            }
+            if (this.props._targetZoomPosY && this.props.storedScreenHeight) {
+                restoreTranslationY = (0.5 - this.props._targetZoomPosY) * this.props.storedScreenHeight;
+            }
+            this.setState({
+                transform: {
+                    scale: restoreScale,
+                    translateX: restoreTranslationX,
+                    translateY: restoreTranslationY
+                }
+            });
+            return;
+        }
+
         if (savedTransform) {
             this.setState({
                 transform: savedTransform
@@ -678,6 +787,20 @@ class VideoTransform extends Component<Props, State> {
         if (enabled) {
             _onUnmount(streamId, transform);
         }
+    }
+
+    _sendTransform() {
+        const { _onSendTransform, enabled, participantId } = this.props;
+
+        if (enabled) {
+            _onSendTransform(participantId, this.state.transform);
+        }
+    }
+
+    _videoCallToast(show) {
+        const { _onVideoCallToast } = this.props;
+
+        _onVideoCallToast(show);
     }
 }
 
@@ -702,6 +825,14 @@ function _mapDispatchToProps(dispatch: Dispatch<any>) {
          */
         _onUnmount(streamId, transform) {
             dispatch(storeVideoTransform(streamId, transform));
+        },
+
+        _onSendTransform(streamId, transform) {
+            dispatch(sendVideoCallZoom(streamId, transform));
+        },
+
+        _onVideoCallToast(show) {
+            dispatch(videoCallToast(show));
         }
     };
 }
@@ -724,7 +855,11 @@ function _mapStateToProps(state) {
          * @private
          * @type {Object}
          */
-        _transforms: state['features/base/media'].video.transforms
+        _transforms: state['features/base/media'].video.transforms,
+        _targetZoomScale: state['features/large-video'].zoom,
+        _targetZoomPosX: state['features/large-video'].x,
+        _targetZoomPosY: state['features/large-video'].y,
+        _targetZoomUserhash: state['features/large-video'].zoomParticipantId
     };
 }
 

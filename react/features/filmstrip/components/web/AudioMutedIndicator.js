@@ -32,7 +32,6 @@ class AudioMutedIndicator extends Component<Props> {
             <BaseIndicator
                 className = 'audioMuted toolbar-icon'
                 iconClassName = 'icon-mic-disabled'
-                tooltipKey = 'videothumbnail.mute'
                 tooltipPosition = { this.props.tooltipPosition } />
         );
     }

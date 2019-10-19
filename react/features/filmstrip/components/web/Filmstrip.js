@@ -15,6 +15,8 @@ import { dockToolbox } from '../../../toolbox';
 import { setFilmstripHovered, setFilmstripVisible } from '../../actions';
 import { shouldRemoteVideosBeVisible } from '../../functions';
 
+import { getTranslatedText } from '../../../../../atheer';
+
 import Toolbar from './Toolbar';
 
 declare var APP: Object;
@@ -270,15 +272,18 @@ class Filmstrip extends Component <Props> {
      * @returns {ReactElement}
      */
     _renderToggleButton() {
-        const icon = this.props._visible ? 'icon-menu-down' : 'icon-menu-up';
-
+        const icon = this.props._visible ? 'icon-atheer-menu-down' : 'icon-atheer-menu-up';
+        const tip = this.props._visible ? getTranslatedText(APP.translation.generateTranslationHTML('atheer.toolTip.hide'))
+            : getTranslatedText(APP.translation.generateTranslationHTML('atheer.toolTip.show'));
         return (
             <div className = 'filmstrip__toolbar'>
-                <button
-                    id = 'toggleFilmstripButton'
-                    onClick = { this._onToolbarToggleFilmstrip }>
-                    <i className = { icon } />
-                </button>
+                <div className = { 'toggle-filmstrip-button' }>
+                    <button onClick = { this._onToolbarToggleFilmstrip } 
+                    className = { 'toggle-filmstrip-button' }>
+                        <i className = { icon } />
+                    </button>
+                    <div className='tooltip-toggle'>{ tip }</div>
+                </div>
             </div>
         );
     }
@@ -300,18 +305,12 @@ class Filmstrip extends Component <Props> {
 function _mapStateToProps(state) {
     const { hovered, visible } = state['features/filmstrip'];
     const isFilmstripOnly = Boolean(interfaceConfig.filmStripOnly);
-    const reduceHeight = !isFilmstripOnly
-        && state['features/toolbox'].visible
-        && interfaceConfig.TOOLBAR_BUTTONS.length;
     const remoteVideosVisible = shouldRemoteVideosBeVisible(state);
-    const className = `${remoteVideosVisible ? '' : 'hide-videos'} ${
-        reduceHeight ? 'reduce-height' : ''}`.trim();
     const videosClassName = `filmstrip__videos${
         isFilmstripOnly ? ' filmstrip__videos-filmstripOnly' : ''}${
         visible ? '' : ' hidden'}`;
 
     return {
-        _className: className,
         _filmstripOnly: isFilmstripOnly,
         _hovered: hovered,
         _videosClassName: videosClassName,

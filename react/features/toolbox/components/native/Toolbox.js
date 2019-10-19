@@ -209,6 +209,8 @@ class Toolbox extends Component<Props, State> {
      * @returns {React$Node}
      */
     _renderToolbar() {
+        return null;
+        
         const { _chatEnabled, _styles } = this.props;
         const buttonSize = this._calculateButtonSize();
         let { buttonStyles, toggledButtonStyles } = _styles;
@@ -246,20 +248,6 @@ class Toolbox extends Component<Props, State> {
             <View
                 pointerEvents = 'box-none'
                 style = { styles.toolbar }>
-                {
-                    _chatEnabled
-                        && <ChatButton
-                            styles = { buttonStyles }
-                            toggledStyles = {
-                                this._getChatButtonToggledStyle(toggledButtonStyles)
-                            } />
-                }
-                {
-                    !_chatEnabled
-                        && <InfoDialogButton
-                            styles = { buttonStyles }
-                            toggledStyles = { toggledButtonStyles } />
-                }
                 <AudioMuteButton
                     styles = { buttonStyles }
                     toggledStyles = { toggledButtonStyles } />

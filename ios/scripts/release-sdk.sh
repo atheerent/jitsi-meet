@@ -10,7 +10,7 @@ SDK_VERSION=${OVERRIDE_SDK_VERSION:-${DEFAULT_SDK_VERSION}}
 DO_GIT_TAG=${GIT_TAG:-0}
 
 
-echo "Releasing Jitsi Meet SDK ${SDK_VERSION}"
+echo "Releasing Jitsi Meet SDK ${SDK_VERSION} ${PROJECT_REPO} ${RELEASE_REPO}"
 
 pushd ${RELEASE_REPO}
 
@@ -25,7 +25,7 @@ popd
 # Build the SDK
 pushd ${PROJECT_REPO}
 rm -rf ios/sdk/JitsiMeet.framework
-xcodebuild -workspace ios/jitsi-meet.xcworkspace -scheme JitsiMeet -destination='generic/platform=iOS' -configuration Release archive
+xcodebuild -workspace ios/jitsi-meet.xcworkspace -scheme JitsiMeet -destination='generic/platform=iOS' -archivePath ${PROJECT_REPO}/ios/sdk/JitsiMeet.framework -configuration Release archive
 if [[ $DO_GIT_TAG == 1 ]]; then
     git tag ios-sdk-${SDK_VERSION}
 fi

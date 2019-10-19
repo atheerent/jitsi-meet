@@ -153,7 +153,7 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
                 className = { rootClassNames }
                 content = { this._renderStatisticsTable() }
                 disablePopover = { !this.props.enableStatsDisplay }
-                position = { this.props.statsPopoverPosition }>
+                position = { this._getPopoverStatusPosition() }>
                 <div className = 'popover-trigger'>
                     <div
                         className = { indicatorContainerClassNames }
@@ -165,6 +165,11 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
                 </div>
             </Popover>
         );
+    }
+
+    _getPopoverStatusPosition() {
+        var pos = this.props.statsPopoverPosition;
+        return pos;
     }
 
     /**
@@ -256,7 +261,7 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
             || this.props.alwaysVisible
             || connectionStatus === JitsiParticipantConnectionStatus.INTERRUPTED
             || connectionStatus === JitsiParticipantConnectionStatus.INACTIVE
-            ? 'show-connection-indicator' : 'hide-connection-indicator';
+            ? 'show-connection-indicator' : 'show-connection-indicator';
     }
 
     _onToggleShowMore: () => void;
@@ -310,13 +315,11 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
             <span
                 className = { emptyIconWrapperClassName }
                 key = 'icon-empty'>
-                <i className = 'icon-gsm-bars' />
             </span>,
             <span
                 className = 'connection_full'
                 key = 'icon-full'
                 style = {{ width: iconWidth }}>
-                <i className = 'icon-gsm-bars' />
             </span>
         ];
     }
@@ -339,6 +342,8 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
             serverRegion,
             transport
         } = this.state.stats;
+        const colorClass = this._getConnectionColorClass();
+        const indicatorContainerClassNames = `connection-indicator indicator ${colorClass}`;
 
         return (
             <ConnectionStatsTable
@@ -355,7 +360,12 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
                 resolution = { resolution }
                 serverRegion = { serverRegion }
                 shouldShowMore = { this.state.showMoreStats }
-                transport = { transport } />
+                transport = { transport } 
+                connectionStatusClass = { colorClass } >
+                <div className = { indicatorContainerClassNames } style = {{ fontSize: this.props.iconSize }}>
+                    <div className = 'connection indicatoricon'>{ this._renderIcon() } </div>
+                </div>
+            </ConnectionStatsTable>
         );
     }
 }

@@ -24,6 +24,9 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 
 import com.facebook.react.bridge.ReadableMap;
+import com.facebook.react.bridge.WritableNativeMap;
+import com.facebook.react.bridge.ReactContext;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 
 import java.lang.reflect.Method;
 import java.util.Map;
@@ -51,6 +54,8 @@ public class JitsiMeetView extends BaseReactView<JitsiMeetViewListener>
     // XXX Currently, one thread writes and one thread reads, so it should be
     // fine to have this field volatile without additional synchronization.
     private volatile String url;
+
+    private static OnHasTorchListener hasTorchListener = null;
 
     /**
      * Helper method to recursively merge 2 {@link Bundle} objects representing React Native props.
@@ -97,6 +102,17 @@ public class JitsiMeetView extends BaseReactView<JitsiMeetViewListener>
         }
 
         return result;
+    }
+
+    public static void emitEvent(ReactContext reactContext, String eventName, @Nullable Object data) {
+        if (reactContext == null) {
+            // XXX If no ReactContext is specified, emit through the
+            // ReactContext of ReactInstanceManager. ReactInstanceManager
+            // cooperates with ReactContextUtils i.e. ReactInstanceManager will
+            // not invoke ReactContextUtils without a ReactContext.
+            ReactInstanceManagerHolder.emitEvent(eventName, data);
+        }
+        reactContext.getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class).emit(eventName, data);
     }
 
     public JitsiMeetView(@NonNull Context context) {
@@ -177,7 +193,6 @@ public class JitsiMeetView extends BaseReactView<JitsiMeetViewListener>
         // "imperativeness" in React Component props by defining a unique value
         // per setProps() invocation.
         props.putLong("timestamp", System.currentTimeMillis());
-
         createReactRootView("App", props);
     }
 
@@ -205,5 +220,27 @@ public class JitsiMeetView extends BaseReactView<JitsiMeetViewListener>
     @Override
     protected void onExternalAPIEvent(String name, ReadableMap data) {
         onExternalAPIEvent(LISTENER_METHODS, name, data);
+    }
+
+    public void sendEvent(String eventName) {
+        emitEvent(ReactInstanceManagerHolder.getReactInstanceManager().getCurrentReactContext(), eventName, null);
+    }
+
+    public void sendEvent(String eventName, WritableNativeMap map) {
+        emitEvent(ReactInstanceManagerHolder.getReactInstanceManager().getCurrentReactContext(), eventName, map);
+    }
+
+    public static void setOnHasTorchListener(OnHasTorchListener listener) {
+        hasTorchListener = listener;
+    }
+
+    public static void hasTorch(boolean result) {
+        if (hasTorchListener != null) {
+            hasTorchListener.execute(result);
+        }
+    }
+
+    public interface OnHasTorchListener {
+        void execute(boolean result);
     }
 }

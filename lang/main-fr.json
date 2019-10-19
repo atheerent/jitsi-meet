@@ -737,5 +737,8 @@
         "no": "Non",
         "label": "ENR-LOC",
         "labelToolTip": "L'enregistrement local est engagé"
+    },
+    "atheer": {
+        "zoomDisabled": "Le zoom est désactivé sur ce flux"
     }
 }

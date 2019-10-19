@@ -58,7 +58,8 @@ export function getDeepLinkingPage(state) {
     const OS = Platform.OS;
     const isUsingMobileBrowser = OS === 'android' || OS === 'ios';
 
-    if (isUsingMobileBrowser) { // mobile
+    // Allow Jitsi to work on mobile browsers.
+    /*if (isUsingMobileBrowser) { // mobile
         const mobileAppPromo
             = typeof interfaceConfig === 'object'
                 && interfaceConfig.MOBILE_APP_PROMO;
@@ -66,7 +67,7 @@ export function getDeepLinkingPage(state) {
         return Promise.resolve(
             typeof mobileAppPromo === 'undefined' || Boolean(mobileAppPromo)
                 ? DeepLinkingMobilePage : NoMobileApp);
-    }
+    }*/
 
     // desktop
     const { launchInWeb } = state['features/deep-linking'];

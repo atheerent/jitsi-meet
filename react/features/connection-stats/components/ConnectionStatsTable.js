@@ -1,112 +1,23 @@
 /* @flow */
+import PropTypes from 'prop-types';
 
 import React, { Component } from 'react';
 
 import { translate } from '../../base/i18n';
 
-/**
- * The type of the React {@code Component} props of
- * {@link ConnectionStatsTable}.
- */
+import { getResolutionString } from '../../../../atheer';
+
 type Props = {
 
     /**
-     * Statistics related to bandwidth.
-     * {{
-     *     download: Number,
-     *     upload: Number
-     * }}
+     * The "onLayout" handler
      */
-    bandwidth: Object,
+    onDimensionsChanged: Function,
 
     /**
-     * Statistics related to bitrate.
-     * {{
-     *     download: Number,
-     *     upload: Number
-     * }}
+     * Any nested Components
      */
-    bitrate: Object,
-
-    /**
-     * The number of bridges (aka media servers) currently used in the
-     * conference.
-     */
-    bridgeCount: number,
-
-    /**
-     * A message describing the connection quality.
-     */
-    connectionSummary: string,
-
-    /**
-     * The end-to-end round-trip-time.
-     */
-    e2eRtt: number,
-
-    /**
-     * Statistics related to frame rates for each ssrc.
-     * {{
-     *     [ ssrc ]: Number
-     * }}
-     */
-    framerate: Object,
-
-    /**
-     * Whether or not the statistics are for local video.
-     */
-    isLocalVideo: boolean,
-
-    /**
-     * Callback to invoke when the show additional stats link is clicked.
-     */
-    onShowMore: Function,
-
-    /**
-     * Statistics related to packet loss.
-     * {{
-     *     download: Number,
-     *     upload: Number
-     * }}
-     */
-    packetLoss: Object,
-
-    /**
-     * The region that we think the client is in.
-     */
-    region: string,
-
-    /**
-     * Statistics related to display resolutions for each ssrc.
-     * {{
-     *     [ ssrc ]: {
-     *         height: Number,
-     *         width: Number
-     *     }
-     * }}
-     */
-    resolution: Object,
-
-    /**
-     * The region of the media server that we are connected to.
-     */
-    serverRegion: string,
-
-    /**
-     * Whether or not additional stats about bandwidth and transport should be
-     * displayed. Will not display even if true for remote participants.
-     */
-    shouldShowMore: boolean,
-
-    /**
-     * Invoked to obtain translated strings.
-     */
-    t: Function,
-
-    /**
-     * Statistics related to transports.
-     */
-    transport: Array<Object>
+    children: React$Node
 };
 
 /**
@@ -115,6 +26,116 @@ type Props = {
  * @extends Component
  */
 class ConnectionStatsTable extends Component<Props> {
+    /**
+     * {@code ConnectionStatsTable} component's property types.
+     * 
+     * @static
+     **/
+    static propTypes = {
+        /**
+         * Statistics related to bandwidth.
+         * {{
+         *     download: Number,
+         *     upload: Number
+         * }}
+         */
+        bandwidth: PropTypes.object,
+
+        /**
+         * Statistics related to bitrate.
+         * {{
+         *     download: Number,
+         *     upload: Number
+         * }}
+         */
+        bitrate: PropTypes.object,
+
+        /**
+         * The number of bridges (aka media servers) currently used in the
+         * conference.
+         */
+        bridgeCount: PropTypes.number,
+
+        /**
+         * A message describing the connection quality.
+         */
+        connectionSummary: PropTypes.string,
+
+        /**
+         * A class color for the connection bandwidth.
+         */
+        connectionStatusClass: PropTypes.string,
+
+        /**
+         * The end-to-end round-trip-time.
+         */
+        e2eRtt: PropTypes.number,
+
+        /**
+         * Statistics related to frame rates for each ssrc.
+         * {{
+         *     [ ssrc ]: Number
+         * }}
+         */
+        framerate: PropTypes.object,
+
+        /**
+         * Whether or not the statistics are for local video.
+         */
+        isLocalVideo: PropTypes.bool,
+
+        /**
+         * Callback to invoke when the show additional stats link is clicked.
+         */
+        onShowMore: PropTypes.func,
+
+        /**
+         * Statistics related to packet loss.
+         * {{
+         *     download: Number,
+         *     upload: Number
+         * }}
+         */
+        packetLoss: PropTypes.object,
+
+        /**
+         * The region that we think the client is in.
+         */
+        region: PropTypes.string,
+
+        /**
+         * Statistics related to display resolutions for each ssrc.
+         * {{
+         *     [ ssrc ]: {
+         *         height: Number,
+         *         width: Number
+         *     }
+         * }}
+         */
+        resolution: PropTypes.object,
+
+        /**
+         * The region of the media server that we are connected to.
+         */
+        serverRegion: PropTypes.string,
+
+        /**
+         * Whether or not additional stats about bandwidth and transport should
+         * be displayed. Will not display even if true for remote participants.
+         */
+        shouldShowMore: PropTypes.bool,
+
+        /**
+         * Invoked to obtain translated strings.
+         */
+        t: PropTypes.func,
+
+        /**
+         * Statistics related to transports.
+         */
+        transport: PropTypes.array
+    };
+
     /**
      * Implements React's {@link Component#render()}.
      *
@@ -126,10 +147,12 @@ class ConnectionStatsTable extends Component<Props> {
 
         return (
             <div className = 'connection-info'>
+                { this._renderTopPopupBar() }
+                { this._renderPopupTitle() }
                 { this._renderStatistics() }
-                { isLocalVideo ? this._renderShowMoreLink() : null }
-                { isLocalVideo && this.props.shouldShowMore
-                    ? this._renderAdditionalStats() : null }
+                { this._renderCallSettingsNote() }
+                { this._renderShowMoreLink() }
+                { this.props.shouldShowMore ? this._renderAdditionalStats() : null }
             </div>
         );
     }
@@ -142,12 +165,19 @@ class ConnectionStatsTable extends Component<Props> {
      * @returns {ReactElement}
      */
     _renderAdditionalStats() {
+        const isRemoteVideo = !this.props.isLocalVideo;
         return (
             <table className = 'connection-info__container'>
                 <tbody>
-                    { this._renderBandwidth() }
-                    { this._renderTransport() }
-                    { this._renderRegion() }
+                { this._renderFrameRate() }
+                { isRemoteVideo ? null : this._renderBandwidth() }
+                { this._renderBitrate() }
+                { this._renderPacketLoss() }
+                { isRemoteVideo ? null : this._renderTransport() }
+                { isRemoteVideo ? null : this._renderRegion() }
+                { isRemoteVideo ? this._renderE2eRtt() : null }
+                { isRemoteVideo ? this._renderRegion() : null }
+                { isRemoteVideo ? null : this._renderBridgeCount() }  
                 </tbody>
             </table>
         );
@@ -224,7 +254,7 @@ class ConnectionStatsTable extends Component<Props> {
         return (
             <tr className = 'connection-info__status'>
                 <td>
-                    <span>{ this.props.t('connectionindicator.status') }</span>
+                    <span className = 'bandwidth-indicator'>{ this.props.t('connectionindicator.status') }</span>
                 </td>
                 <td>{ this.props.connectionSummary }</td>
             </tr>
@@ -385,7 +415,7 @@ class ConnectionStatsTable extends Component<Props> {
             .map(ssrc => {
                 const { width, height } = resolution[ssrc];
 
-                return `${width}x${height}`;
+                return getResolutionString(width);
             })
             .join(', ') || 'N/A';
 
@@ -394,7 +424,7 @@ class ConnectionStatsTable extends Component<Props> {
                 <td>
                     <span>{ t('connectionindicator.resolution') }</span>
                 </td>
-                <td>{ resolutionString }</td>
+                <td>{ t(resolutionString) }</td>
             </tr>
         );
     }
@@ -428,19 +458,11 @@ class ConnectionStatsTable extends Component<Props> {
      * @returns {ReactElement}
      */
     _renderStatistics() {
-        const isRemoteVideo = !this.props.isLocalVideo;
-
         return (
             <table className = 'connection-info__container'>
                 <tbody>
-                    { this._renderConnectionSummary() }
-                    { this._renderBitrate() }
-                    { this._renderPacketLoss() }
-                    { isRemoteVideo ? this._renderE2eRtt() : null }
-                    { isRemoteVideo ? this._renderRegion() : null }
-                    { this._renderResolution() }
-                    { this._renderFrameRate() }
-                    { isRemoteVideo ? null : this._renderBridgeCount() }
+                { this._renderConnectionSummary() }
+                { this._renderResolution() }
                 </tbody>
             </table>
         );
@@ -592,6 +614,34 @@ class ConnectionStatsTable extends Component<Props> {
                     { additionalData || null }
                 </td>
             </tr>
+        );
+    }
+
+    _renderTopPopupBar() {
+        const infoTobBarClass = `connection-info-top-bar ${this.props.connectionStatusClass}`;
+        return (<div className={infoTobBarClass}></div>);
+    }
+    
+    _renderPopupTitle() {
+        return (
+        <div className='connection-info-title-div'>
+        { this.props.children }
+        <span className='connection-info-title'>Connection Information</span>
+        </div>
+        );
+    }
+    
+    _renderCallSettingsNote() {
+        const { t, transport } = this.props;
+        const isRemoteVideo = !this.props.isLocalVideo;
+        let note = isRemoteVideo ? t('atheer.videoThumbnail.callQualityNote.remote') : t('atheer.videoThumbnail.callQualityNote.local');
+        var noteIconClass = isRemoteVideo ? '' : 'icon-info';
+        var noteTextClass = isRemoteVideo ? 'hide-note-tooltip' : 'note-tooltip';
+        return (
+        <div className='connection-info-note'>
+            <i className={noteIconClass}/>{note}
+            <div className={noteTextClass}>{t('atheer.videoThumbnail.noteTooltip')}</div>
+        </div>
         );
     }
 }

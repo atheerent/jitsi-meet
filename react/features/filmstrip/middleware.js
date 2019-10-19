@@ -1,21 +1,68 @@
 // @flow
-
+import { getAppProp } from '../base/app';
 import { setLastN } from '../base/conference';
-import { pinParticipant } from '../base/participants';
+import {
+        pinParticipant,
+        PARTICIPANT_UPDATED
+        } from '../base/participants';
 import { MiddlewareRegistry } from '../base/redux';
+import { SET_ROOM } from '../base/conference/actionTypes';
+import { setFilmstripVisible,
+        setFilmstripForceHidden,
+        setGlassUi } from './actions';
+import { selectParticipantInLargeVideo } from '../large-video/actions';
+import { SET_FILMSTRIP_ENABLED,
+        CLEAR_EXTENDED_TOOLS} from './actionTypes';
 
-import { SET_FILMSTRIP_ENABLED } from './actionTypes';
+import Thumbnail from './components/native/Thumbnail';
+import LargeVideo from '../large-video/components/LargeVideo.native';
+
+const logger = require('jitsi-meet-logger').getLogger(__filename);
+
+var Store: Object;
+
+var RCTDeviceEventEmitter = require('RCTDeviceEventEmitter');
+
+var ParticipantName; // this contains the users hash of the local user
+
+RCTDeviceEventEmitter.addListener('setParticipantName', function(data) {
+    Object.keys(data).forEach((key) => {
+        if (key == 'userHash') {
+            ParticipantName = data[key];
+        }
+    });
+});
 
 declare var APP: Object;
 
 MiddlewareRegistry.register(store => next => action => {
     switch (action.type) {
+    case SET_ROOM:
+        Store = store;
+        return _setRoom(store, next, action);
     case SET_FILMSTRIP_ENABLED:
         return _setFilmstripEnabled(store, next, action);
     }
 
     return next(action);
 });
+
+function _setRoom({ dispatch, getState }, next, action) {
+    const state = getState();
+
+    var remoteViewWidth = 100;
+    var remoteViewHeight = 100;
+
+    if (getAppProp(state, 'atheerInfo') != null) {
+        remoteViewWidth = Number(getAppProp(state, 'atheerInfo').remoteVideoInfo.remoteViewWidth);
+        remoteViewHeight = Number(getAppProp(state, 'atheerInfo').remoteVideoInfo.remoteViewHeight);
+    }
+
+    Thumbnail.setRemoteViewSize(remoteViewWidth, remoteViewHeight);
+    dispatch(setFilmstripVisible(true));
+
+    return next(action);
+}
 
 /**
  * Notifies the feature filmstrip that the action {@link SET_FILMSTRIP_ENABLED}

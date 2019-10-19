@@ -6,11 +6,16 @@ import { Popover } from '../../../base/popover';
 
 import {
     MuteButton,
-    KickButton,
+    FlashlightButton,
     RemoteControlButton,
     RemoteVideoMenu,
     VolumeSlider
 } from './';
+import {
+    displayNamePrefix,
+    getFlashStatus,
+    isFlashlightDisabled
+} from '../../../../../atheer';
 
 declare var $: Object;
 declare var interfaceConfig: Object;
@@ -31,6 +36,11 @@ type Props = {
      * Whether or not the participant is currently muted.
      */
     isAudioMuted: boolean,
+
+    /**
+     * Whether or not the participant flash light is currently off.
+     */
+    isFlashOn: boolean,
 
     /**
      * Whether or not the participant is a conference moderator.
@@ -117,14 +127,13 @@ class RemoteVideoMenuTriggerButton extends Component<Props> {
 
         return (
             <Popover
-                content = { content }
-                onPopoverOpen = { this._onShowRemoteMenu }
-                position = { this.props.menuPosition }>
+                content={content}
+                onPopoverOpen={this._onShowRemoteMenu}
+                position={this.props.menuPosition}>
                 <span
-                    className = 'popover-trigger remote-video-menu-trigger'>
+                    className='popover-trigger remote-video-menu-trigger'>
                     <i
-                        className = 'icon-thumb-menu'
-                        title = 'Remote user controls' />
+                        className='icon-thumb-menu' />
                 </span>
             </Popover>
         );
@@ -153,52 +162,61 @@ class RemoteVideoMenuTriggerButton extends Component<Props> {
         const {
             initialVolumeValue,
             isAudioMuted,
-            isModerator,
             onRemoteControlToggle,
             onVolumeChange,
             remoteControlState,
-            participantID
+            participantID,
+            participantName
         } = this.props;
 
         const buttons = [];
 
-        if (isModerator) {
+        buttons.push(
+            <MuteButton
+                isAudioMuted={isAudioMuted}
+                key='mute'
+                participantID={participantID}
+                participantName={participantName} />
+        );
+
+        const isFlashEnabled = participantName.indexOf(displayNamePrefix) !== 0 &&
+            !isFlashlightDisabled(participantID);
+        const isFlashOn = getFlashStatus(participantID);
+        if (isFlashEnabled) {
             buttons.push(
-                <MuteButton
-                    isAudioMuted = { isAudioMuted }
-                    key = 'mute'
-                    participantID = { participantID } />
-            );
-            buttons.push(
-                <KickButton
-                    key = 'kick'
-                    participantID = { participantID } />
+                <FlashlightButton
+                    isFlashOn={isFlashOn}
+                    isEnabled={isFlashEnabled}
+                    key='flashlight'
+                    participantID={participantID}
+                    participantName={participantName} />
             );
         }
-
         if (remoteControlState) {
             buttons.push(
                 <RemoteControlButton
-                    key = 'remote-control'
-                    onClick = { onRemoteControlToggle }
-                    participantID = { participantID }
-                    remoteControlState = { remoteControlState } />
+                    key='remote-control'
+                    onClick={onRemoteControlToggle}
+                    participantID={participantID}
+                    remoteControlState={remoteControlState} />
             );
         }
 
-        if (onVolumeChange) {
+        // Disabling Jitsi's volume control
+        // this is done here to make buttons array is the same as the buttons displayed in the popover menu
+        if (onVolumeChange && false) {
             buttons.push(
                 <VolumeSlider
-                    initialValue = { initialVolumeValue }
-                    key = 'volume-slider'
-                    onChange = { onVolumeChange } />
+                    initialValue={initialVolumeValue}
+                    key='volume-slider'
+                    onChange={onVolumeChange} />
             );
         }
 
         if (buttons.length > 0) {
             return (
-                <RemoteVideoMenu id = { participantID }>
-                    { buttons }
+                <RemoteVideoMenu id={participantID}>
+                    {buttons}
                 </RemoteVideoMenu>
             );
         }

@@ -26,6 +26,20 @@ import {
 } from './actionTypes';
 import { getLocalTrack, getTrackByJitsiTrack, setTrackMuted } from './functions';
 
+const logger = require('jitsi-meet-logger').getLogger(__filename);
+
+var IsTablet = false;
+
+var RCTDeviceEventEmitter = require('RCTDeviceEventEmitter');
+
+RCTDeviceEventEmitter.addListener('toggleCamera', function(data) {
+    Object.keys(data).forEach((key) => {
+        if (key == 'isTablet') {
+            IsTablet = data[key];
+        }
+    });
+});
+
 declare var APP: Object;
 
 /**
@@ -90,7 +104,7 @@ MiddlewareRegistry.register(store => next => action => {
 
             // Don't mirror the video of the back/environment-facing camera.
             const mirror
-                = jitsiTrack.getCameraFacingMode() === CAMERA_FACING_MODE.USER;
+                = jitsiTrack.getCameraFacingMode() === CAMERA_FACING_MODE.USER && !IsTablet;
 
             store.dispatch({
                 type: TRACK_UPDATED,

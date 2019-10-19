@@ -43,6 +43,9 @@ class Notification extends AbstractNotification<Props> {
      * @returns {ReactElement}
      */
     render() {
+        //Turn off notifications
+        return null;
+        
         const {
             appearance,
             hideErrorSupportLink,

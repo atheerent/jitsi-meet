@@ -1,7 +1,9 @@
 // @flow
 
 import React, { Component } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
+
+import { Icon } from '../../../base/font-icons';
 
 import { Container, Platform } from '../../../base/react';
 import { connect } from '../../../base/redux';
@@ -11,10 +13,14 @@ import {
 } from '../../../base/responsive-ui';
 
 import { isFilmstripVisible } from '../../functions';
-
+import { getLocalParticipant } from '../../../base/participants';
 import LocalThumbnail from './LocalThumbnail';
 import styles from './styles';
 import Thumbnail from './Thumbnail';
+
+import { setFilmstripVisible } from '../../actions'
+
+const logger = require('jitsi-meet-logger').getLogger(__filename);
 
 /**
  * Filmstrip component's property types.
@@ -35,12 +41,29 @@ type Props = {
      */
     _participants: Array<any>,
 
+    _participantsNumber: int,
+
     /**
      * The indicator which determines whether the filmstrip is visible.
      *
      * @private
      */
-    _visible: boolean
+    _visible: boolean,
+
+    _forceHidden: boolean,
+
+    _isGlass: boolean,
+
+    _extendedToolsParticipant: int,
+
+    _participantsFlashOn: Array<any>,
+
+    _participantsFlashDisabled: Array<any>,
+
+    /**
+     * The local participant.
+     */
+    _localParticipant: Object
 };
 
 /**
@@ -81,7 +104,9 @@ class Filmstrip extends Component<Props> {
         // indicators such as moderator, audio and video muted, etc. For now we
         // do not have much of a choice but to continue rendering LocalThumbnail
         // as any other remote Thumbnail on Android.
-        this._separateLocalThumbnail = Platform.OS !== 'android';
+        this._separateLocalThumbnail = false;
+        this._onExpandFilmstrip = this._onExpandFilmstrip.bind(this);
+        this._onHideFilmstrip = this._onHideFilmstrip.bind(this);
     }
 
     /**
@@ -101,46 +126,73 @@ class Filmstrip extends Component<Props> {
                 ? styles.filmstripNarrow
                 : styles.filmstripWide;
 
+        // TODO(Hao): Make this value dynamic and support all devices
+        var filmStripLength = 100 * this.props._participantsNumber + 20;
+
+        var hideFilmStripStyle = {
+            right: filmStripLength
+        }
+
         return (
             <Container
-                style = { filmstripStyle }
-                visible = { this.props._visible }>
+                style = { filmstripStyle } >
                 {
                     this._separateLocalThumbnail
                         && !isNarrowAspectRatio_
-                        && <LocalThumbnail />
+                        && this.props._visible
+                        && <Thumbnail participant = { this.props._localParticipant }  />
                 }
-                <ScrollView
-                    horizontal = { isNarrowAspectRatio_ }
+                { !this.props._forceHidden && !this.props._visible && !this.props._isGlass && <Container
+                    style = { [ styles.thumbnailToolBackgroundSmall, styles.thumbnailToolBackgroundDark ] }
+                    onClick = { this._onExpandFilmstrip } >
+                        <Icon name = 'navigate_before'
+                        style = { [ styles.thumbnailToolIcon, styles.thumbnailToolIconPressed ] } />
+                </Container>
+                }
+                { !this.props._forceHidden && this.props._visible && !this.props._isGlass && <Container
+                    style = { [ styles.thumbnailToolBackgroundSmall, styles.thumbnailToolBackgroundDark, hideFilmStripStyle ] }
+                    onClick = { this._onHideFilmstrip } >
+                        <Icon name = 'navigate_next'
+                        style = { [ styles.thumbnailToolIcon, styles.thumbnailToolIconPressed ] } />
+                </Container>
+                }
+                { !this.props._forceHidden && this.props._visible && <ScrollView
+                    horizontal = { true }
                     showsHorizontalScrollIndicator = { false }
                     showsVerticalScrollIndicator = { false }
                     style = { styles.scrollView } >
                     {
                         !this._separateLocalThumbnail
                             && !isNarrowAspectRatio_
-                            && <LocalThumbnail />
+                            && <Thumbnail participant = { this.props._localParticipant }  />
                     }
                     {
-
+                        /* eslint-disable react/jsx-wrap-multilines */
                         this._sort(
                                 this.props._participants,
                                 isNarrowAspectRatio_)
-                            .map(p => (
-                                <Thumbnail
+                            .map(p =>
+                                !this.props._isGlass && <Thumbnail
                                     key = { p.id }
-                                    participant = { p } />))
+                                    participant = { p }
+                                    extendedToolsParticipant = { this.props._extendedToolsParticipant }
+                                    participantsFlashOn = {this.props._participantsFlashOn }
+                                    allowToolTips = { true } />)
 
+                        /* eslint-enable react/jsx-wrap-multilines */
                     }
                     {
                         !this._separateLocalThumbnail
                             && isNarrowAspectRatio_
-                            && <LocalThumbnail />
+                            && <Thumbnail participant = { this.props._localParticipant }  />
                     }
                 </ScrollView>
+                }
                 {
                     this._separateLocalThumbnail
                         && isNarrowAspectRatio_
-                        && <LocalThumbnail />
+                        && this.props._visible
+                        && <Thumbnail participant = { this.props._localParticipant }  />
                 }
             </Container>
         );
@@ -174,6 +226,18 @@ class Filmstrip extends Component<Props> {
 
         return sortedParticipants;
     }
+
+    _onExpandFilmstrip() {
+        const { dispatch } = this.props;
+
+        dispatch(setFilmstripVisible(true));
+    }
+
+    _onHideFilmstrip() {
+        const { dispatch } = this.props;
+
+        dispatch(setFilmstripVisible(false));
+    }
 }
 
 /**
@@ -188,7 +252,8 @@ class Filmstrip extends Component<Props> {
  */
 function _mapStateToProps(state) {
     const participants = state['features/base/participants'];
-    const { enabled } = state['features/filmstrip'];
+    const { enabled, visible, forceHidden, extendedToolsParticipant, participantsFlashOn,
+            participantsFlashDisabled, reRender, isGlass } = state['features/filmstrip'];
 
     return {
         /**
@@ -207,6 +272,8 @@ function _mapStateToProps(state) {
          */
         _participants: participants.filter(p => !p.local),
 
+        _participantsNumber: participants.length,
+
         /**
          * The indicator which determines whether the filmstrip is visible. The
          * mobile/react-native Filmstrip is visible when there are at least 2
@@ -215,7 +282,13 @@ function _mapStateToProps(state) {
          * @private
          * @type {boolean}
          */
-        _visible: isFilmstripVisible(state)
+        _visible: isFilmstripVisible(state),
+        _forceHidden: forceHidden,
+        _isGlass: isGlass,
+        _extendedToolsParticipant: extendedToolsParticipant,
+        _participantsFlashOn: participantsFlashOn,
+        _participantsFlashDisabled: participantsFlashDisabled,
+        _localParticipant: getLocalParticipant(state)
     };
 }
 

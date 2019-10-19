@@ -731,5 +731,8 @@
         "no": "沒有",
         "label": "LOR",
         "labelToolTip": "本地端錄影使用中"
+    },
+    "atheer": {
+        "zoomDisabled": "此資訊流中縮放已禁用"
     }
 }

@@ -60,30 +60,7 @@ class PictureInPictureModule
      */
     @TargetApi(Build.VERSION_CODES.O)
     public void enterPictureInPicture() {
-        if (!isPictureInPictureSupported()) {
-            throw new IllegalStateException("Picture-in-Picture not supported");
-        }
-
-        Activity currentActivity = getCurrentActivity();
-
-        if (currentActivity == null) {
-            throw new IllegalStateException("No current Activity!");
-        }
-
-        Log.d(TAG, "Entering Picture-in-Picture");
-
-        PictureInPictureParams.Builder builder
-            = new PictureInPictureParams.Builder()
-                .setAspectRatio(new Rational(1, 1));
-
-        // https://developer.android.com/reference/android/app/Activity.html#enterPictureInPictureMode(android.app.PictureInPictureParams)
-        //
-        // The system may disallow entering picture-in-picture in various cases,
-        // including when the activity is not visible, if the screen is locked
-        // or if the user has an activity pinned.
-        if (!currentActivity.enterPictureInPictureMode(builder.build())) {
-            throw new RuntimeException("Failed to enter Picture-in-Picture");
-        }
+        return;
     }
 
     /**

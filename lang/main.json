@@ -33,11 +33,6 @@
         "addMeetingURL": "Add a meeting link",
         "confirmAddLink": "Do you want to add a Jitsi link to this event?",
         "confirmAddLinkTitle": "Calendar",
-        "error": {
-            "appConfiguration": "Calendar integration is not properly configured.",
-            "generic": "An error has occurred. Please check your calendar settings or try refreshing the calendar.",
-            "notSignedIn": "An error occurred while authenticating to see calendar events. Please check your calendar settings and try logging in again."
-        },
         "join": "Join",
         "joinTooltip": "Join the meeting",
         "nextMeeting": "next meeting",
@@ -107,7 +102,7 @@
         "remoteport": "Remote port:",
         "remoteport_plural": "Remote ports:",
         "resolution": "Resolution:",
-        "status": "Connection:",
+        "status": "Bandwidth Connection:",
         "transport": "Transport:",
         "transport_plural": "Transports:",
         "turn": " (turn)"
@@ -737,16 +732,16 @@
         "unavailableTitle": "Room service unavailable"
     },
     "videoStatus": {
-        "audioOnly": "AUD",
+        "audioOnly": "Audio Only",
         "audioOnlyExpanded": "You are in audio only mode. This mode saves bandwidth but you won't see videos of others.",
         "callQuality": "Video Quality",
-        "hd": "HD",
+        "hd": "High Definition",
         "hdTooltip": "Viewing high definition video",
         "highDefinition": "High definition",
         "labelTooiltipNoVideo": "No video",
         "labelTooltipAudioOnly": "Audio-only mode enabled",
         "labelTooltipVideo": "Current video quality",
-        "ld": "LD",
+        "ld": "Low Definition",
         "ldTooltip": "Viewing low definition video",
         "lowDefinition": "Low definition",
         "onlyAudioAvailable": "Only audio is available",
@@ -755,17 +750,17 @@
         "p2pVideoQualityDescription": "In peer to peer mode, received video quality can only be toggled between high and audio only. Other settings will not be honored until peer to peer is exited.",
         "qualityButtonTip": "Change received video quality",
         "recHighDefinitionOnly": "Will prefer high definition.",
-        "sd": "SD",
+        "sd": "Standard Definition",
         "sdTooltip": "Viewing standard definition video",
         "standardDefinition": "Standard definition"
     },
     "videothumbnail": {
-        "domute": "Mute",
+        "domute": "Mute Mic",
         "flip": "Flip",
         "kick": "Kick out",
         "moderator": "Moderator",
         "mute": "Member is muted",
-        "muted": "Muted",
+        "muted": "User is Muted",
         "remoteControl": "Remote control",
         "show": "Show on stage",
         "videomute": "Member has stopped the camera"
@@ -783,7 +778,6 @@
         "calendar": "Calendar",
         "connectCalendarButton": "Connect your calendar",
         "connectCalendarText": "Connect your calendar to view all your meetings in __app__. Plus, add __provider__ meetings to your calendar and start them with one click.",
-        "enterRoomTitle": "Start a new meeting",
         "go": "GO",
         "join": "JOIN",
         "info": "Info",
@@ -796,6 +790,27 @@
         "roomnameHint": "Enter the name or URL of the room you want to join. You may make a name up, just let the people you are meeting know it so that they enter the same name.",
         "sendFeedback": "Send feedback",
         "terms": "Terms",
-        "title": "Secure, fully featured, and completely free video conferencing"
+        "title": "More secure, more flexible, and completely free video conferencing"
+    },
+    "atheer": {
+        "videoThumbnail":{
+            "flashOff": "Turn Off Flashlight",
+            "flashOn": "Turn On Flashlight",
+            "callQualityNote": {
+                "local": "Need to adjust call quality settings?",
+                "remote": "* User can manually adjust their resolution"
+            },
+            "noteTooltip": "If are having issiues with your video, try changing the call quality level through video call settings",
+            "videoResolution": {
+                "hd": "High Definition",
+                "sd": "Standard Definition",
+                "ld": "Low Definition"
+            }
+        },
+        "toolTip": {
+            "hide": "Hide Video Feeds",
+            "show": "Show Video Feeds"
+        },
+        "zoomDisabled": "Zooming is disabled on this feed"
     }
 }

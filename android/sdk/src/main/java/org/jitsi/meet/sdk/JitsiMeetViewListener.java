@@ -47,4 +47,39 @@ public interface JitsiMeetViewListener {
      * @param data Map with a "url" key with the conference URL.
      */
     void onConferenceWillJoin(Map<String, Object> data);
+
+    /**
+     * Called when a conference was joined.
+     *
+     * @param data Map with a "url" key with the conference URL.
+     */
+    void onMuteMic(Map<String, Object> data);
+
+    /**
+     * Called when a conference was joined.
+     *
+     * @param data Map with a "url" key with the conference URL.
+     */
+    void onToggleFlashlight(Map<String, Object> data);
+
+    /**
+     * Called when a conference was joined.
+     *
+     * @param data Map with a "url" key with the conference URL.
+     */
+    void onParticipantJoined(Map<String, Object> data);
+
+    /**
+     * Called when a conference was joined.
+     *
+     * @param data Map with a "url" key with the conference URL.
+     */
+    void onParticipantLeft(Map<String, Object> data);
+
+    /**
+     * Called when a conference was joined.
+     *
+     * @param data Map with a "url" key with the conference URL.
+     */
+    void onVideoCallZoomUpdated(Map<String, Object> data);
 }

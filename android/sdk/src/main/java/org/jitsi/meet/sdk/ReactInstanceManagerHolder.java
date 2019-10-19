@@ -60,7 +60,8 @@ class ReactInstanceManagerHolder {
                 new PictureInPictureModule(reactContext),
                 new ProximityModule(reactContext),
                 new WiFiStatsModule(reactContext),
-                new org.jitsi.meet.sdk.net.NAT64AddrInfoModule(reactContext)));
+                new org.jitsi.meet.sdk.net.NAT64AddrInfoModule(reactContext),
+                new DeviceModule(reactContext)));
 
         if (AudioModeModule.useConnectionService()) {
             nativeModules.add(new RNConnectionService(reactContext));
