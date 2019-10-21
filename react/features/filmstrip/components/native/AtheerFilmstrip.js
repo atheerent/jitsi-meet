@@ -105,7 +105,8 @@ class Filmstrip extends Component<Props> {
             return null;
         }
 
-        const isNarrowAspectRatio_ = isNarrowAspectRatio(this);
+        //const isNarrowAspectRatio_ = isNarrowAspectRatio(this);
+        const isNarrowAspectRatio_ = false;
         const filmstripStyle
             = isNarrowAspectRatio_
                 ? styles.filmstripNarrow

@@ -37,4 +37,8 @@
  */
 - (void)leave;
 
+- (void)sendEventOnly:(NSString * _Nullable) eventName;
+- (void)sendEvent:(NSString * _Nullable) eventName withMap :(NSDictionary * _Nullable)map;
+
+
 @end

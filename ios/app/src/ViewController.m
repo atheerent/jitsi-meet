@@ -96,6 +96,19 @@
     [self _onJitsiMeetViewDelegateEvent:@"CONFERENCE_WILL_JOIN" withData:data];
 }
 
+- (void)participantJoined:(NSDictionary *)data {
+  [self _onJitsiMeetViewDelegateEvent:@"PARTICIPANT_JOINED" withData:data];
+}
+
+- (void)participantLeft:(NSDictionary *)data {
+  [self _onJitsiMeetViewDelegateEvent:@"PARTICIPANT_LEFT" withData:data];
+}
+
+- (void)pinParticipant:(NSDictionary *)data {
+  [self _onJitsiMeetViewDelegateEvent:@"PIN_PARTICIPANT" withData:data];
+}
+
+
 #if 0
 - (void)enterPictureInPicture:(NSDictionary *)data {
     [self _onJitsiMeetViewDelegateEvent:@"ENTER_PICTURE_IN_PICTURE" withData:data];
