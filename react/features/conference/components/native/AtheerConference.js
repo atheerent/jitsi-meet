@@ -215,11 +215,6 @@ class Conference extends AbstractConference<Props, *> {
                     <Captions onPress = { this._onClick } />
 
                     {/*
-                      * The Toolbox is in a stacking layer below the Filmstrip.
-                      */}
-                    <Toolbox />
-
-                    {/*
                       * The Filmstrip is in a stacking layer above the
                       * LargeVideo. The LargeVideo and the Filmstrip form what
                       * the Web/React app calls "videospace". Presumably, the
@@ -235,14 +230,9 @@ class Conference extends AbstractConference<Props, *> {
                     pointerEvents = 'box-none'
                     style = { styles.navBarSafeView }>
                     <NavigationBar />
-                    { this.renderNotificationsContainer() }
                 </SafeAreaView>
 
                 <TestConnectionInfo />
-
-                {
-                    this._renderConferenceNotification()
-                }
 
             </Container>
         );
