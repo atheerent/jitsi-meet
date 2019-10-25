@@ -20,6 +20,7 @@ import {
     SELECT_LARGE_VIDEO_PARTICIPANT
 } from '../large-video';
 import {
+    setParticipantDisplayName,
     PIN_PARTICIPANT
 } from '../base/participants';
 import { MiddlewareRegistry } from '../base/redux';
@@ -60,6 +61,21 @@ emitter.addListener(ATHEER_LISTENERS.HANG_UP, (data) => {
     logger.log('atheer jitsi receive ' + ATHEER_LISTENERS.HANG_UP + ' in emitter');
     if (Store) {
         Store.dispatch(disconnect(true));
+    }
+});
+
+/*
+    required keys:
+*/
+emitter.addListener(ATHEER_LISTENERS.SET_PARTICIPANT_NAME, (data) => {
+    logger.log('atheer jitsi receive ' + ATHEER_LISTENERS.SET_PARTICIPANT_NAME + ' in emitter');
+    if (Store && data != null) {
+        Object.keys(data).forEach((key) => {
+            if (key === ATHEER_LISTENER_KEYS.USERNAME) {
+                logger.log('jitsi emitter receive key' + data[key]);
+                Store.dispatch(setParticipantDisplayName(data[key]));
+            }
+        });
     }
 });
 

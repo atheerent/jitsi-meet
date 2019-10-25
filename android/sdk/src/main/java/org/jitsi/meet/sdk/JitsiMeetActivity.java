@@ -239,8 +239,8 @@ public class JitsiMeetActivity extends FragmentActivity
                 getJitsiView().sendEvent("muteAudio", map);*/
 
                 WritableNativeMap map = new WritableNativeMap();
-                map.putBoolean("filmstripState", false);
-                getJitsiView().sendEvent("hideFilmstrip", map);
+                map.putString("username", "deepooo:blablabla");
+                getJitsiView().sendEvent("setParticipantName", map);
             }
         }, 2000);
 
