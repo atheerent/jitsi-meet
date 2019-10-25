@@ -44,6 +44,14 @@
  */
 - (void)conferenceWillJoin:(NSDictionary *)data;
 
+- (void)participantJoined:(NSDictionary *)data;
+
+- (void)participantLeft:(NSDictionary *)data;
+
+- (void)toggleFlashlight:(NSDictionary *)data;
+
+- (void)pinParticipant:(NSDictionary *)data;
+
 /**
  * Called when entering Picture-in-Picture is requested by the user. The app
  * should now activate its Picture-in-Picture implementation (and resize the
