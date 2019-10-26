@@ -28,6 +28,7 @@ import { appNavigate } from '../app/actions';
 import { disconnect } from '../base/connection';
 import {
     setThumbnailStyle,
+    setFilmstripStyle,
     setFilmstripHidden
 } from '../filmstrip/atheerActions';
 import {
@@ -123,21 +124,50 @@ emitter.addListener(ATHEER_LISTENERS.TOGGLE_CAMERA, (data) => {
 
 /*
     required keys:
-    width
-    height
-    widthInterval
+    thumbnailRadius
 */
 emitter.addListener(ATHEER_LISTENERS.SET_THUMBNAIL_STYLE, (data) => {
     logger.log('atheer jitsi receive ' + ATHEER_LISTENERS.SET_THUMBNAIL_STYLE + ' in emitter');
     if (Store && data != null) {
         var thumbnailRadius = 0;
+        var thumbnailMarginBottom = 0;
         Object.keys(data).forEach((key) => {
             if (key === ATHEER_LISTENER_KEYS.THUMBNAIL_RADIUS) {
                 logger.log('jitsi emitter receive key' + data[key]);
                 thumbnailRadius = (data[key]);
             }
+            if (key === ATHEER_LISTENER_KEYS.THUMBNAIL_MARGIN_BOTTOM) {
+                logger.log('jitsi emitter receive key' + data[key]);
+                thumbnailMarginBottom = (data[key]);
+            }
             if (thumbnailRadius != 0) {
-                Store.dispatch(setThumbnailStyle(thumbnailRadius));
+                Store.dispatch(setThumbnailStyle(thumbnailRadius, thumbnailMarginBottom));
+            }
+        });
+    }
+});
+
+/*
+    required keys:
+    filmstripMarginTop
+    filmstripMarginLeft
+*/
+emitter.addListener(ATHEER_LISTENERS.SET_FILMSTRIP_STYLE, (data) => {
+    logger.log('atheer jitsi receive ' + ATHEER_LISTENERS.SET_FILMSTRIP_STYLE + ' in emitter');
+    if (Store && data != null) {
+        var filmstripMarginTop = 0;
+        var filmstripMarginLeft = 0;
+        Object.keys(data).forEach((key) => {
+            if (key === ATHEER_LISTENER_KEYS.FILMSTRIP_MARGIN_TOP) {
+                logger.log('jitsi emitter receive key' + data[key]);
+                filmstripMarginTop = (data[key]);
+            }
+            if (key === ATHEER_LISTENER_KEYS.FILMSTRIP_MARGIN_LEFT) {
+                logger.log('jitsi emitter receive key' + data[key]);
+                filmstripMarginLeft = (data[key]);
+            }
+            if (filmstripMarginTop != 0 && filmstripMarginLeft != 0) {
+                Store.dispatch(setFilmstripStyle(thumbnailRadius, thumbnailMarginBottom));
             }
         });
     }

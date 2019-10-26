@@ -39,7 +39,7 @@ export default {
         borderRadius: 50,
         justifyContent: 'center',
         marginBottom: 20,
-        marginLeft: 10,
+        marginLeft: 0,
         overflow: 'hidden',
         position: 'relative'
     },

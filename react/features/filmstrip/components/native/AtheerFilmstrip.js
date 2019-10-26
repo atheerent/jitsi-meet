@@ -22,6 +22,9 @@ import Thumbnail from './AtheerThumbnail';
 
 const logger = require('jitsi-meet-logger').getLogger(__filename);
 
+export const DEFAULT_FILMSTRIP_MARGIN_TOP = 10;
+export const DEFAULT_FILMSTRIP_MARGIN_LEFT = 10;
+
 /**
  * Filmstrip component's property types.
  */
@@ -48,7 +51,9 @@ type Props = {
      *
      * @private
      */
-    _visible: boolean
+    _visible: boolean,
+
+    _filmstripStyle?: Object
 };
 
 /**
@@ -105,6 +110,19 @@ class Filmstrip extends Component<Props> {
             return null;
         }
 
+        var filmstripStyleOverride = {
+            top: DEFAULT_FILMSTRIP_MARGIN_TOP,
+            left: DEFAULT_FILMSTRIP_MARGIN_LEFT
+        }
+
+        const _filmstripStyle = this.props._filmstripStyle;
+        if (_filmstripStyle && _filmstripStyle.filmstripMarginTop && _filmstripStyle.filmstripMarginTop > 0) {
+            filmstripStyleOverride.top = _filmstripStyle.filmstripMarginTop;
+        }
+        if (_filmstripStyle && _filmstripStyle.filmstripMarginLeft && _filmstripStyle.filmstripMarginLeft > 0) {
+            filmstripStyleOverride.left = _filmstripStyle.filmstripMarginLeft;
+        }
+
         //const isNarrowAspectRatio_ = isNarrowAspectRatio(this);
         const isNarrowAspectRatio_ = false;
         const filmstripStyle
@@ -119,7 +137,7 @@ class Filmstrip extends Component<Props> {
 
         return (
             <Container
-                style = { filmstripStyle }>
+                style = { [ filmstripStyle, filmstripStyleOverride ] }>
                 {
                     this._separateLocalThumbnail
                         && !isNarrowAspectRatio_
@@ -220,7 +238,7 @@ class Filmstrip extends Component<Props> {
  */
 function _mapStateToProps(state) {
     const participants = state['features/base/participants'];
-    const { enabled, visible } = state['features/filmstrip'];
+    const { enabled, visible, filmstripStyle } = state['features/filmstrip'];
 
     return {
         /**
@@ -250,7 +268,8 @@ function _mapStateToProps(state) {
          * @type {boolean}
          */
         _visible: isFilmstripVisible(state) && visible,
-        _localParticipant: getLocalParticipant(state)
+        _localParticipant: getLocalParticipant(state),
+        _filmstripStyle: filmstripStyle
     };
 }
 

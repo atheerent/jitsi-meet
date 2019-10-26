@@ -34,6 +34,7 @@ import VideoMutedIndicator from './VideoMutedIndicator';
 const logger = require('jitsi-meet-logger').getLogger(__filename);
 
 export const DEFAULT_THUMBNAIL_RADIUS = 25;
+export const DEFAULT_THUMBNAIL_MARGIN_BOTTOM = 10;
 
 /**
  * Thumbnail component's property types.
@@ -142,12 +143,17 @@ function Thumbnail(props: Props) {
     var thumbnailStyleOverride = {
         borderRadius: DEFAULT_THUMBNAIL_RADIUS,
         width: thumbnailDiameter,
-        height: thumbnailDiameter
+        height: thumbnailDiameter,
+        marginBottom: DEFAULT_THUMBNAIL_MARGIN_BOTTOM
     }
     if (_thumbnailStyle.thumbnailRadius && _thumbnailStyle.thumbnailRadius > 0) {
         thumbnailStyleOverride.borderRadius = _thumbnailStyle.thumbnailRadius;
         thumbnailStyleOverride.width = _thumbnailStyle.thumbnailRadius * 2;
         thumbnailStyleOverride.height = _thumbnailStyle.thumbnailRadius * 2;
+    }
+
+    if (_thumbnailStyle.thumbnailMarginBottom && _thumbnailStyle.thumbnailMarginBottom > 0) {
+        thumbnailStyleOverride.marginBottom = _thumbnailStyle.thumbnailMarginBottom;
     }
 
     const participantId = participant.id;

@@ -10,6 +10,7 @@ import {
 
 import {
     SET_THUMBNAIL_STYLE,
+    SET_FILMSTRIP_STYLE,
     SET_FILMSTRIP_HIDDEN
 } from './atheerActionTypes';
 
@@ -78,7 +79,17 @@ ReducerRegistry.register(
             return {
                 ...state,
                 thumbnailStyle: {
-                    thumbnailWidth: action.thumbnailRadius
+                    thumbnailWidth: action.thumbnailRadius,
+                    thumbnailMarginBottom: action.thumbnailMarginBottom
+                }
+            };
+
+        case SET_FILMSTRIP_STYLE:
+            return {
+                ...state,
+                filmstripStyle: {
+                    filmstripMarginTop: action.filmstripMarginTop,
+                    filmstripMarginLeft: action.filmstripMarginLeft
                 }
             };
 
