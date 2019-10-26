@@ -24,7 +24,7 @@ class CircleVideoTrack extends AbstractVideoTrack<Props> {
      */
     render() {
         return (
-            <View style = { atheerStyles.video } >
+            <View style = { styles.video } >
                 { super.render() }
             </View>
         );

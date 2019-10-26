@@ -17,7 +17,7 @@ export default {
 
     atheerFilmstripWide: {
         position: 'absolute',
-        width: 150,
+        width: 200,
         left: 10,
         top: 10
     },
@@ -31,7 +31,6 @@ export default {
         alignItems: 'stretch',
         backgroundColor: ColorPalette.appBackground,
         borderColor: '#424242',
-        borderRadius: 3,
         borderStyle: 'solid',
         borderWidth: 1,
         flex: 1,
@@ -39,7 +38,8 @@ export default {
         width: 100,
         borderRadius: 50,
         justifyContent: 'center',
-        margin: 2,
+        marginBottom: 20,
+        marginLeft: 10,
         overflow: 'hidden',
         position: 'relative'
     },

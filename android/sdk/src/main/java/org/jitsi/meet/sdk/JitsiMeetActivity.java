@@ -232,7 +232,7 @@ public class JitsiMeetActivity extends FragmentActivity
                 map.putInt("width", 100);
                 map.putInt("height", 100);
                 map.putInt("widthInterval", 10);
-                getJitsiView().sendEvent("setThumbnailSize", map);
+                getJitsiView().sendEvent("setThumbnailStyle", map);
 
                 /*WritableNativeMap map = new WritableNativeMap();
                 map.putBoolean("audioState", true);

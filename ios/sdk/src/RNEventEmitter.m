@@ -14,7 +14,7 @@ RCT_EXPORT_MODULE();
 
 - (NSArray<NSString *> *)supportedEvents
 {
-    return @[@"setParticipantName", @"hangUp", @"muteAudio", @"muteVideo", @"toggleCamera", @"setThumbnailSize", @"hideFilmstrip"];
+    return @[@"setParticipantName", @"hangUp", @"muteAudio", @"muteVideo", @"toggleCamera", @"setThumbnailStyle", @"hideFilmstrip"];
 }
 
 - (void)sendNotificationToReactNativeEventOnly:(NSString *)eventName

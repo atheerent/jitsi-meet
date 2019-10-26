@@ -27,7 +27,7 @@ import { MiddlewareRegistry } from '../base/redux';
 import { appNavigate } from '../app/actions';
 import { disconnect } from '../base/connection';
 import {
-    setThumbnailSize,
+    setThumbnailStyle,
     setFilmstripHidden
 } from '../filmstrip/atheerActions';
 import {
@@ -127,27 +127,17 @@ emitter.addListener(ATHEER_LISTENERS.TOGGLE_CAMERA, (data) => {
     height
     widthInterval
 */
-emitter.addListener(ATHEER_LISTENERS.SET_THUMBNAIL_SIZE, (data) => {
-    logger.log('atheer jitsi receive ' + ATHEER_LISTENERS.SET_THUMBNAIL_SIZE + ' in emitter');
+emitter.addListener(ATHEER_LISTENERS.SET_THUMBNAIL_STYLE, (data) => {
+    logger.log('atheer jitsi receive ' + ATHEER_LISTENERS.SET_THUMBNAIL_STYLE + ' in emitter');
     if (Store && data != null) {
-        var width = 0;
-        var height = 0;
-        var widthInterval = 0;
+        var thumbnailRadius = 0;
         Object.keys(data).forEach((key) => {
-            if (key === ATHEER_LISTENER_KEYS.WIDTH) {
+            if (key === ATHEER_LISTENER_KEYS.THUMBNAIL_RADIUS) {
                 logger.log('jitsi emitter receive key' + data[key]);
-                width = (data[key]);
+                thumbnailRadius = (data[key]);
             }
-            if (key === ATHEER_LISTENER_KEYS.HEIGHT) {
-                logger.log('jitsi emitter receive key' + data[key]);
-                height = (data[key]);
-            }
-            if (key === ATHEER_LISTENER_KEYS.WIDTH_INTERVAL) {
-                logger.log('jitsi emitter receive key' + data[key]);
-                widthInterval = (data[key]);
-            }
-            if (width != 0 && height != 0) {
-                Store.dispatch(setThumbnailSize(width, height, widthInterval));
+            if (thumbnailRadius != 0) {
+                Store.dispatch(setThumbnailStyle(thumbnailRadius));
             }
         });
     }

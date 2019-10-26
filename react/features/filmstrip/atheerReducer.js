@@ -9,7 +9,7 @@ import {
 } from './actionTypes';
 
 import {
-    SET_THUMBNAIL_SIZE,
+    SET_THUMBNAIL_STYLE,
     SET_FILMSTRIP_HIDDEN
 } from './atheerActionTypes';
 
@@ -74,13 +74,11 @@ ReducerRegistry.register(
                 ...state
             }
 
-        case SET_THUMBNAIL_SIZE:
+        case SET_THUMBNAIL_STYLE:
             return {
                 ...state,
                 thumbnailStyle: {
-                    thumbnailWidth: action.width,
-                    thumbnailHeight: action.height,
-                    thumbnailWidthInterval: action.widthInterval
+                    thumbnailWidth: action.thumbnailRadius
                 }
             };
 

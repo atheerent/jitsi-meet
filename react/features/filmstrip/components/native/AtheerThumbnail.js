@@ -33,10 +33,7 @@ import VideoMutedIndicator from './VideoMutedIndicator';
 
 const logger = require('jitsi-meet-logger').getLogger(__filename);
 
-export const DEFAULT_THUMBNAIL_HEIGHT = 100;
-export const DEFAULT_THUMBNAIL_WIDTH = 100;
-export const DEFAULT_THUMBNAIL_RADIUS = 100;
-export const DEFAULT_THUMBNAIL_WIDTH_INTERVAL = 20;
+export const DEFAULT_THUMBNAIL_RADIUS = 25;
 
 /**
  * Thumbnail component's property types.
@@ -141,26 +138,16 @@ function Thumbnail(props: Props) {
         tileView
     } = props;
 
-    var styleDimension = {
-        width: DEFAULT_THUMBNAIL_WIDTH,
-        height: DEFAULT_THUMBNAIL_HEIGHT
+    var thumbnailDiameter = DEFAULT_THUMBNAIL_RADIUS * 2;
+    var thumbnailStyleOverride = {
+        borderRadius: DEFAULT_THUMBNAIL_RADIUS,
+        width: thumbnailDiameter,
+        height: thumbnailDiameter
     }
-
-    var thumbnailContainerOverride = {
-        width: DEFAULT_THUMBNAIL_WIDTH,
-        height: DEFAULT_THUMBNAIL_HEIGHT
-    }
-
-    if (_thumbnailStyle.thumbnailWidth && _thumbnailStyle.thumbnailWidth > 0) {
-        styleDimension.width = _thumbnailStyle.thumbnailWidth;
-        thumbnailContainerOverride.width = _thumbnailStyle.thumbnailWidth + DEFAULT_THUMBNAIL_WIDTH_INTERVAL;
-        if (_thumbnailStyle.thumbnailWidthInterval && _thumbnailStyle.thumbnailWidthInterval > 0) {
-            thumbnailContainerOverride.width = _thumbnailStyle.thumbnailWidth + _thumbnailStyle.thumbnailWidthInterval;
-        }
-    }
-    if (_thumbnailStyle.thumbnailHeight && _thumbnailStyle.thumbnailHeight > 0) {
-        styleDimension.height = _thumbnailStyle.thumbnailHeight;
-        thumbnailContainerOverride.height = _thumbnailStyle.thumbnailHeight;
+    if (_thumbnailStyle.thumbnailRadius && _thumbnailStyle.thumbnailRadius > 0) {
+        thumbnailStyleOverride.borderRadius = _thumbnailStyle.thumbnailRadius;
+        thumbnailStyleOverride.width = _thumbnailStyle.thumbnailRadius * 2;
+        thumbnailStyleOverride.height = _thumbnailStyle.thumbnailRadius * 2;
     }
 
     const participantId = participant.id;
@@ -174,7 +161,7 @@ function Thumbnail(props: Props) {
                 onClick = { _onClick }
                 onLongPress = { participant.local ? undefined : _onShowRemoteVideoMenu }
                 style = { [
-                    atheerStyles.atheerThumbnail,
+                    atheerStyles.atheerThumbnail, thumbnailStyleOverride,
                     participant.pinned && !tileView
                         ? _styles.thumbnailPinned : null,
                     null
@@ -192,11 +179,6 @@ function Thumbnail(props: Props) {
                     zOrder = { 1 } />
 
                 { renderDisplayName && <DisplayNameLabel participantId = { participantId } /> }
-
-                { renderModeratorIndicator
-                    && <View style = { styles.moderatorIndicatorContainer }>
-                        <ModeratorIndicator />
-                    </View> }
 
                 <View
                     style = { [

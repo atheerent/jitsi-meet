@@ -8,7 +8,8 @@ export const ATHEER_LISTENERS = {
     MUTE_AUDIO: 'muteAudio',
     MUTE_VIDEO: 'muteVideo',
     TOGGLE_CAMERA: 'toggleCamera',
-    SET_THUMBNAIL_SIZE: 'setThumbnailSize',
+    SET_THUMBNAIL_STYLE: 'setThumbnailStyle',
+    SET_FILMSTRIP_STYLE: 'setFilmstripeStyle',
     HIDE_FILMSTRIP: 'hideFilmstrip'
 };
 
@@ -16,8 +17,6 @@ export const ATHEER_LISTENER_KEYS = {
     USERNAME: 'username',
     AUDIO_STATE: 'audioState',
     VIDEO_STATE: 'videoState',
-    WIDTH: 'width',
-    HEIGHT: 'height',
-    WIDTH_INTERVAL: 'widthInterval',
+    THUMBNAIL_RADIUS: 'thumbnailRadius',
     FILMSTRIP_STATE: 'filmstripState'
 };

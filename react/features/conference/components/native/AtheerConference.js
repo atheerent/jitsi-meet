@@ -174,13 +174,6 @@ class Conference extends AbstractConference<Props, *> {
 
         return (
             <Container style = { styles.conference }>
-                <StatusBar
-                    barStyle = 'light-content'
-                    hidden = { true }
-                    translucent = { true } />
-
-                <Chat />
-                <AddPeopleDialog />
 
                 {/*
                   * The LargeVideo is the lowermost stacking layer.
@@ -194,26 +187,6 @@ class Conference extends AbstractConference<Props, *> {
                     pointerEvents = 'box-none'
                     style = { styles.toolboxAndFilmstripContainer }>
 
-                    { showGradient && <LinearGradient
-                        colors = { NAVBAR_GRADIENT_COLORS }
-                        end = {{
-                            x: 0.0,
-                            y: 0.0
-                        }}
-                        pointerEvents = 'none'
-                        start = {{
-                            x: 0.0,
-                            y: 1.0
-                        }}
-                        style = { [
-                            styles.bottomGradient,
-                            applyGradientStretching ? styles.gradientStretchBottom : undefined
-                        ] } />}
-
-                    <Labels />
-
-                    <Captions onPress = { this._onClick } />
-
                     {/*
                       * The Filmstrip is in a stacking layer above the
                       * LargeVideo. The LargeVideo and the Filmstrip form what
@@ -225,12 +198,6 @@ class Conference extends AbstractConference<Props, *> {
                         _shouldDisplayTileView ? undefined : <Filmstrip />
                     }
                 </View>
-
-                <SafeAreaView
-                    pointerEvents = 'box-none'
-                    style = { styles.navBarSafeView }>
-                    <NavigationBar />
-                </SafeAreaView>
 
                 <TestConnectionInfo />
 
