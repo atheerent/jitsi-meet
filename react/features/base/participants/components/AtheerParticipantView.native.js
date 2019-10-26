@@ -8,7 +8,8 @@ import { translate } from '../../i18n';
 import { JitsiParticipantConnectionStatus } from '../../lib-jitsi-meet';
 import {
     MEDIA_TYPE,
-    VideoTrack
+    VideoTrack,
+    CircleVideoTrack
 } from '../../media';
 import { Container, TintedView } from '../../react';
 import { connect } from '../../redux';
@@ -119,7 +120,9 @@ type Props = {
     /**
      * Indicates whether zooming (pinch to zoom and/or drag) is enabled.
      */
-    zoomEnabled: boolean
+    zoomEnabled: boolean,
+
+    useCircleVideo: boolean
 };
 
 /**
@@ -216,7 +219,15 @@ class ParticipantView extends Component<Props> {
                     onPress = { onPress }
                     value = '' />
 
-                { renderVideo
+                { renderVideo && this.props.useCircleVideo
+                    && <CircleVideoTrack
+                        onPress = { onPress }
+                        videoTrack = { videoTrack }
+                        waitForVideoStarted = { false }
+                        zOrder = { this.props.zOrder }
+                        zoomEnabled = { this.props.zoomEnabled } /> }
+
+                { renderVideo && !this.props.useCircleVideo
                     && <VideoTrack
                         onPress = { onPress }
                         videoTrack = { videoTrack }

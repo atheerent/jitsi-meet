@@ -33,8 +33,9 @@ import VideoMutedIndicator from './VideoMutedIndicator';
 
 const logger = require('jitsi-meet-logger').getLogger(__filename);
 
-export const DEFAULT_THUMBNAIL_HEIGHT = 80;
+export const DEFAULT_THUMBNAIL_HEIGHT = 100;
 export const DEFAULT_THUMBNAIL_WIDTH = 100;
+export const DEFAULT_THUMBNAIL_RADIUS = 100;
 export const DEFAULT_THUMBNAIL_WIDTH_INTERVAL = 20;
 
 /**
@@ -169,24 +170,25 @@ function Thumbnail(props: Props) {
     const isScreenShare = videoTrack && videoTrack.videoType === VIDEO_TYPE.DESKTOP;
 
     return (
-        <Container style = { [atheerStyles.thumbnailContainer, thumbnailContainerOverride] }>
             <Container
                 onClick = { _onClick }
                 onLongPress = { participant.local ? undefined : _onShowRemoteVideoMenu }
                 style = { [
-                    styles.thumbnail, styleDimension,
+                    atheerStyles.atheerThumbnail,
                     participant.pinned && !tileView
                         ? _styles.thumbnailPinned : null,
                     null
-                ] }>
+                ] }
+                touchFeedback = { false }>
 
                 <ParticipantView
                     avatarSize = { AVATAR_SIZE }
                     disableVideo = { isScreenShare }
                     participantId = { participantId }
-                    style = { _styles.participantViewStyle }
+                    style = { atheerStyles.atheerParticipantViewStyle }
                     tintEnabled = { participantInLargeVideo && !disableTint }
                     tintStyle = { _styles.activeThumbnailTint }
+                    useCircleVideo = { true }
                     zOrder = { 1 } />
 
                 { renderDisplayName && <DisplayNameLabel participantId = { participantId } /> }
@@ -222,7 +224,6 @@ function Thumbnail(props: Props) {
                 </Container>
 
             </Container>
-        </Container>
     );
 }
 

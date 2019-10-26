@@ -128,7 +128,7 @@ class Filmstrip extends Component<Props> {
                 }
                 { visibility &&
                     <ScrollView
-                        horizontal = { true }
+                        horizontal = { false }
                         showsHorizontalScrollIndicator = { false }
                         showsVerticalScrollIndicator = { false }
                         style = { styles.scrollView } >

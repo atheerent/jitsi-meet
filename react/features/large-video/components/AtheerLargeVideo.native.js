@@ -136,6 +136,7 @@ class LargeVideo extends Component<Props, State> {
                     testHintId = 'org.jitsi.meet.LargeVideo'
                     useConnectivityInfoLabel = { useConnectivityInfoLabel }
                     zOrder = { 0 }
+                    useCircleVideo = { false }
                     zoomEnabled = { true } />
             </DimensionsDetector>
         );
