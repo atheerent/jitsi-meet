@@ -17,9 +17,7 @@ export default {
 
     atheerFilmstripWide: {
         position: 'absolute',
-        width: 200,
-        left: 10,
-        top: 10
+        width: 200
     },
 
     atheerParticipantViewStyle: {
@@ -34,9 +32,6 @@ export default {
         borderStyle: 'solid',
         borderWidth: 1,
         flex: 1,
-        height: 100,
-        width: 100,
-        borderRadius: 50,
         justifyContent: 'center',
         marginBottom: 20,
         marginLeft: 0,

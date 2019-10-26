@@ -22,7 +22,7 @@ import Thumbnail from './AtheerThumbnail';
 
 const logger = require('jitsi-meet-logger').getLogger(__filename);
 
-export const DEFAULT_FILMSTRIP_MARGIN_TOP = 10;
+export const DEFAULT_FILMSTRIP_MARGIN_TOP = 100;
 export const DEFAULT_FILMSTRIP_MARGIN_LEFT = 10;
 
 /**
