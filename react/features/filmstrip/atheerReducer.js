@@ -79,7 +79,7 @@ ReducerRegistry.register(
             return {
                 ...state,
                 thumbnailStyle: {
-                    thumbnailWidth: action.thumbnailRadius,
+                    thumbnailRadius: action.thumbnailRadius,
                     thumbnailMarginBottom: action.thumbnailMarginBottom
                 }
             };

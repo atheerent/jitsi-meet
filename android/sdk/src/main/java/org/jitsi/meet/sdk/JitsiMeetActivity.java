@@ -229,9 +229,8 @@ public class JitsiMeetActivity extends FragmentActivity
             public void run() {
                 // Do something after 5s = 5000ms
                 WritableNativeMap map = new WritableNativeMap();
-                map.putInt("width", 100);
-                map.putInt("height", 100);
-                map.putInt("widthInterval", 10);
+                map.putInt("thumbnailRadius", 50);
+                map.putInt("thumbnailMarginBottom", 30);
                 getJitsiView().sendEvent("setThumbnailStyle", map);
 
                 /*WritableNativeMap map = new WritableNativeMap();

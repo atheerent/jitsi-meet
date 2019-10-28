@@ -206,11 +206,11 @@ MiddlewareRegistry.register(store => next => action => {
     }
 
     case CONFERENCE_JOINED:
-        logger.log('hao check conference joined');
+        logger.log('jitsi info: conference joined');
         break;
 
     case CONFERENCE_LEFT:
-        logger.log('hao check conference left');
+        logger.log('jitsi info: conference left');
         jitsiHashDict = [];
         userHashDict = [];
         break;
@@ -219,7 +219,7 @@ MiddlewareRegistry.register(store => next => action => {
         break;
 
     case CONNECTION_DISCONNECTED: {
-        logger.log('hao check connection CONNECTION_DISCONNECTED');
+        logger.log('jitsi info: connection disconnected');
         break;
     }
 

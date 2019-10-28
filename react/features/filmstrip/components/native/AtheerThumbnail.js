@@ -146,13 +146,14 @@ function Thumbnail(props: Props) {
         height: thumbnailDiameter,
         marginBottom: DEFAULT_THUMBNAIL_MARGIN_BOTTOM
     }
-    if (_thumbnailStyle.thumbnailRadius && _thumbnailStyle.thumbnailRadius > 0) {
+
+    if (_thumbnailStyle && _thumbnailStyle.thumbnailRadius > 0) {
         thumbnailStyleOverride.borderRadius = _thumbnailStyle.thumbnailRadius;
         thumbnailStyleOverride.width = _thumbnailStyle.thumbnailRadius * 2;
         thumbnailStyleOverride.height = _thumbnailStyle.thumbnailRadius * 2;
     }
 
-    if (_thumbnailStyle.thumbnailMarginBottom && _thumbnailStyle.thumbnailMarginBottom > 0) {
+    if (_thumbnailStyle && _thumbnailStyle.thumbnailMarginBottom > 0) {
         thumbnailStyleOverride.marginBottom = _thumbnailStyle.thumbnailMarginBottom;
     }
 
