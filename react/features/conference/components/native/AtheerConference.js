@@ -180,7 +180,7 @@ class Conference extends AbstractConference<Props, *> {
                   */
                     _shouldDisplayTileView
                         ? <TileView onClick = { this._onClick } />
-                        : <LargeVideo onClick = { this._onClick } />
+                        : undefined
                 }
 
                 <View
