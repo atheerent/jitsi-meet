@@ -228,10 +228,10 @@ public class JitsiMeetActivity extends FragmentActivity
             @Override
             public void run() {
                 // Do something after 5s = 5000ms
-                WritableNativeMap map = new WritableNativeMap();
+                /*WritableNativeMap map = new WritableNativeMap();
                 map.putInt("thumbnailRadius", 50);
                 map.putInt("thumbnailMarginBottom", 30);
-                getJitsiView().sendEvent("setThumbnailStyle", map);
+                getJitsiView().sendEvent("setThumbnailStyle", map);*/
 
                 /*WritableNativeMap map = new WritableNativeMap();
                 map.putBoolean("audioState", true);
@@ -240,6 +240,8 @@ public class JitsiMeetActivity extends FragmentActivity
                 /*WritableNativeMap map = new WritableNativeMap();
                 map.putString("username", "deepooo:blablabla");
                 getJitsiView().sendEvent("setParticipantName", map);*/
+
+                getJitsiView().sendEvent("toggleCamera");
             }
         }, 2000);
 

@@ -117,7 +117,7 @@ emitter.addListener(ATHEER_LISTENERS.MUTE_VIDEO, (data) => {
 */
 emitter.addListener(ATHEER_LISTENERS.TOGGLE_CAMERA, (data) => {
     logger.log('atheer jitsi receive ' + ATHEER_LISTENERS.TOGGLE_CAMERA + ' in emitter');
-    if (Store && data != null) {
+    if (Store) {
         Store.dispatch(toggleCameraFacingMode());
     }
 });
