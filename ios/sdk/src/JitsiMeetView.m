@@ -104,7 +104,7 @@ static void initializeViewsMap() {
     // parts of the application and causes less perceived visual flicker than
     // the default background color.
     self.backgroundColor
-        = [UIColor colorWithRed:.07f green:.07f blue:.07f alpha:1];
+        = [UIColor colorWithRed:.07f green:.07f blue:.07f alpha:0];
 }
 
 #pragma mark API

@@ -27,16 +27,23 @@ export default {
 
     atheerThumbnail: {
         alignItems: 'stretch',
-        backgroundColor: ColorPalette.appBackground,
+        flex: 1,
+        justifyContent: 'center',
+        marginTop: 10,
+        marginBottom: 10,
+        marginLeft: 15,
+        overflow: 'hidden',
+        position: 'relative',
         borderColor: '#424242',
         borderStyle: 'solid',
         borderWidth: 1,
-        flex: 1,
-        justifyContent: 'center',
-        marginBottom: 20,
-        marginLeft: 0,
-        overflow: 'hidden',
-        position: 'relative'
+        shadowRadius: 3,
+        shadowOpacity: 1.0,
+        shadowColor: 'black',
+        shadowOffset: { width: 0, height: 0 },
+        backgroundColor : "#ffffff",
+        elevation: 5,
+        zIndex: 1
     },
 
     thumbnailContainer: {

@@ -33,7 +33,7 @@ import VideoMutedIndicator from './VideoMutedIndicator';
 
 const logger = require('jitsi-meet-logger').getLogger(__filename);
 
-export const DEFAULT_THUMBNAIL_RADIUS = 25;
+export const DEFAULT_THUMBNAIL_RADIUS = 40;
 export const DEFAULT_THUMBNAIL_MARGIN_BOTTOM = 10;
 
 /**

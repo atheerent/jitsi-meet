@@ -243,11 +243,11 @@ public class JitsiMeetActivity extends FragmentActivity
 
                 //getJitsiView().sendEvent("toggleCamera");
 
-                WritableNativeMap map = new WritableNativeMap();
+                /*WritableNativeMap map = new WritableNativeMap();
                 map.putBoolean("annotationState", true);
-                getJitsiView().sendEvent("setAnnotationMode", map);
+                getJitsiView().sendEvent("setAnnotationMode", map);*/
             }
-        }, 2000);
+        }, 3000);
 
     }
 
