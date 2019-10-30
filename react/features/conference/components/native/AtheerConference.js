@@ -171,16 +171,19 @@ class Conference extends AbstractConference<Props, *> {
         } = this.props;
         const showGradient = _toolboxVisible;
         const applyGradientStretching = _filmstripVisible && isNarrowAspectRatio(this) && !_shouldDisplayTileView;
+        const atheerConfernceStyle = {
+            alignSelf: 'stretch',
+            backgroundColor: 'transparent',
+            flex: 1
+        }
 
         return (
-            <Container style = { styles.conference }>
+            <Container style = { atheerConfernceStyle }>
 
                 {/*
                   * The LargeVideo is the lowermost stacking layer.
                   */
-                    _shouldDisplayTileView
-                        ? <TileView onClick = { this._onClick } />
-                        : undefined
+                    <LargeVideo onClick = { this._onClick } />
                 }
 
                 <View

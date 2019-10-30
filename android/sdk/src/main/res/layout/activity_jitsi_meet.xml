@@ -4,6 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".JitsiMeetActivity">
+    <TextView
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="100dp"
+        android:text="test jitsi annotation"
+        />
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"

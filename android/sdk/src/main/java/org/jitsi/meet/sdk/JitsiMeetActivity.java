@@ -241,7 +241,11 @@ public class JitsiMeetActivity extends FragmentActivity
                 map.putString("username", "deepooo:blablabla");
                 getJitsiView().sendEvent("setParticipantName", map);*/
 
-                getJitsiView().sendEvent("toggleCamera");
+                //getJitsiView().sendEvent("toggleCamera");
+
+                WritableNativeMap map = new WritableNativeMap();
+                map.putBoolean("annotationState", true);
+                getJitsiView().sendEvent("setAnnotationMode", map);
             }
         }, 2000);
 

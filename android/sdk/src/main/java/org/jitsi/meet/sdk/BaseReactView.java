@@ -19,6 +19,7 @@ package org.jitsi.meet.sdk;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 import androidx.annotation.NonNull;

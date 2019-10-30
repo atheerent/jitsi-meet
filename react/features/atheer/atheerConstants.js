@@ -10,7 +10,8 @@ export const ATHEER_LISTENERS = {
     TOGGLE_CAMERA: 'toggleCamera',
     SET_THUMBNAIL_STYLE: 'setThumbnailStyle',
     SET_FILMSTRIP_STYLE: 'setFilmstripStyle',
-    HIDE_FILMSTRIP: 'hideFilmstrip'
+    HIDE_FILMSTRIP: 'hideFilmstrip',
+    SET_ANNOTATION_MODE: 'setAnnotationMode'
 };
 
 export const ATHEER_LISTENER_KEYS = {
@@ -21,5 +22,6 @@ export const ATHEER_LISTENER_KEYS = {
     THUMBNAIL_MARGIN_BOTTOM: 'thumbnailMarginBottom',
     FILMSTRIP_STATE: 'filmstripState',
     FILMSTRIP_MARGIN_TOP: 'filmstripMarginTop',
-    FILMSTRIP_MARGIN_LEFT: 'filmstripMarginLeft'
+    FILMSTRIP_MARGIN_LEFT: 'filmstripMarginLeft',
+    ANNOTATION_STATE: 'annotationState'
 };

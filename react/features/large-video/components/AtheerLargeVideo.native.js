@@ -27,10 +27,12 @@ type Props = {
      */
     _styles: StyleType,
 
+    _annotationState: Boolean,
+
     /**
      * Callback to invoke when the {@code LargeVideo} is clicked/pressed.
      */
-    onClick: Function,
+    onClick: Function
 };
 
 /**
@@ -122,11 +124,12 @@ class LargeVideo extends Component<Props, State> {
         const {
             _participantId,
             _styles,
+            _annotationState,
             onClick
         } = this.props;
 
         return (
-            <DimensionsDetector
+            _annotationState ? null : <DimensionsDetector
                 onDimensionsChanged = { this._onDimensionsChanged }>
                 <ParticipantView
                     avatarSize = { avatarSize }
@@ -156,6 +159,7 @@ class LargeVideo extends Component<Props, State> {
 function _mapStateToProps(state) {
     return {
         _participantId: state['features/large-video'].participantId,
+        _annotationState: state['features/large-video'].annotationState,
         _styles: ColorSchemeRegistry.get(state, 'LargeVideo')
     };
 }
