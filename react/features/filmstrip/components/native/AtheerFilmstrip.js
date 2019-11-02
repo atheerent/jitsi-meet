@@ -1,7 +1,8 @@
 // @flow
 
 import React, { Component } from 'react';
-import { ScrollView } from 'react-native';
+import { ScrollView, View } from 'react-native';
+import type { Dispatch } from 'redux';
 
 import { Container, Platform } from '../../../base/react';
 import { connect } from '../../../base/redux';
@@ -11,12 +12,17 @@ import {
 } from '../../../base/responsive-ui';
 
 import { isFilmstripVisible } from '../../functions';
-import { getLocalParticipant } from '../../../base/participants';
+import {
+    getLocalParticipant,
+    pinParticipant
+} from '../../../base/participants';
 
 import LocalThumbnail from './LocalThumbnail';
 import styles from './styles';
 import atheerStyles from './atheerStyles';
 import Thumbnail from './AtheerThumbnail';
+
+import Draggable from 'react-native-draggable';
 
 //import { setFilmstripVisible } from '../../atheerActions'
 
@@ -53,7 +59,9 @@ type Props = {
      */
     _visible: boolean,
 
-    _filmstripStyle?: Object
+    _filmstripStyle?: Object,
+
+    dispatch: Dispatch<any>
 };
 
 /**
@@ -135,26 +143,47 @@ class Filmstrip extends Component<Props> {
 
         var visibility = this.props._visible;
 
+        const testStyle = {
+    width: 120,
+    height: 120,
+    backgroundColor: '#00BCD4'
+  }
+
         return (
             <Container
                 style = { [ filmstripStyle, filmstripStyleOverride ] }>
                 {
-                    this._separateLocalThumbnail
-                        && !isNarrowAspectRatio_
-                        && visibility
-                         && <Thumbnail participant = { this.props._localParticipant } />
+                    <Draggable renderSize={20} renderColor='transparent' reverse={false}
+                        offsetX={0} offsetY={0} z={10}
+                        pressInDrag={()=>
+                            this.props.dispatch(pinParticipant(this.props._localParticipant.id))
+                        }>
+                        <Thumbnail participant = { this.props._localParticipant } />
+                    </Draggable>
                 }
-                { visibility &&
+                {
+
+                    this._sort(
+                            this.props._participants,
+                            isNarrowAspectRatio_)
+                        .map(p => (
+                            <Draggable renderSize={20} renderColor='transparent' reverse={false}
+                                offsetX={0} offsetY={-100} z={10}
+                                pressInDrag={()=>
+                                    this.props.dispatch(pinParticipant(p.id))
+                                }>
+                                <Thumbnail
+                                    key = { p.id }
+                                    participant = { p } />
+                            </Draggable>))
+
+                }
+                { false &&
                     <ScrollView
                         horizontal = { false }
                         showsHorizontalScrollIndicator = { false }
                         showsVerticalScrollIndicator = { false }
                         style = { styles.scrollView } >
-                        {
-                            !this._separateLocalThumbnail
-                                && !isNarrowAspectRatio_
-                                && <Thumbnail participant = { this.props._localParticipant } />
-                        }
                         {
 
                             this._sort(

@@ -31,6 +31,9 @@ import styles, { AVATAR_SIZE } from './styles';
 import atheerStyles from './atheerStyles';
 import VideoMutedIndicator from './VideoMutedIndicator';
 
+import { createResponder } from 'react-native-gesture-responder';
+import Draggable from 'react-native-draggable';
+
 const logger = require('jitsi-meet-logger').getLogger(__filename);
 
 export const DEFAULT_THUMBNAIL_RADIUS = 40;
@@ -153,9 +156,9 @@ function Thumbnail(props: Props) {
         thumbnailStyleOverride.height = _thumbnailStyle.thumbnailRadius * 2;
     }
 
-    if (_thumbnailStyle && _thumbnailStyle.thumbnailMarginBottom > 0) {
+    /*if (_thumbnailStyle && _thumbnailStyle.thumbnailMarginBottom > 0) {
         thumbnailStyleOverride.marginBottom = _thumbnailStyle.thumbnailMarginBottom;
-    }
+    }*/
 
     const participantId = participant.id;
     const participantInLargeVideo
@@ -164,7 +167,7 @@ function Thumbnail(props: Props) {
     const isScreenShare = videoTrack && videoTrack.videoType === VIDEO_TYPE.DESKTOP;
 
     return (
-            <Container
+            <View
                 onClick = { _onClick }
                 onLongPress = { participant.local ? undefined : _onShowRemoteVideoMenu }
                 style = { [
@@ -183,7 +186,7 @@ function Thumbnail(props: Props) {
                     tintEnabled = { participantInLargeVideo && !disableTint }
                     tintStyle = { _styles.activeThumbnailTint }
                     useCircleVideo = { true }
-                    zOrder = { 1 } />
+                    zOrder = { 0 } />
 
                 { renderDisplayName && <DisplayNameLabel participantId = { participantId } /> }
 
@@ -212,7 +215,7 @@ function Thumbnail(props: Props) {
                         && <VideoMutedIndicator /> }
                 </Container>
 
-            </Container>
+            </View>
     );
 }
 

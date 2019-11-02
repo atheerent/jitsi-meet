@@ -8,6 +8,8 @@ import { Pressable } from '../../../react';
 import styles from './styles';
 import VideoTransform from './VideoTransform';
 
+const logger = require('jitsi-meet-logger').getLogger(__filename);
+
 /**
  * The type of the React {@code Component} props of {@link Video}.
  */
@@ -83,6 +85,8 @@ export default class Video extends Component<Props> {
         const { onPress, stream, zoomEnabled } = this.props;
 
         if (stream) {
+            logger.log('hao check stream', stream);
+            logger.log('hao check stream url', stream.toURL());
             // RTCView
             const style = styles.video;
             const objectFit
