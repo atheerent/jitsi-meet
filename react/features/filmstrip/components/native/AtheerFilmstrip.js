@@ -61,6 +61,8 @@ type Props = {
 
     _filmstripStyle?: Object,
 
+    _thumbnailStyle?: Object,
+
     dispatch: Dispatch<any>
 };
 
@@ -143,18 +145,22 @@ class Filmstrip extends Component<Props> {
 
         var visibility = this.props._visible;
 
-        const testStyle = {
-    width: 120,
-    height: 120,
-    backgroundColor: '#00BCD4'
-  }
+        var thumbnailRadius = 40;
+        var thumbnailInterval = 10;
+        const _thumbnailStyle = this.props._thumbnailStyle;
+        if (_thumbnailStyle && _thumbnailStyle.thumbnailRadius > 0) {
+            thumbnailRadius = _thumbnailStyle.thumbnailRadius;
+        }
+        if (_thumbnailStyle && _thumbnailStyle.thumbnailMarginBottom > 0) {
+            thumbnailInterval = _thumbnailStyle.thumbnailMarginBottom;
+        }
 
         return (
             <Container
                 style = { [ filmstripStyle, filmstripStyleOverride ] }>
                 {
-                    <Draggable renderSize={20} renderColor='transparent' reverse={false}
-                        offsetX={0} offsetY={0} z={10}
+                    <Draggable renderSize={thumbnailRadius} renderColor='transparent' reverse={false}
+                        x={0} y={0}
                         pressInDrag={()=>
                             this.props.dispatch(pinParticipant(this.props._localParticipant.id))
                         }>
@@ -166,9 +172,9 @@ class Filmstrip extends Component<Props> {
                     this._sort(
                             this.props._participants,
                             isNarrowAspectRatio_)
-                        .map(p => (
-                            <Draggable renderSize={20} renderColor='transparent' reverse={false}
-                                offsetX={0} offsetY={-100} z={10}
+                        .map((p, index) => (
+                            <Draggable renderSize={thumbnailRadius} renderColor='transparent' reverse={false}
+                                x={0} y={(index + 1) * (thumbnailRadius * 2 + thumbnailInterval)}
                                 pressInDrag={()=>
                                     this.props.dispatch(pinParticipant(p.id))
                                 }>
@@ -267,7 +273,7 @@ class Filmstrip extends Component<Props> {
  */
 function _mapStateToProps(state) {
     const participants = state['features/base/participants'];
-    const { enabled, visible, filmstripStyle } = state['features/filmstrip'];
+    const { enabled, visible, filmstripStyle, thumbnailStyle } = state['features/filmstrip'];
 
     return {
         /**
@@ -298,7 +304,8 @@ function _mapStateToProps(state) {
          */
         _visible: isFilmstripVisible(state) && visible,
         _localParticipant: getLocalParticipant(state),
-        _filmstripStyle: filmstripStyle
+        _filmstripStyle: filmstripStyle,
+        _thumbnailStyle: thumbnailStyle
     };
 }
 
