@@ -65,20 +65,6 @@ else
         popd
     fi
 
-    # Push JSC, if necessary
-    if [[ ! -d ${MVN_REPO}/org/webkit/android-jsc/${JSC_VERSION} ]]; then
-        echo "Pushing JSC ${JSC_VERSION} to the Maven repo"
-        pushd ${THIS_DIR}/../../node_modules/jsc-android/dist/org/webkit/android-jsc/${JSC_VERSION}
-        mvn \
-            deploy:deploy-file \
-            -Durl=${MVN_REPO} \
-            -Dfile=android-jsc-${JSC_VERSION}.aar \
-            -Dpackaging=aar \
-            -DgeneratePom=false \
-            -DpomFile=android-jsc-${JSC_VERSION}.pom
-        popd
-    fi
-
     # Check if an SDK with that same version has already been released
     if [[ -d ${MVN_REPO}/org/jitsi/react/jitsi-meet-sdk/${SDK_VERSION} ]]; then
         echo "There is already a release with that version in the Maven repo!"
