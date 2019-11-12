@@ -39,6 +39,9 @@ import {
     setVideoMuted,
     toggleCameraFacingMode
 } from '../base/media/actions';
+import {
+    toggleAtheerBuffer
+} from '../base/media/atheerActions';
 
 import { sendEvent } from '../mobile/external-api/functions';
 
@@ -122,6 +125,16 @@ emitter.addListener(ATHEER_LISTENERS.TOGGLE_CAMERA, (data) => {
     logger.log('atheer jitsi receive ' + ATHEER_LISTENERS.TOGGLE_CAMERA + ' in emitter');
     if (Store) {
         Store.dispatch(toggleCameraFacingMode());
+    }
+});
+
+/*
+    required keys:
+*/
+emitter.addListener(ATHEER_LISTENERS.TOGGLE_ATHEER_BUFFER, (data) => {
+    logger.log('atheer jitsi receive ' + ATHEER_LISTENERS.TOGGLE_ATHEER_BUFFER + ' in emitter');
+    if (Store) {
+        Store.dispatch(toggleAtheerBuffer());
     }
 });
 

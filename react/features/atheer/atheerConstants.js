@@ -8,6 +8,7 @@ export const ATHEER_LISTENERS = {
     MUTE_AUDIO: 'muteAudio',
     MUTE_VIDEO: 'muteVideo',
     TOGGLE_CAMERA: 'toggleCamera',
+    TOGGLE_ATHEER_BUFFER: 'toggleAtheerBuffer',
     SET_THUMBNAIL_STYLE: 'setThumbnailStyle',
     SET_FILMSTRIP_STYLE: 'setFilmstripStyle',
     HIDE_FILMSTRIP: 'hideFilmstrip',
