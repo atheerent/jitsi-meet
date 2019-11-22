@@ -6,6 +6,8 @@ import {
     SET_FILMSTRIP_VISIBLE,
     SET_FILMSTRIP_FORCE_HIDDEN,
     MUTE_MIC,
+    OPEN_CHAT,
+    SHARE_FILE,
     TOGGLE_FLASHLIGHT,
     UPDATE_FLASHLIGHT_STATUS,
     ENABLE_FLASHLIGHT,
@@ -84,6 +86,24 @@ export function toggleFlashlight(id, flashlight: boolean) {
             id
         },
         flashlight
+    };
+}
+
+export function openChat(id) {
+    return {
+        type: OPEN_CHAT,
+        participant: {
+            id
+        }
+    };
+}
+
+export function shareFile(id) {
+    return {
+        type: SHARE_FILE,
+        participant: {
+            id
+        }
     };
 }
 

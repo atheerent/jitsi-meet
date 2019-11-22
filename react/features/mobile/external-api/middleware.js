@@ -16,6 +16,8 @@ import {
 } from '../../base/participants'
 import { MUTE_MIC,
         TOGGLE_FLASHLIGHT,
+        OPEN_CHAT,
+        SHARE_FILE,
         setGlassUi,
         setFilmstripVisible,
         setFilmstripForceHidden,
@@ -265,6 +267,20 @@ MiddlewareRegistry.register(store => next => action => {
         break;
 
     case TOGGLE_FLASHLIGHT:
+        sendEvent(store, type,
+        /* data */ {
+            userhash: _getAtheerUserhash(userHashDict[action.participant.id])
+        });
+        break;
+
+    case OPEN_CHAT:
+        sendEvent(store, type,
+        /* data */ {
+            userhash: _getAtheerUserhash(userHashDict[action.participant.id])
+        });
+        break;
+
+    case SHARE_FILE:
         sendEvent(store, type,
         /* data */ {
             userhash: _getAtheerUserhash(userHashDict[action.participant.id])

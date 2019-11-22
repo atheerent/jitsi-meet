@@ -244,6 +244,18 @@ public class JitsiMeetActivity extends FragmentActivity
     }
 
     @Override
+    public void onOpenChat(Map<String, Object> data) {
+        Log.d(TAG, "Open Chat: " + data);
+        on("OPEN_CHAT", data);
+    }
+
+    @Override
+    public void onShareFile(Map<String, Object> data) {
+        Log.d(TAG, "Share File: " + data);
+        on("SHARE_FILE", data);
+    }
+
+    @Override
     public void onParticipantJoined(Map<String, Object> data) {
         Log.d(TAG, "Participant Joined: " + data);
         on("PARTICIPANT_JOINED", data);
