@@ -1,7 +1,7 @@
 // @flow
 
 import React, { Component } from 'react';
-import { View, Image, ScrollView } from 'react-native';
+import { View, Image } from 'react-native';
 import type { Dispatch } from 'redux';
 import { Icon } from '../../../base/font-icons';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
