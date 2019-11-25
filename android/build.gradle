@@ -160,7 +160,7 @@ ext {
     moduleGroupId = 'com.facebook.react'
 
     // Maven repo where artifacts will be published
-    mavenRepo = "s3://atheer-maven/releases"
+    mavenRepo = "file:/tmp/repo"//"s3://atheer-maven/releases"
     mavenRepoAccessKey = System.getenv('ATHEER_MAVEN_REPO_ACCESS_KEY')
     mavenRepoSecretKey = System.getenv('ATHEER_MAVEN_REPO_SECRET_KEY')
 
