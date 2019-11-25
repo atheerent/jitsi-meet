@@ -54,6 +54,10 @@
 
 - (void)muteMic:(NSDictionary *)data;
 
+- (void)openChat:(NSDictionary *)data;
+
+- (void)shareFile:(NSDictionary *)data;
+
 /**
  * Called when entering Picture-in-Picture is requested by the user. The app
  * should now activate its Picture-in-Picture implementation (and resize the
