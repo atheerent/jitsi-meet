@@ -90,6 +90,15 @@ export default {
         position: 'absolute'
     },
 
+    thumbnailToolIconSmall: {
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: ColorPalette.black,
+        fontSize: 20,
+        position: 'absolute'
+    },
+
     thumbnailToolIconNoraml: {
         color: ColorPalette.black,
     },
@@ -186,6 +195,15 @@ export default {
     thumbnailTools: {
         position: 'relative',
         height: 70,
+        width: 110,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+
+    thumbnailToolsMedium: {
+        position: 'relative',
+        height: 50,
         width: 110,
         flexDirection: 'row',
         alignItems: 'center',
