@@ -82,4 +82,18 @@ public interface JitsiMeetViewListener {
      * @param data Map with a "url" key with the conference URL.
      */
     void onVideoCallZoomUpdated(Map<String, Object> data);
+
+    /**
+     * Called when a Chat button clicked.
+     *
+     * @param data Map with a "url" key with the conference URL.
+     */
+    void onOpenChat(Map<String, Object> data);
+
+    /**
+     * Called when a Share button clicked.
+     *
+     * @param data Map with a "url" key with the conference URL.
+     */
+    void onShareFile(Map<String, Object> data);
 }

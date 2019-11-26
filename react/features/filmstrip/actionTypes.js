@@ -42,3 +42,7 @@ export const DISABLE_FLASHLIGHT = Symbol('DISABLE_FLASHLIGHT');
 export const ENABLE_FLASHLIGHT = Symbol('ENABLE_FLASHLIGHT');
 
 export const SET_DEVICE_TYPE = Symbol('SET_DEVICE_TYPE');
+
+export const OPEN_CHAT = "OPEN_CHAT";
+
+export const SHARE_FILE = "SHARE_FILE";

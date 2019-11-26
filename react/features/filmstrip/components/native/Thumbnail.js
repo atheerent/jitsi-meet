@@ -34,7 +34,9 @@ import RaisedHandIndicator from './RaisedHandIndicator';
 import styles, { AVATAR_SIZE } from './styles';
 import VideoMutedIndicator from './VideoMutedIndicator';
 import { selectParticipant, selectParticipantInLargeVideo } from '../../../large-video/actions';
-import { muteMic, toggleFlashlight, setFilmstripVisible } from '../../actions';
+import { muteMic, toggleFlashlight, openChat, shareFile, setFilmstripVisible } from '../../actions';
+
+const device = require('react-native-device-detection');
 
 const logger = require('jitsi-meet-logger').getLogger(__filename);
 
@@ -91,6 +93,16 @@ type Props = {
      * Handles click/tap event on the thumbnail.
      */
     _onClickFlashlight: ?Function,
+
+    /**
+     * Handles click/tap event on the thumbnail.
+     */
+    _onClickChat: ?Function,
+
+    /**
+     * Handles click/tap event on the thumbnail.
+     */
+    _onClickFileShare: ?Function,
 
 
     /**
@@ -182,6 +194,8 @@ class Thumbnail extends Component<Props> {
         this._onSwipeRight = this._onSwipeRight.bind(this);
         this._onShowTools = this._onShowTools.bind(this);
         this._onHideTools = this._onHideTools.bind(this);
+        this._onClickChat = this._onClickChat.bind(this);
+        this._onClickFileShare = this._onClickFileShare.bind(this);
     }
     /**
      * Implements React's {@link Component#render()}.
@@ -342,26 +356,44 @@ class Thumbnail extends Component<Props> {
                     showTools && <View>
                         <Container
                             onClick = { this._onClickMute }
-                            style = { [ styles.thumbnailTools, styles.thumbnailToolsTopMargin ] }>
-                            <View style = { [ styles.thumbnailToolBackground,
+                            style = { [ device.isPhone ? styles.thumbnailToolsMedium : styles.thumbnailTools, styles.thumbnailToolsTopMargin ] }>
+                            <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundMedium : styles.thumbnailToolBackground,
                                             audioMuted ? styles.thumbnailToolBackgroundDisabled : styles.thumbnailToolBackgroundNormal ] }
                                 onPress = { this._onClickMute }>
                                 <Icon name = 'atheer-mic'
-                                style = { [ styles.thumbnailToolIcon,
+                                style = { [ device.isPhone ? styles.thumbnailToolIconSmall : styles.thumbnailToolIcon,
                                         audioMuted ? styles.thumbnailToolIconPressed : styles.thumbnailToolIconNoraml ] } />
                             </View>
                         </Container>
                         <Container
                             onClick = { this._onClickFlashlight }
-                            style = { [ styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
-                            <View style = { [ styles.thumbnailToolBackground,
+                            style = { [ device.isPhone ? styles.thumbnailToolsMedium : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
+                            <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundMedium : styles.thumbnailToolBackground,
                                             !hasTorch ? styles.thumbnailToolBackgroundDisabled : null,
                                             (hasTorch && flashlightOn) ? styles.thumbnailToolBackgroundHighlighted : null,
                                             (hasTorch && !flashlightOn) ? styles.thumbnailToolBackgroundNormal : null ] }
                                 onPress = { this._onClickFlashlight } >
                                 <Icon name = 'atheer-flashlight'
-                                style = { [ styles.thumbnailToolIcon,
+                                style = { [ device.isPhone ? styles.thumbnailToolIconSmall : styles.thumbnailToolIcon,
                                             (flashlightOn || !hasTorch) ? styles.thumbnailToolIconPressed : styles.thumbnailToolIconNoraml ] } />
+                            </View>
+                        </Container>
+                        <Container
+                            onClick = { this._onClickChat }
+                            style = { [ device.isPhone ? styles.thumbnailToolsMedium : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
+                            <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundMedium : styles.thumbnailToolBackground , styles.thumbnailToolBackgroundNormal ] }
+                                onPress = { this._onClickChat }>
+                                <Icon name = 'atheer-message'
+                                style = { [ device.isPhone ? styles.thumbnailToolIconSmall : styles.thumbnailToolIcon , styles.thumbnailToolIconNoraml ] } />
+                            </View>
+                        </Container>
+                        <Container
+                            onClick = { this._onClickFileShare }
+                            style = { [ device.isPhone ? styles.thumbnailToolsMedium : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
+                            <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundMedium : styles.thumbnailToolBackground, styles.thumbnailToolBackgroundNormal ] }
+                                onPress = { this._onClickFileShare }>
+                                <Icon name = 'atheer-share-file'
+                                style = { [ device.isPhone ? styles.thumbnailToolIconSmall : styles.thumbnailToolIcon, styles.thumbnailToolIconNoraml ] } />
                             </View>
                         </Container>
                     </View>
@@ -420,6 +452,18 @@ class Thumbnail extends Component<Props> {
         const flashlightOn = participantsFlashOn && participantsFlashOn.indexOf(participantId) != -1;
 
         dispatch(toggleFlashlight(participant.id, !flashlightOn));
+    }
+
+    _onClickChat() {
+        const { dispatch, participant } = this.props;
+
+        dispatch(openChat(participant.id));
+    }
+
+    _onClickFileShare() {
+        const { dispatch, participant } = this.props;
+
+        dispatch(shareFile(participant.id));
     }
 
     _onSwipeRight(gestureState) {

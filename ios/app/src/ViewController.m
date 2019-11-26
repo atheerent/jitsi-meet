@@ -120,6 +120,14 @@
   [self _onJitsiMeetViewDelegateEvent:@"VIDEO_CALL_ZOOM_UPDATED" withData:data];
 }
 
+- (void)openChat:(NSDictionary *)data {
+  [self _onJitsiMeetViewDelegateEvent:@"OPEN_CHAT" withData:data];
+}
+
+- (void)shareFile:(NSDictionary *)data {
+  [self _onJitsiMeetViewDelegateEvent:@"SHARE_FILE" withData:data];
+}
+
 #if 0
 - (void)enterPictureInPicture:(NSDictionary *)data {
     [self _onJitsiMeetViewDelegateEvent:@"ENTER_PICTURE_IN_PICTURE" withData:data];
