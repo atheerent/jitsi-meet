@@ -177,6 +177,7 @@ class Filmstrip extends Component<Props> {
                                     participant = { p }
                                     extendedToolsParticipant = { this.props._extendedToolsParticipant }
                                     participantsFlashOn = {this.props._participantsFlashOn }
+                                    isExternalSession = {this.props._isExternalSession}
                                     allowToolTips = { true } />)
 
                         /* eslint-enable react/jsx-wrap-multilines */
@@ -253,7 +254,7 @@ class Filmstrip extends Component<Props> {
 function _mapStateToProps(state) {
     const participants = state['features/base/participants'];
     const { enabled, visible, forceHidden, extendedToolsParticipant, participantsFlashOn,
-            participantsFlashDisabled, reRender, isGlass } = state['features/filmstrip'];
+            participantsFlashDisabled, reRender, isGlass, isExternalSession } = state['features/filmstrip'];
 
     return {
         /**
@@ -287,6 +288,7 @@ function _mapStateToProps(state) {
         _isGlass: isGlass,
         _extendedToolsParticipant: extendedToolsParticipant,
         _participantsFlashOn: participantsFlashOn,
+        _isExternalSession: isExternalSession,
         _participantsFlashDisabled: participantsFlashDisabled,
         _localParticipant: getLocalParticipant(state)
     };

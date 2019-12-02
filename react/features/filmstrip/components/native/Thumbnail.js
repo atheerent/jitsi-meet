@@ -168,7 +168,9 @@ type Props = {
 
     _toZoomParticipantId: Object,
 
-    _toZoomParticipantLevel: Object
+    _toZoomParticipantLevel: Object,
+
+    _isExternalSession: Object
 };
 
 /**
@@ -216,6 +218,7 @@ class Thumbnail extends Component<Props> {
             tileView,
             extendedToolsParticipant: extendedToolsParticipant,
             participantsFlashOn: participantsFlashOn,
+            _isExternalSession: _isExternalSession,
             _reRedner: _reRedner,
             allowToolTips: allowToolTips,
             _hasTorch: _hasTorch,
@@ -247,6 +250,8 @@ class Thumbnail extends Component<Props> {
         const videoMuted = !videoTrack || videoTrack.muted;
 
         const showTools = extendedToolsParticipant == participantId;
+        
+        const isExternalSession = _isExternalSession;
 
         const flashlightOn = participantsFlashOn && participantsFlashOn.indexOf(participantId) != -1;
 
@@ -378,7 +383,8 @@ class Thumbnail extends Component<Props> {
                                             (flashlightOn || !hasTorch) ? styles.thumbnailToolIconPressed : styles.thumbnailToolIconNoraml ] } />
                             </View>
                         </Container>
-                        <Container
+                        {
+                        !isExternalSession && <Container
                             onClick = { this._onClickChat }
                             style = { [ device.isPhone ? styles.thumbnailToolsMedium : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
                             <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundMedium : styles.thumbnailToolBackground , styles.thumbnailToolBackgroundNormal ] }
@@ -387,7 +393,9 @@ class Thumbnail extends Component<Props> {
                                 style = { [ device.isPhone ? styles.thumbnailToolIconSmall : styles.thumbnailToolIcon , styles.thumbnailToolIconNoraml ] } />
                             </View>
                         </Container>
-                        <Container
+                        }
+                        {
+                        !isExternalSession && <Container
                             onClick = { this._onClickFileShare }
                             style = { [ device.isPhone ? styles.thumbnailToolsMedium : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
                             <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundMedium : styles.thumbnailToolBackground, styles.thumbnailToolBackgroundNormal ] }
@@ -396,6 +404,7 @@ class Thumbnail extends Component<Props> {
                                 style = { [ device.isPhone ? styles.thumbnailToolIconSmall : styles.thumbnailToolIcon, styles.thumbnailToolIconNoraml ] } />
                             </View>
                         </Container>
+                        }   
                     </View>
                 }
             </Container>
@@ -498,7 +507,7 @@ function _mapStateToProps(state, ownProps) {
     // the stage i.e. as a large video.
     const largeVideo = state['features/large-video'];
     const tracks = state['features/base/tracks'];
-    const { participantsFlashOn, reRender, participantsFlashDisabled } = state['features/filmstrip'];
+    const { participantsFlashOn, reRender, participantsFlashDisabled, _isExternalSession} = state['features/filmstrip'];
     const id = ownProps.participant.id;
     const name = ownProps.participant.name;
     var hasTorch = false;
@@ -523,6 +532,7 @@ function _mapStateToProps(state, ownProps) {
         _videoTrack: videoTrack,
         _reRedner: reRender,
         _hasTorch: hasTorch,
+        _isExternalSession: _isExternalSession,
         _fromZoomParticipantId: state['features/large-video'].zoomParticipantId,
         _fromZoomParticipantLevel: state['features/large-video'].zoom,
         _toZoomParticipantId: state['features/large-video'].toZoomParticipantId,
