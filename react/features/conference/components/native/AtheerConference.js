@@ -185,6 +185,10 @@ class Conference extends AbstractConference<Props, *> {
                   */
                     <LargeVideo onClick = { this._onClick } />
                 }
+                {/*
+                       * The Toolbox is in a stacking layer below the Filmstrip.
+                       */}
+                     <Toolbox />
 
                 <View
                     pointerEvents = 'box-none'
