@@ -75,7 +75,6 @@ RCTDeviceEventEmitter.addListener('toggleFlashlight', function(data) {
     });
 });
 
-
 RCTDeviceEventEmitter.addListener('hasTorch', function() {
     let result = WebRTCModule.hasTorch();
     result.then(function(hasTorch) {
