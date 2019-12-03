@@ -6,6 +6,8 @@ import {
 export const ATHEER_MESSAGE = {
     TEST_MESSAGE: 'testMessage',
     CONFERENCE_INTIALIZED: 'conferenceInitialized',
+    PARTICIPANT_JOINED: 'participantJoined',
+    PARTICIPANT_LEFT: 'participantLeft',
     MUTE_AUDIO: 'muteAudio',
     MUTE_VIDEO: 'muteVideo'
 }
@@ -65,4 +67,10 @@ function onMessage(event) {
         default:
 
     }
+}
+
+// TODO(Sanjay or Hao): Define userhash to participant mapping in Jitsi,
+// and return the proper userhash.
+export function getUserHash(user) {
+    return "LOCAL_USER";
 }
