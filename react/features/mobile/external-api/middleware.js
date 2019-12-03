@@ -13,7 +13,7 @@ import {
 import {
     PARTICIPANT_JOINED,
     PARTICIPANT_LEFT
-} from '../../base/participants'
+} from '../../base/participants';
 import { MUTE_MIC,
         TOGGLE_FLASHLIGHT,
         OPEN_CHAT,
@@ -23,7 +23,8 @@ import { MUTE_MIC,
         setFilmstripForceHidden,
         updateFlashlightStatus,
         enableFlashlight,
-        disableFlashlight } from '../../filmstrip'
+        disableFlashlight,
+        setExternalSessionStatus } from '../../filmstrip'
 import { LOAD_CONFIG_ERROR } from '../../base/config';
 import {
     CONNECTION_DISCONNECTED,
@@ -108,6 +109,10 @@ RCTDeviceEventEmitter.addListener('setGlassUI', function() {
     Store.dispatch(setFilmstripVisible(false));
     Store.dispatch(setGlassUi(true));
     Store.dispatch(selectParticipantInLargeVideo(true));
+});
+
+RCTDeviceEventEmitter.addListener('setExternalSession', function() {
+    Store.dispatch(setExternalSessionStatus(true))
 });
 
 emitter.addListener(

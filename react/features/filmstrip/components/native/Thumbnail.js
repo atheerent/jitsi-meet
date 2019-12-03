@@ -218,7 +218,7 @@ class Thumbnail extends Component<Props> {
             tileView,
             extendedToolsParticipant: extendedToolsParticipant,
             participantsFlashOn: participantsFlashOn,
-            _isExternalSession: _isExternalSession,
+            isExternalSession: isExternalSession,
             _reRedner: _reRedner,
             allowToolTips: allowToolTips,
             _hasTorch: _hasTorch,
@@ -250,8 +250,6 @@ class Thumbnail extends Component<Props> {
         const videoMuted = !videoTrack || videoTrack.muted;
 
         const showTools = extendedToolsParticipant == participantId;
-        
-        const isExternalSession = _isExternalSession;
 
         const flashlightOn = participantsFlashOn && participantsFlashOn.indexOf(participantId) != -1;
 
@@ -384,7 +382,7 @@ class Thumbnail extends Component<Props> {
                             </View>
                         </Container>
                         {
-                        !isExternalSession && <Container
+                        !this.props.isExternalSession && <Container
                             onClick = { this._onClickChat }
                             style = { [ device.isPhone ? styles.thumbnailToolsMedium : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
                             <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundMedium : styles.thumbnailToolBackground , styles.thumbnailToolBackgroundNormal ] }
@@ -395,7 +393,7 @@ class Thumbnail extends Component<Props> {
                         </Container>
                         }
                         {
-                        !isExternalSession && <Container
+                        !this.props.isExternalSession && <Container
                             onClick = { this._onClickFileShare }
                             style = { [ device.isPhone ? styles.thumbnailToolsMedium : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
                             <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundMedium : styles.thumbnailToolBackground, styles.thumbnailToolBackgroundNormal ] }

@@ -178,11 +178,12 @@ ReducerRegistry.register(
                 participantsFlashDisabled: participantsFlashDisabled,
                 reRender: !state.reRender
             };
+            
         case IS_EXTERNAL_SESSION:
             return {
                 ...state,
-                isExternalSession: state.isExternalSession
-            }
+                isExternalSession: true
+            };
         }
 
         return state;

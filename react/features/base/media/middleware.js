@@ -75,14 +75,6 @@ RCTDeviceEventEmitter.addListener('toggleFlashlight', function(data) {
     });
 });
 
-RCTDeviceEventEmitter.addListener('isExternalSession', function(data) {
-    Object.keys(data).forEach((key) => {
-        if (key == 'isExternalSession') {
-            logger.log('Event:isExternalSession isExternalSession=' + data[key]);
-            WebRTCModule.setExternalSessionStatus(data[key]);
-        }
-    });
-});
 
 RCTDeviceEventEmitter.addListener('hasTorch', function() {
     let result = WebRTCModule.hasTorch();
