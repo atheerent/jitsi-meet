@@ -25,9 +25,6 @@ export default StyleSheet.create({
      * Make {@code Video} fill its container.
      */
     video: {
-        width: 100,
-        height: 100,
-        borderRadius: 75,
-        overflow: 'hidden'
+        flex: 1
     }
 });

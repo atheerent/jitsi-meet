@@ -144,7 +144,7 @@ function Thumbnail(props: Props) {
 
     var thumbnailDiameter = DEFAULT_THUMBNAIL_RADIUS * 2;
     var thumbnailStyleOverride = {
-        borderRadius: DEFAULT_THUMBNAIL_RADIUS,
+        borderRadius: 0,
         width: thumbnailDiameter,
         height: thumbnailDiameter,
         marginBottom: DEFAULT_THUMBNAIL_MARGIN_BOTTOM
@@ -186,7 +186,7 @@ function Thumbnail(props: Props) {
                     tintEnabled = { participantInLargeVideo && !disableTint }
                     tintStyle = { _styles.activeThumbnailTint }
                     useCircleVideo = { true }
-                    zOrder = { 0 } />
+                    zOrder = { 1 } />
 
                 { renderDisplayName && <DisplayNameLabel participantId = { participantId } /> }
 

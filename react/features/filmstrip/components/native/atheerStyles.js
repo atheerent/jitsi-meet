@@ -21,7 +21,7 @@ export default {
     },
 
     atheerParticipantViewStyle: {
-        borderRadius: 100,
+        borderRadius: 0,
         overflow: 'hidden'
     },
 
@@ -31,18 +31,11 @@ export default {
         justifyContent: 'center',
         top: 10,
         left: 15,
-        overflow: 'hidden',
         position: 'absolute',
         borderColor: '#424242',
         borderStyle: 'solid',
         borderWidth: 1,
-        shadowRadius: 3,
-        shadowOpacity: 1.0,
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: 0 },
-        backgroundColor : "#ffffff",
-        elevation: 5,
-        zIndex: 1
+        backgroundColor : "#ffffff"
     },
 
     thumbnailContainer: {
@@ -53,7 +46,7 @@ export default {
         flexDirection: 'column',
         justifyContent: 'flex-start',
         margin: 2,
-        overflow: 'hidden',
+        overflow: 'visible',
         position: 'relative'
     },
 
