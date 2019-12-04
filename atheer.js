@@ -51,7 +51,7 @@ function onMessage(event) {
         case ATHEER_MESSAGE.SET_DISPLAY_NAME:
             var displayName = "Atheer User: LOCAL_USER";
             if (receivedData.data) {
-                displayName = receivedData.data.username + displayNameSplit + receivedData.data.userhash;
+                displayName = receivedData.data.userhash + displayNameSplit + receivedData.data.username;
             }
             APP.store.dispatch(updateSettings({displayName: displayName}));
             break;
@@ -81,8 +81,11 @@ function onMessage(event) {
     }
 }
 
-// TODO(Sanjay or Hao): Define userhash to participant mapping in Jitsi,
-// and return the proper userhash.
 export function getUserHash(user) {
+    var displayName = user.name ? user.name : user.getDisplayName();
+    if (displayName) {
+        var splitParts = displayName.split(displayNameSplit);
+        return splitParts[0];
+    }
     return "LOCAL_USER";
 }
