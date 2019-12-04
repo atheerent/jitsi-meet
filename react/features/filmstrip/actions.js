@@ -12,7 +12,8 @@ import {
     UPDATE_FLASHLIGHT_STATUS,
     ENABLE_FLASHLIGHT,
     DISABLE_FLASHLIGHT,
-    SET_DEVICE_TYPE
+    SET_DEVICE_TYPE, 
+    IS_EXTERNAL_SESSION
 } from './actionTypes';
 
 /**
@@ -139,5 +140,12 @@ export function setGlassUi(isGlass: boolean) {
     return {
         type: SET_DEVICE_TYPE,
         isGlass
+    };
+}
+
+export function setExternalSessionStatus(isExternalSession: boolean) {
+    return {
+        type: IS_EXTERNAL_SESSION,
+        isExternalSession
     };
 }

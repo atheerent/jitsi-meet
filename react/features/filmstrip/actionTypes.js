@@ -43,6 +43,8 @@ export const ENABLE_FLASHLIGHT = Symbol('ENABLE_FLASHLIGHT');
 
 export const SET_DEVICE_TYPE = Symbol('SET_DEVICE_TYPE');
 
+export const IS_EXTERNAL_SESSION = 'IS_EXTERNAL_SESSION';
+
 export const OPEN_CHAT = "OPEN_CHAT";
 
 export const SHARE_FILE = "SHARE_FILE";

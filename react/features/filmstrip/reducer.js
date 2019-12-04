@@ -11,7 +11,8 @@ import {
     UPDATE_FLASHLIGHT_STATUS,
     ENABLE_FLASHLIGHT,
     DISABLE_FLASHLIGHT,
-    SET_DEVICE_TYPE
+    SET_DEVICE_TYPE,
+    IS_EXTERNAL_SESSION
 } from './actionTypes';
 
 import {
@@ -45,7 +46,8 @@ const DEFAULT_STATE = {
     participantsFlashEnabled: null,
     participantsFlashOn: [],
     participantsFlashDisabled: [],
-    reRender: false
+    reRender: false,
+    isExternalSession: false
 };
 
 ReducerRegistry.register(
@@ -175,6 +177,12 @@ ReducerRegistry.register(
                 ...state,
                 participantsFlashDisabled: participantsFlashDisabled,
                 reRender: !state.reRender
+            };
+            
+        case IS_EXTERNAL_SESSION:
+            return {
+                ...state,
+                isExternalSession: true
             };
         }
 
