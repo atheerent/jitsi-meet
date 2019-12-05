@@ -77,12 +77,19 @@ emitter.addListener(ATHEER_LISTENERS.HANG_UP, (data) => {
 emitter.addListener(ATHEER_LISTENERS.SET_PARTICIPANT_NAME, (data) => {
     logger.log('atheer jitsi receive ' + ATHEER_LISTENERS.SET_PARTICIPANT_NAME + ' in emitter');
     if (Store && data != null) {
+        var userhash = 'USERHASH';
+        var username = 'LOCAL_USER';
         Object.keys(data).forEach((key) => {
             if (key === ATHEER_LISTENER_KEYS.USERNAME) {
                 logger.log('jitsi emitter receive key' + data[key]);
-                Store.dispatch(setParticipantDisplayName(data[key]));
+                username = data[key];
+            } else if (key === ATHEER_LISTENER_KEYS.USERHASH) {
+                logger.log('jitsi emitter receive key' + data[key]);
+                userhash = data[key];
             }
         });
+        var displayName = userhash + ':' + username;
+        Store.dispatch(setParticipantDisplayName(displayName));
     }
 });
 
@@ -296,16 +303,12 @@ MiddlewareRegistry.register(store => next => action => {
     return result;
 });
 
-// Hao change this once we figure out new naming convention
-function _getAtheerUserhash(fullUsername) {
-    /*if (!fullUsername || fullUsername == undefined) {
+function _getAtheerUserhash(displayName) {
+    if (!displayName || displayName == undefined) {
         return;
     }
-    var splitParts = fullUsername.split(displayNameSplit);
-    if (splitParts.length > 1) {
-        return splitParts[1];
-    }*/
-    return fullUsername;
+    var splitParts = displayName.split(':');
+    return splitParts[0];
 }
 
 function _getJitsiParticipantId(atheerUserhash) {

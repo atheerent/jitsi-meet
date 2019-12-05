@@ -16,6 +16,7 @@ export const ATHEER_LISTENERS = {
 };
 
 export const ATHEER_LISTENER_KEYS = {
+    USERHASH: 'userhash',
     USERNAME: 'username',
     AUDIO_STATE: 'audioState',
     VIDEO_STATE: 'videoState',
