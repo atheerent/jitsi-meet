@@ -144,7 +144,7 @@ function Thumbnail(props: Props) {
 
     var thumbnailDiameter = DEFAULT_THUMBNAIL_RADIUS * 2;
     var thumbnailStyleOverride = {
-        borderRadius: 0,
+        borderRadius: 10,
         width: thumbnailDiameter,
         height: thumbnailDiameter,
         marginBottom: DEFAULT_THUMBNAIL_MARGIN_BOTTOM
@@ -179,7 +179,7 @@ function Thumbnail(props: Props) {
                 touchFeedback = { false }>
 
                 <ParticipantView
-                    avatarSize = { AVATAR_SIZE }
+                    avatarSize = { 100 }
                     disableVideo = { isScreenShare }
                     participantId = { participantId }
                     style = { atheerStyles.atheerParticipantViewStyle }
@@ -190,30 +190,12 @@ function Thumbnail(props: Props) {
 
                 { renderDisplayName && <DisplayNameLabel participantId = { participantId } /> }
 
-                <View
-                    style = { [
-                        styles.thumbnailTopIndicatorContainer,
-                        styles.thumbnailTopLeftIndicatorContainer
-                    ] }>
-                    <RaisedHandIndicator participantId = { participant.id } />
-                    { renderDominantSpeakerIndicator && <DominantSpeakerIndicator /> }
-                </View>
-
-                <View
-                    style = { [
-                        styles.thumbnailTopIndicatorContainer,
-                        styles.thumbnailTopRightIndicatorContainer
-                    ] }>
-                    <ConnectionIndicator participantId = { participant.id } />
-                </View>
-
-                <Container style = { styles.thumbnailIndicatorContainer }>
-                    { audioMuted
-                        && <AudioMutedIndicator /> }
-
-                    { videoMuted
-                        && <VideoMutedIndicator /> }
-                </Container>
+                { audioMuted
+                    && <Container style = { atheerStyles.muteAudioIndicatorContainer }>
+                        <Container style = { atheerStyles.muteAudioIndicatorIcon }>
+                            <AudioMutedIndicator />
+                        </Container>
+                </Container> }
 
             </View>
     );

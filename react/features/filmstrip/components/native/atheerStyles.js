@@ -21,8 +21,12 @@ export default {
     },
 
     atheerParticipantViewStyle: {
-        borderRadius: 0,
-        overflow: 'hidden'
+        margin: 1,
+        borderRadius: 10,
+        overflow: 'hidden',
+        borderColor: '#E2E2E2',
+        borderStyle: 'solid',
+        borderWidth: 3
     },
 
     atheerThumbnail: {
@@ -32,10 +36,7 @@ export default {
         top: 10,
         left: 15,
         position: 'absolute',
-        borderColor: '#424242',
-        borderStyle: 'solid',
-        borderWidth: 1,
-        backgroundColor : "#ffffff"
+        backgroundColor : "#ffffff00"
     },
 
     thumbnailContainer: {
@@ -53,5 +54,27 @@ export default {
     thumbnailVideo: {
         height: 100,
         width: 100
+    },
+
+    muteAudioIndicatorContainer: {
+        alignSelf: 'stretch',
+        bottom: -2,
+        flex: 1,
+        flexDirection: 'row',
+        right: -2,
+        position: 'absolute',
+        backgroundColor : "#757575",
+        height: 30,
+        width: 30,
+        borderRadius: 15,
+        overflow: 'hidden',
+        borderColor: '#E2E2E2',
+        borderStyle: 'solid',
+        borderWidth: 3
+    },
+
+    muteAudioIndicatorIcon: {
+        marginLeft: 5,
+        marginTop: 5
     }
 };
