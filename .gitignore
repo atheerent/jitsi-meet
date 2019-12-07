@@ -6,6 +6,9 @@ all.css
 .remote-sync.json
 .sync-config.cson
 
+libs
+libs/
+
 # CocoaPods
 Pods/
 
