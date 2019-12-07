@@ -32,6 +32,7 @@ function getPerformanceHints(size) {
 // jitsi-meet such as app.bundle.js and external_api.js.
 const config = {
     devServer: {
+        port: 9000,
         https: true,
         inline: true,
         proxy: {
@@ -40,7 +41,8 @@ const config = {
                 secure: false,
                 target: devServerProxyTarget
             }
-        }
+        },
+        disableHostCheck: true
     },
     devtool: 'source-map',
     mode: minimize ? 'production' : 'development',
@@ -280,7 +282,8 @@ function devServerProxyBypass({ path }) {
             || path.startsWith('/fonts/') || path.startsWith('/images/')
             || path.startsWith('/sounds/')
             || path.startsWith('/static/')
-            || path.endsWith('.wasm')) {
+            || path.endsWith('.wasm')
+            || path == '/') {
         return path;
     }
 
