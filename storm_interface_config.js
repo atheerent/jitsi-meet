@@ -14,7 +14,7 @@ var interfaceConfig = {
     INITIAL_TOOLBAR_TIMEOUT: 20000,
     TOOLBAR_TIMEOUT: 4000,
     TOOLBAR_ALWAYS_VISIBLE: false,
-    DEFAULT_REMOTE_DISPLAY_NAME: 'Fellow Jitster',
+    DEFAULT_REMOTE_DISPLAY_NAME: 'Atheer Fellow',
     DEFAULT_LOCAL_DISPLAY_NAME: 'me',
     SHOW_JITSI_WATERMARK: true,
     JITSI_WATERMARK_LINK: 'https://jitsi.org',
@@ -168,7 +168,7 @@ var interfaceConfig = {
      *
      * @type {boolean}
      */
-    RECENT_LIST_ENABLED: true,
+    RECENT_LIST_ENABLED: false,
 
     // Names of browsers which should show a warning stating the current browser
     // has a suboptimal experience. Browsers which are not listed as optimal or

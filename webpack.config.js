@@ -283,6 +283,7 @@ function devServerProxyBypass({ path }) {
             || path.startsWith('/sounds/')
             || path.startsWith('/static/')
             || path.endsWith('.wasm')
+            || path.startsWith('/storm_')
             || path == '/') {
         return path;
     }
