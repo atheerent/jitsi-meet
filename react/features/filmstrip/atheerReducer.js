@@ -14,6 +14,8 @@ import {
     SET_FILMSTRIP_HIDDEN
 } from './atheerActionTypes';
 
+const logger = require('jitsi-meet-logger').getLogger(__filename);
+
 const DEFAULT_STATE = {
     /**
      * The indicator which determines whether the {@link Filmstrip} is enabled.

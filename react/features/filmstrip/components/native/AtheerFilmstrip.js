@@ -127,7 +127,7 @@ class Filmstrip extends Component<Props> {
 
         const _filmstripStyle = this.props._filmstripStyle;
         if (_filmstripStyle && _filmstripStyle.filmstripMarginBottom && _filmstripStyle.filmstripMarginBottom > 0) {
-            filmstripStyleOverride.top = _filmstripStyle.filmstripMarginBottom;
+            filmstripStyleOverride.bottom = _filmstripStyle.filmstripMarginBottom;
         }
         if (_filmstripStyle && _filmstripStyle.filmstripMarginLeft && _filmstripStyle.filmstripMarginLeft > 0) {
             filmstripStyleOverride.left = _filmstripStyle.filmstripMarginLeft;

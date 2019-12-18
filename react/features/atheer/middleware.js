@@ -190,7 +190,7 @@ emitter.addListener(ATHEER_LISTENERS.SET_FILMSTRIP_STYLE, (data) => {
                 filmstripMarginLeft = (data[key]);
             }
             if (filmstripMarginBottom != 0 && filmstripMarginLeft != 0) {
-                Store.dispatch(setFilmstripStyle(thumbnailRadius, thumbnailMarginBottom));
+                Store.dispatch(setFilmstripStyle(filmstripMarginBottom, filmstripMarginLeft));
             }
         });
     }
