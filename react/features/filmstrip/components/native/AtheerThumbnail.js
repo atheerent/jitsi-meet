@@ -116,7 +116,9 @@ type Props = {
     /**
      * If true, it tells the thumbnail that it needs to behave differently. E.g. react differently to a single tap.
      */
-    tileView?: boolean
+    tileView?: boolean,
+
+    index?: int
 };
 
 /**
@@ -139,7 +141,8 @@ function Thumbnail(props: Props) {
         disableTint,
         participant,
         renderDisplayName,
-        tileView
+        tileView,
+        index
     } = props;
 
     var thumbnailDiameter = DEFAULT_THUMBNAIL_RADIUS * 2;
@@ -147,7 +150,8 @@ function Thumbnail(props: Props) {
         borderRadius: 10,
         width: thumbnailDiameter,
         height: thumbnailDiameter,
-        marginBottom: DEFAULT_THUMBNAIL_MARGIN_BOTTOM
+        marginBottom: DEFAULT_THUMBNAIL_MARGIN_BOTTOM,
+        marginLeft: index * (thumbnailDiameter + 10)
     }
 
     if (_thumbnailStyle && _thumbnailStyle.thumbnailRadius > 0) {

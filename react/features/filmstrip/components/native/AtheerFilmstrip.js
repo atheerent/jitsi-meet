@@ -121,7 +121,7 @@ class Filmstrip extends Component<Props> {
         }
 
         var filmstripStyleOverride = {
-            top: DEFAULT_FILMSTRIP_MARGIN_TOP,
+            bottom: DEFAULT_FILMSTRIP_MARGIN_TOP,
             left: DEFAULT_FILMSTRIP_MARGIN_LEFT
         }
 
@@ -158,32 +158,23 @@ class Filmstrip extends Component<Props> {
         return (
             <Container
                 style = { [ filmstripStyle, filmstripStyleOverride ] }>
-                {
-                    <Draggable renderSize={thumbnailRadius} renderColor='transparent' reverse={false}
-                        x={0} y={0}
-                        pressInDrag={()=>
-                            this.props.dispatch(pinParticipant(this.props._localParticipant.id))
-                        }>
-                        <Thumbnail participant = { this.props._localParticipant } />
-                    </Draggable>
-                }
+
+                <Thumbnail
+                    index = {0}
+                    participant = { this.props._localParticipant } />
                 {
 
                     this._sort(
                             this.props._participants,
                             isNarrowAspectRatio_)
                         .map((p, index) => (
-                            <Draggable renderSize={thumbnailRadius} renderColor='transparent' reverse={false}
-                                x={0} y={(index + 1) * (thumbnailRadius * 2 + thumbnailInterval)}
-                                pressInDrag={()=>
-                                    this.props.dispatch(pinParticipant(p.id))
-                                }>
-                                <Thumbnail
-                                    key = { p.id }
-                                    participant = { p } />
-                            </Draggable>))
+                            <Thumbnail
+                                index = {index + 1}
+                                key = { p.id }
+                                participant = { p } />))
 
                 }
+
                 { false &&
                     <ScrollView
                         horizontal = { false }
