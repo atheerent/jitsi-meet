@@ -88,7 +88,7 @@ ReducerRegistry.register(
             return {
                 ...state,
                 filmstripStyle: {
-                    filmstripMarginTop: action.filmstripMarginTop,
+                    filmstripMarginBottom: action.filmstripMarginBottom,
                     filmstripMarginLeft: action.filmstripMarginLeft
                 }
             };

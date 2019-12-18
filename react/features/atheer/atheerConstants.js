@@ -23,7 +23,7 @@ export const ATHEER_LISTENER_KEYS = {
     THUMBNAIL_RADIUS: 'thumbnailRadius',
     THUMBNAIL_MARGIN_BOTTOM: 'thumbnailMarginBottom',
     FILMSTRIP_STATE: 'filmstripState',
-    FILMSTRIP_MARGIN_TOP: 'filmstripMarginTop',
+    FILMSTRIP_MARGIN_BOTTOM: 'filmstripMarginBottom',
     FILMSTRIP_MARGIN_LEFT: 'filmstripMarginLeft',
     ANNOTATION_STATE: 'annotationState'
 };

@@ -172,24 +172,24 @@ emitter.addListener(ATHEER_LISTENERS.SET_THUMBNAIL_STYLE, (data) => {
 
 /*
     required keys:
-    filmstripMarginTop
+    filmstripMarginBottom
     filmstripMarginLeft
 */
 emitter.addListener(ATHEER_LISTENERS.SET_FILMSTRIP_STYLE, (data) => {
     logger.log('atheer jitsi receive ' + ATHEER_LISTENERS.SET_FILMSTRIP_STYLE + ' in emitter');
     if (Store && data != null) {
-        var filmstripMarginTop = 0;
+        var filmstripMarginBottom = 0;
         var filmstripMarginLeft = 0;
         Object.keys(data).forEach((key) => {
-            if (key === ATHEER_LISTENER_KEYS.FILMSTRIP_MARGIN_TOP) {
+            if (key === ATHEER_LISTENER_KEYS.FILMSTRIP_MARGIN_BOTTOM) {
                 logger.log('jitsi emitter receive key' + data[key]);
-                filmstripMarginTop = (data[key]);
+                filmstripMarginBottom = (data[key]);
             }
             if (key === ATHEER_LISTENER_KEYS.FILMSTRIP_MARGIN_LEFT) {
                 logger.log('jitsi emitter receive key' + data[key]);
                 filmstripMarginLeft = (data[key]);
             }
-            if (filmstripMarginTop != 0 && filmstripMarginLeft != 0) {
+            if (filmstripMarginBottom != 0 && filmstripMarginLeft != 0) {
                 Store.dispatch(setFilmstripStyle(thumbnailRadius, thumbnailMarginBottom));
             }
         });

@@ -28,7 +28,7 @@ import Draggable from 'react-native-draggable';
 
 const logger = require('jitsi-meet-logger').getLogger(__filename);
 
-export const DEFAULT_FILMSTRIP_MARGIN_TOP = 100;
+export const DEFAULT_FILMSTRIP_MARGIN_BOTTOM = 100;
 export const DEFAULT_FILMSTRIP_MARGIN_LEFT = 10;
 
 /**
@@ -121,13 +121,13 @@ class Filmstrip extends Component<Props> {
         }
 
         var filmstripStyleOverride = {
-            bottom: DEFAULT_FILMSTRIP_MARGIN_TOP,
+            bottom: DEFAULT_FILMSTRIP_MARGIN_BOTTOM,
             left: DEFAULT_FILMSTRIP_MARGIN_LEFT
         }
 
         const _filmstripStyle = this.props._filmstripStyle;
-        if (_filmstripStyle && _filmstripStyle.filmstripMarginTop && _filmstripStyle.filmstripMarginTop > 0) {
-            filmstripStyleOverride.top = _filmstripStyle.filmstripMarginTop;
+        if (_filmstripStyle && _filmstripStyle.filmstripMarginBottom && _filmstripStyle.filmstripMarginBottom > 0) {
+            filmstripStyleOverride.top = _filmstripStyle.filmstripMarginBottom;
         }
         if (_filmstripStyle && _filmstripStyle.filmstripMarginLeft && _filmstripStyle.filmstripMarginLeft > 0) {
             filmstripStyleOverride.left = _filmstripStyle.filmstripMarginLeft;
@@ -157,6 +157,7 @@ class Filmstrip extends Component<Props> {
 
         return (
             <Container
+                visible = { visibility }
                 style = { [ filmstripStyle, filmstripStyleOverride ] }>
 
                 <Thumbnail

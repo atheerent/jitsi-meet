@@ -16,10 +16,10 @@ export function setThumbnailStyle(thumbnailRadius: int, thumbnailMarginBottom: i
     };
 }
 
-export function setFilmstripStyle(filmstripMarginTop: int, filmstripMarginLeft: int) {
+export function setFilmstripStyle(filmstripMarginBottom: int, filmstripMarginLeft: int) {
     return {
         type: SET_FILMSTRIP_STYLE,
-        filmstripMarginTop: filmstripMarginTop,
+        filmstripMarginBottom: filmstripMarginBottom,
         filmstripMarginLeft: filmstripMarginLeft
     };
 }
