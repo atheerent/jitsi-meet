@@ -85,8 +85,6 @@ export default class Video extends Component<Props> {
         const { onPress, stream, zoomEnabled } = this.props;
 
         if (stream) {
-            logger.log('hao check stream', stream);
-            logger.log('hao check stream url', stream.toURL());
             // RTCView
             const style = styles.video;
             const objectFit

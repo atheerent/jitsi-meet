@@ -158,7 +158,8 @@ class Filmstrip extends Component<Props> {
         return (
             <Container
                 visible = { visibility }
-                style = { [ filmstripStyle, filmstripStyleOverride ] }>
+                style = { [ filmstripStyle, filmstripStyleOverride ] }
+                >
 
                 <Thumbnail
                     index = {0}
@@ -169,37 +170,13 @@ class Filmstrip extends Component<Props> {
                             this.props._participants,
                             isNarrowAspectRatio_)
                         .map((p, index) => (
+
                             <Thumbnail
                                 index = {index + 1}
                                 key = { p.id }
-                                participant = { p } />))
+                                participant = { p } />
+                            ))
 
-                }
-
-                { false &&
-                    <ScrollView
-                        horizontal = { false }
-                        showsHorizontalScrollIndicator = { false }
-                        showsVerticalScrollIndicator = { false }
-                        style = { styles.scrollView } >
-                        {
-
-                            this._sort(
-                                    this.props._participants,
-                                    isNarrowAspectRatio_)
-                                .map(p => (
-                                    <Thumbnail
-                                        key = { p.id }
-                                        participant = { p } />))
-
-                        }
-                        {
-                            !this._separateLocalThumbnail
-                                && isNarrowAspectRatio_
-                                && visibility
-                                && <Thumbnail participant = { this.props._localParticipant } />
-                        }
-                    </ScrollView>
                 }
                 {
                     this._separateLocalThumbnail

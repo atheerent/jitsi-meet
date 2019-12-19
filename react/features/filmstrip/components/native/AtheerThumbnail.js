@@ -171,7 +171,7 @@ function Thumbnail(props: Props) {
     const isScreenShare = videoTrack && videoTrack.videoType === VIDEO_TYPE.DESKTOP;
 
     return (
-            <View
+            <Container
                 onClick = { _onClick }
                 onLongPress = { participant.local ? undefined : _onShowRemoteVideoMenu }
                 style = { [
@@ -201,7 +201,7 @@ function Thumbnail(props: Props) {
                         </Container>
                 </Container> }
 
-            </View>
+            </Container>
     );
 }
 

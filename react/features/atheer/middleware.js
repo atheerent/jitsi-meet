@@ -218,7 +218,6 @@ emitter.addListener(ATHEER_LISTENERS.HIDE_FILMSTRIP, (data) => {
 */
 emitter.addListener(ATHEER_LISTENERS.SET_ANNOTATION_MODE, (data) => {
     logger.log('atheer jitsi receive ' + ATHEER_LISTENERS.SET_ANNOTATION_MODE + ' in emitter');
-    logger.log('hao check receive set annotation mode');
     if (Store && data != null) {
         Object.keys(data).forEach((key) => {
             if (key === ATHEER_LISTENER_KEYS.ANNOTATION_STATE) {
