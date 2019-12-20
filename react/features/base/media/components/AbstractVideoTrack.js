@@ -45,7 +45,9 @@ export type Props = {
     /**
      * Indicates whether zooming (pinch to zoom and/or drag) is enabled.
      */
-    zoomEnabled?: boolean
+    zoomEnabled?: boolean,
+
+    isLargeVideo?: boolean
 };
 
 /**
@@ -118,7 +120,8 @@ export default class AbstractVideoTrack<P: Props> extends Component<P> {
                 onPress = { this.props.onPress }
                 stream = { stream }
                 zOrder = { this.props.zOrder }
-                zoomEnabled = { zoomEnabled } />
+                zoomEnabled = { zoomEnabled }
+                isLargeVideo = { this.props.isLargeVideo } />
         );
     }
 

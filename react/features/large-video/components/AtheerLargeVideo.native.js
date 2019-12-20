@@ -140,7 +140,8 @@ class LargeVideo extends Component<Props, State> {
                     useConnectivityInfoLabel = { useConnectivityInfoLabel }
                     zOrder = { 0 }
                     useCircleVideo = { false }
-                    zoomEnabled = { true } />
+                    zoomEnabled = { true }
+                    isLargeVideo = { true } />
             </DimensionsDetector>
         );
     }

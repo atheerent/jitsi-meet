@@ -53,7 +53,9 @@ type Props = {
     /**
      * Indicates whether zooming (pinch to zoom and/or drag) is enabled.
      */
-    zoomEnabled: boolean
+    zoomEnabled: boolean,
+
+    isLargeVideo: boolean
 };
 
 /**
@@ -82,15 +84,14 @@ export default class Video extends Component<Props> {
      * @returns {ReactElement|null}
      */
     render() {
-        const { onPress, stream, zoomEnabled } = this.props;
+        const { onPress, stream, zoomEnabled, isLargeVideo } = this.props;
+
 
         if (stream) {
             // RTCView
             const style = styles.video;
-            const objectFit
-                = zoomEnabled
-                    ? 'contain'
-                    : (style && style.objectFit) || 'cover';
+            const objectFit = isLargeVideo ? 'contain' : (style && style.objectFit) || 'cover';
+
             const rtcView
                 = (
                     <RTCView

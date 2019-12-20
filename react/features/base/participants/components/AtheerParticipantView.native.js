@@ -122,6 +122,8 @@ type Props = {
      */
     zoomEnabled: boolean,
 
+    isLargeVideo: boolean,
+
     useCircleVideo: boolean
 };
 
@@ -191,7 +193,8 @@ class ParticipantView extends Component<Props> {
             _renderVideo: renderVideo,
             _videoTrack: videoTrack,
             onPress,
-            tintStyle
+            tintStyle,
+            isLargeVideo
         } = this.props;
 
         // If the connection has problems, we will "tint" the video / avatar.
@@ -225,7 +228,8 @@ class ParticipantView extends Component<Props> {
                         videoTrack = { videoTrack }
                         waitForVideoStarted = { false }
                         zOrder = { this.props.zOrder }
-                        zoomEnabled = { this.props.zoomEnabled } /> }
+                        zoomEnabled = { this.props.zoomEnabled }
+                        isLargeVideo = { isLargeVideo } /> }
 
                 { renderVideo && !this.props.useCircleVideo
                     && <VideoTrack
@@ -233,7 +237,8 @@ class ParticipantView extends Component<Props> {
                         videoTrack = { videoTrack }
                         waitForVideoStarted = { false }
                         zOrder = { this.props.zOrder }
-                        zoomEnabled = { this.props.zoomEnabled } /> }
+                        zoomEnabled = { this.props.zoomEnabled }
+                        isLargeVideo = { isLargeVideo } /> }
 
                 { !renderVideo
                     && <View style = { styles.avatarContainer }>

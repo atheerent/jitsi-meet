@@ -190,7 +190,8 @@ function Thumbnail(props: Props) {
                     tintEnabled = { participantInLargeVideo && !disableTint }
                     tintStyle = { _styles.activeThumbnailTint }
                     useCircleVideo = { true }
-                    zOrder = { 1 } />
+                    zOrder = { 1 }
+                    isLargeVideo = { false } />
 
                 { renderDisplayName && <DisplayNameLabel participantId = { participantId } /> }
 
