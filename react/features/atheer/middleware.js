@@ -307,7 +307,7 @@ function _getAtheerUserhash(displayName) {
         return;
     }
     var splitParts = displayName.split(':');
-    return splitParts[0];
+    return splitParts[1];
 }
 
 function _getJitsiParticipantId(atheerUserhash) {
