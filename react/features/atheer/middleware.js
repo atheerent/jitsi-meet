@@ -263,7 +263,7 @@ MiddlewareRegistry.register(store => next => action => {
     }
 
     case PARTICIPANT_JOINED:
-        userHashDict[action.participant.id] = action.participant.name;
+        userHashDict[action.participant.id] = _getAtheerUserhash(action.participant.name);
         jitsiHashDict[action.participant.name] = action.participant.id;
         sendEvent(store, type,
         /* data */ {
@@ -276,7 +276,7 @@ MiddlewareRegistry.register(store => next => action => {
         sendEvent(store, type,
         /* data */ {
             jitsiParticipantId: action.participant.id,
-            atheerUser: _getAtheerUserhash(userHashDict[action.participant.id])
+            atheerUser: userHashDict[action.participant.id]
         });
         break;
 
@@ -290,7 +290,7 @@ MiddlewareRegistry.register(store => next => action => {
         sendEvent(store, type,
         /* data */ {
             jitsiParticipantId: action.participant.id,
-            atheerUser: _getAtheerUserhash(userHashDict[action.participant.id])
+            atheerUser: userHashDict[action.participant.id]
         });
         break;
 
@@ -307,7 +307,7 @@ function _getAtheerUserhash(displayName) {
         return;
     }
     var splitParts = displayName.split(':');
-    return splitParts[1];
+    return splitParts[0];
 }
 
 function _getJitsiParticipantId(atheerUserhash) {
