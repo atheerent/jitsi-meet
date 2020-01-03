@@ -128,6 +128,10 @@
   [self _onJitsiMeetViewDelegateEvent:@"SHARE_FILE" withData:data];
 }
 
+- (void)addUser:(NSDictionary *)data {
+    [self _onJitsiMeetViewDelegateEvent:@"ADD_USER" withData:data];
+}
+
 #if 0
 - (void)enterPictureInPicture:(NSDictionary *)data {
     [self _onJitsiMeetViewDelegateEvent:@"ENTER_PICTURE_IN_PICTURE" withData:data];

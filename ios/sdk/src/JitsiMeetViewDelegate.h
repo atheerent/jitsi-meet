@@ -58,6 +58,8 @@
 
 - (void)shareFile:(NSDictionary *)data;
 
+- (void)addUser:(NSDictionary *)data;
+
 /**
  * Called when entering Picture-in-Picture is requested by the user. The app
  * should now activate its Picture-in-Picture implementation (and resize the
