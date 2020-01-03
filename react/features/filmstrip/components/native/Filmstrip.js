@@ -177,7 +177,7 @@ class Filmstrip extends Component<Props> {
                     showsVerticalScrollIndicator = { false }
                     style = { styles.scrollView } >
                     {
-                        isNarrowAspectRatio_ && this.props._participantsNumber === 2 ?
+                        this.props._participantsNumber === 2 ?
                             <Container style = { styles.thumbnailContainer } onClick = { this._onAddUser }>
                                 <Container style = { [ styles.thumbnail, styleDimension, styleBackground ] }>
                                     {
@@ -209,19 +209,6 @@ class Filmstrip extends Component<Props> {
                                     allowToolTips = { true } />)
 
                         /* eslint-enable react/jsx-wrap-multilines */
-                    }
-                    {
-                        !isNarrowAspectRatio_ && this.props._participantsNumber === 2 ?
-                        <Container style = { styles.thumbnailContainer } onClick = { this._onAddUser }>
-                            <Container style = { [ styles.thumbnail, styleDimension, styleBackground ] }>
-                                {
-                                    <Container style = { [ styles.thumbnailToolBackgroundMedium, styles.thumbnailToolBackgroundDisabled ] }
-                                        onClick = { this._onAddUser }>
-                                        <Icon name = 'add' style ={ [ styles.thumbnailToolIcon, styles.thumbnailToolIconPressed ] } />
-                                    </Container>
-                                }
-                            </Container>
-                        </Container> : null
                     }
                     {
                         !this._separateLocalThumbnail
