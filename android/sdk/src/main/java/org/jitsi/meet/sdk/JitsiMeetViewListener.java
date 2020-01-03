@@ -96,4 +96,11 @@ public interface JitsiMeetViewListener {
      * @param data Map with a "url" key with the conference URL.
      */
     void onShareFile(Map<String, Object> data);
+
+    /**
+     * Called when a Add User button clicked.
+     *
+     * @param data Map with a "url" key with the conference URL.
+     */
+    void onAddUser(Map<String, Object> data);
 }

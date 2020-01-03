@@ -48,3 +48,5 @@ export const IS_EXTERNAL_SESSION = 'IS_EXTERNAL_SESSION';
 export const OPEN_CHAT = "OPEN_CHAT";
 
 export const SHARE_FILE = "SHARE_FILE";
+
+export const ADD_USER = "ADD_USER";

@@ -24,7 +24,8 @@ import { MUTE_MIC,
         updateFlashlightStatus,
         enableFlashlight,
         disableFlashlight,
-        setExternalSessionStatus } from '../../filmstrip'
+        setExternalSessionStatus, 
+        ADD_USER} from '../../filmstrip'
 import { LOAD_CONFIG_ERROR } from '../../base/config';
 import {
     CONNECTION_DISCONNECTED,
@@ -289,6 +290,12 @@ MiddlewareRegistry.register(store => next => action => {
         sendEvent(store, type,
         /* data */ {
             userhash: _getAtheerUserhash(userHashDict[action.participant.id])
+        });
+        break;
+
+    case ADD_USER:
+        sendEvent(store, type,
+        /* data */ {
         });
         break;
 

@@ -18,9 +18,12 @@ import LocalThumbnail from './LocalThumbnail';
 import styles from './styles';
 import Thumbnail from './Thumbnail';
 
-import { setFilmstripVisible } from '../../actions'
+import { setFilmstripVisible, addUser } from '../../actions';
 
 const logger = require('jitsi-meet-logger').getLogger(__filename);
+
+export const DEFAULT_THUMBNAIL_HEIGHT = 80;
+export const DEFAULT_THUMBNAIL_WIDTH = 100;
 
 /**
  * Filmstrip component's property types.
@@ -107,6 +110,7 @@ class Filmstrip extends Component<Props> {
         this._separateLocalThumbnail = false;
         this._onExpandFilmstrip = this._onExpandFilmstrip.bind(this);
         this._onHideFilmstrip = this._onHideFilmstrip.bind(this);
+        this._onAddUser = this._onAddUser.bind(this);
     }
 
     /**
@@ -126,11 +130,22 @@ class Filmstrip extends Component<Props> {
                 ? styles.filmstripNarrow
                 : styles.filmstripWide;
 
+        let participantCount = this.props._participantsNumber === 2 ?
+                                3 : this.props._participantsNumber;
+
         // TODO(Hao): Make this value dynamic and support all devices
-        var filmStripLength = 100 * this.props._participantsNumber + 20;
+        var filmStripLength = 100 * participantCount + 20;
 
         var hideFilmStripStyle = {
             right: filmStripLength
+        }
+
+        let styleDimension = {
+            width: DEFAULT_THUMBNAIL_WIDTH,
+            height: DEFAULT_THUMBNAIL_HEIGHT
+        }
+        let styleBackground = {
+            opacity: 0.3
         }
 
         return (
@@ -162,6 +177,19 @@ class Filmstrip extends Component<Props> {
                     showsVerticalScrollIndicator = { false }
                     style = { styles.scrollView } >
                     {
+                        isNarrowAspectRatio_ && this.props._participantsNumber === 2 ?
+                            <Container style = { styles.thumbnailContainer } onClick = { this._onAddUser }>
+                                <Container style = { [ styles.thumbnail, styleDimension, styleBackground ] }>
+                                    {
+                                        <Container style = { [ styles.thumbnailToolBackgroundMedium, styles.thumbnailToolBackgroundDisabled ] }
+                                            onClick = { this._onAddUser }>
+                                            <Icon name = 'add' style ={ [ styles.thumbnailToolIcon, styles.thumbnailToolIconPressed ] } />
+                                        </Container>
+                                    }
+                                </Container>
+                            </Container> : null
+                    }
+                    {
                         !this._separateLocalThumbnail
                             && !isNarrowAspectRatio_
                             && <Thumbnail participant = { this.props._localParticipant }  />
@@ -181,6 +209,19 @@ class Filmstrip extends Component<Props> {
                                     allowToolTips = { true } />)
 
                         /* eslint-enable react/jsx-wrap-multilines */
+                    }
+                    {
+                        !isNarrowAspectRatio_ && this.props._participantsNumber === 2 ?
+                        <Container style = { styles.thumbnailContainer } onClick = { this._onAddUser }>
+                            <Container style = { [ styles.thumbnail, styleDimension, styleBackground ] }>
+                                {
+                                    <Container style = { [ styles.thumbnailToolBackgroundMedium, styles.thumbnailToolBackgroundDisabled ] }
+                                        onClick = { this._onAddUser }>
+                                        <Icon name = 'add' style ={ [ styles.thumbnailToolIcon, styles.thumbnailToolIconPressed ] } />
+                                    </Container>
+                                }
+                            </Container>
+                        </Container> : null
                     }
                     {
                         !this._separateLocalThumbnail
@@ -238,6 +279,12 @@ class Filmstrip extends Component<Props> {
         const { dispatch } = this.props;
 
         dispatch(setFilmstripVisible(false));
+    }
+
+    _onAddUser() {
+        const { dispatch } = this.props;
+
+        dispatch(addUser());
     }
 }
 
