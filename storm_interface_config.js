@@ -14,9 +14,9 @@ var interfaceConfig = {
     INITIAL_TOOLBAR_TIMEOUT: 20000,
     TOOLBAR_TIMEOUT: 4000,
     TOOLBAR_ALWAYS_VISIBLE: false,
-    DEFAULT_REMOTE_DISPLAY_NAME: '',
-    DEFAULT_LOCAL_DISPLAY_NAME: '',
-    SHOW_JITSI_WATERMARK: false,
+    DEFAULT_REMOTE_DISPLAY_NAME: 'Atheer Fellow',
+    DEFAULT_LOCAL_DISPLAY_NAME: 'me',
+    SHOW_JITSI_WATERMARK: true,
     JITSI_WATERMARK_LINK: 'https://jitsi.org',
 
     // if watermark is disabled by default, it can be shown only for guests
@@ -28,9 +28,9 @@ var interfaceConfig = {
     GENERATE_ROOMNAMES_ON_WELCOME_PAGE: true,
     DISPLAY_WELCOME_PAGE_CONTENT: true,
     DISPLAY_WELCOME_PAGE_TOOLBAR_ADDITIONAL_CONTENT: false,
-    APP_NAME: 'Atheer Session',
-    NATIVE_APP_NAME: 'Atheer Session',
-    PROVIDER_NAME: 'Atheer Session',
+    APP_NAME: 'Jitsi Meet',
+    NATIVE_APP_NAME: 'Jitsi Meet',
+    PROVIDER_NAME: 'Jitsi',
     LANG_DETECTION: false, // Allow i18n to detect the system language
     INVITATION_POWERED_BY: true,
 
@@ -113,7 +113,7 @@ var interfaceConfig = {
      *
      * @type {boolean}
      */
-    MOBILE_APP_PROMO: false,
+    MOBILE_APP_PROMO: true,
 
     /**
      * Maximum coeficient of the ratio of the large video to the visible area
