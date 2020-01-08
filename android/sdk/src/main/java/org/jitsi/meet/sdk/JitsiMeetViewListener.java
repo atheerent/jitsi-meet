@@ -102,5 +102,5 @@ public interface JitsiMeetViewListener {
      *
      * @param data Map with a "url" key with the conference URL.
      */
-    void onAddUser(Map<String, Object> data);
+    void onAddUserToGroupCall(Map<String, Object> data);
 }

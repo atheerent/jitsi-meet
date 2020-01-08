@@ -49,4 +49,4 @@ export const OPEN_CHAT = "OPEN_CHAT";
 
 export const SHARE_FILE = "SHARE_FILE";
 
-export const ADD_USER = "ADD_USER";
+export const ADD_USER_TO_GROUP_CALL = "ADD_USER_TO_GROUP_CALL";

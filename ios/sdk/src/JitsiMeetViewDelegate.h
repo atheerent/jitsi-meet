@@ -58,7 +58,7 @@
 
 - (void)shareFile:(NSDictionary *)data;
 
-- (void)addUser:(NSDictionary *)data;
+- (void)addUserToGroupCall:(NSDictionary *)data;
 
 /**
  * Called when entering Picture-in-Picture is requested by the user. The app

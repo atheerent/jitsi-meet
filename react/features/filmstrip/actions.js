@@ -14,7 +14,7 @@ import {
     DISABLE_FLASHLIGHT,
     SET_DEVICE_TYPE, 
     IS_EXTERNAL_SESSION,
-    ADD_USER
+    ADD_USER_TO_GROUP_CALL
 } from './actionTypes';
 
 /**
@@ -109,9 +109,9 @@ export function shareFile(id) {
     };
 }
 
-export function addUser() {
+export function addUserToGroupCall() {
     return {
-        type: ADD_USER
+        type: ADD_USER_TO_GROUP_CALL
     };
 }
 

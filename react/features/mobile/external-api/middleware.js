@@ -25,7 +25,7 @@ import { MUTE_MIC,
         enableFlashlight,
         disableFlashlight,
         setExternalSessionStatus, 
-        ADD_USER} from '../../filmstrip'
+        ADD_USER_TO_GROUP_CALL} from '../../filmstrip'
 import { LOAD_CONFIG_ERROR } from '../../base/config';
 import {
     CONNECTION_DISCONNECTED,
@@ -293,7 +293,7 @@ MiddlewareRegistry.register(store => next => action => {
         });
         break;
 
-    case ADD_USER:
+    case ADD_USER_TO_GROUP_CALL:
         sendEvent(store, type,
         /* data */ {
         });
