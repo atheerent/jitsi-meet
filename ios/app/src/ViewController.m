@@ -128,8 +128,8 @@
   [self _onJitsiMeetViewDelegateEvent:@"SHARE_FILE" withData:data];
 }
 
-- (void)addUserToGroupCall:(NSDictionary *)data {
-    [self _onJitsiMeetViewDelegateEvent:@"ADD_USER_TO_GROUP_CALL" withData:data];
+- (void)inviteUser:(NSDictionary *)data {
+    [self _onJitsiMeetViewDelegateEvent:@"INVITE_USER" withData:data];
 }
 
 #if 0

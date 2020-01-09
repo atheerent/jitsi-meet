@@ -18,7 +18,7 @@ import LocalThumbnail from './LocalThumbnail';
 import styles from './styles';
 import Thumbnail from './Thumbnail';
 
-import { setFilmstripVisible, addUserToGroupCall } from '../../actions';
+import { setFilmstripVisible, inviteUser } from '../../actions';
 
 const logger = require('jitsi-meet-logger').getLogger(__filename);
 
@@ -110,7 +110,7 @@ class Filmstrip extends Component<Props> {
         this._separateLocalThumbnail = false;
         this._onExpandFilmstrip = this._onExpandFilmstrip.bind(this);
         this._onHideFilmstrip = this._onHideFilmstrip.bind(this);
-        this._onAddUserToGroupCall = this._onAddUserToGroupCall.bind(this);
+        this._onInviteUser = this._onInviteUser.bind(this);
     }
 
     /**
@@ -178,11 +178,11 @@ class Filmstrip extends Component<Props> {
                     style = { styles.scrollView } >
                     {
                         this.props._participantsNumber === 2 ?
-                            <Container style = { styles.thumbnailContainer } onClick = { this._onAddUserToGroupCall }>
+                            <Container style = { styles.thumbnailContainer } onClick = { this._onInviteUser }>
                                 <Container style = { [ styles.thumbnail, styleDimension, styleBackground ] }>
                                     {
                                         <Container style = { [ styles.thumbnailToolBackgroundMedium, styles.thumbnailToolBackgroundDisabled ] }
-                                            onClick = { this._onAddUserToGroupCall }>
+                                            onClick = { this._onInviteUser }>
                                             <Icon name = 'add' style ={ [ styles.thumbnailToolIcon, styles.thumbnailToolIconPressed ] } />
                                         </Container>
                                     }
@@ -268,10 +268,10 @@ class Filmstrip extends Component<Props> {
         dispatch(setFilmstripVisible(false));
     }
 
-    _onAddUserToGroupCall() {
+    _onInviteUser() {
         const { dispatch } = this.props;
 
-        dispatch(addUserToGroupCall());
+        dispatch(inviteUser());
     }
 }
 

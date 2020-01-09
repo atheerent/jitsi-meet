@@ -256,9 +256,9 @@ public class JitsiMeetActivity extends FragmentActivity
     }
 
     @Override
-    public void onAddUserToGroupCall(Map<String, Object> data) {
-        Log.d(TAG, "Add User to Group Call: " + data);
-        on("ADD_USER_TO_GROUP_CALL", data);
+    public void onInviteUser(Map<String, Object> data) {
+        Log.d(TAG, "invite user to Group Call: " + data);
+        on("INVITE_USER", data);
     }
 
     @Override
