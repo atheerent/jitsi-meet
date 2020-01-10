@@ -13,7 +13,8 @@ import {
     ENABLE_FLASHLIGHT,
     DISABLE_FLASHLIGHT,
     SET_DEVICE_TYPE, 
-    IS_EXTERNAL_SESSION
+    IS_EXTERNAL_SESSION,
+    INVITE_USER
 } from './actionTypes';
 
 /**
@@ -105,6 +106,12 @@ export function shareFile(id) {
         participant: {
             id
         }
+    };
+}
+
+export function inviteUser() {
+    return {
+        type: INVITE_USER
     };
 }
 
