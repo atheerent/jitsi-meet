@@ -83,7 +83,7 @@ export function appNavigate(uri: ?string) {
         protocol !== 'http:' && protocol !== 'https:' && (protocol = 'https:');
 
         const baseURL = `${protocol}//${host}${contextRoot || '/'}`;
-        let url = `${baseURL}config.js`;
+        let url = `${baseURL}storm_config.js`;
 
         // XXX In order to support multiple shards, tell the room to the deployment.
         room && (url += `?room=${getBackendSafeRoomName(room)}`);
@@ -279,4 +279,3 @@ export function maybeRedirectToWelcomePage(options: Object = {}) {
         }
     };
 }
-
