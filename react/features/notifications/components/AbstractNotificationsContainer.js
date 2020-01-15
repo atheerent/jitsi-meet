@@ -177,7 +177,7 @@ export default class AbstractNotificationsContainer<P: Props>
  */
 export function _abstractMapStateToProps(state: Object) {
     const { notifications } = state['features/notifications'];
-    const _visible = areThereNotifications(state);
+    const _visible = false;
 
     return {
         _notifications: _visible ? notifications : [],
