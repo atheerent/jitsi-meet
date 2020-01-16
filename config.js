@@ -73,6 +73,11 @@ var config = {
     // Disable measuring of audio levels.
     // disableAudioLevels: false,
 
+    // Enabling this will run the lib-jitsi-meet no audio detection module which
+    // will notify the user if the current selected microphone has no audio
+    // input and will suggest another valid device if one is present.
+    // enableNoAudioDetection: false
+
     // Start the conference in audio only mode (no video is being received nor
     // sent).
     // startAudioOnly: false,
@@ -292,13 +297,11 @@ var config = {
     // callStatsID: '',
     // callStatsSecret: '',
 
-    // enables callstatsUsername to be reported as statsId and used
-    // by callstats as repoted remote id
-    // enableStatsID: false
-
     // enables sending participants display name to callstats
     // enableDisplayNameInStats: false
 
+    // enables sending participants email if available to callstats and other analytics
+    // enableEmailInStats: false
 
     // Privacy
     //
@@ -326,6 +329,8 @@ var config = {
 
         // The STUN servers that will be used in the peer to peer connections
         stunServers: [
+
+            // { urls: 'stun:jitsi-meet.example.com:443' },
             { urls: 'stun:stun.l.google.com:19302' },
             { urls: 'stun:stun1.l.google.com:19302' },
             { urls: 'stun:stun2.l.google.com:19302' }
@@ -419,15 +424,14 @@ var config = {
     // the menu has option to flip the locally seen video for local presentations
     // disableLocalVideoFlip: false
 
-    // If specified a 'Help' button will be displayed in the overflow menu with a link to the specified URL for
-    // user documentation.
-    // userDocumentationURL: 'https://docs.example.com/video-meetings.html'
-
-    // URLs meant to be opened in different windows.
+    // Deployment specific URLs.
     // deploymentUrls: {
-    //  // If specified a 'Download our apps' button will be displayed in the overflow menu with a link
-    //  // to the specified URL for an app download page.
-    //  downloadAppsUrl: 'https://docs.example.com/our-apps.html'
+    //    // If specified a 'Help' button will be displayed in the overflow menu with a link to the specified URL for
+    //    // user documentation.
+    //    userDocumentationURL: 'https://docs.example.com/video-meetings.html',
+    //    // If specified a 'Download our apps' button will be displayed in the overflow menu with a link
+    //    // to the specified URL for an app download page.
+    //    downloadAppsUrl: 'https://docs.example.com/our-apps.html'
     // }
 
     // List of undocumented settings used in jitsi-meet

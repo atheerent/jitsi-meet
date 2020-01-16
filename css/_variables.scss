@@ -29,11 +29,14 @@ $defaultSideBarFontColor: #44A5FF;
 $defaultSemiDarkColor: #ACACAC;
 $defaultDarkColor: #2b3d5c;
 $defaultWarningColor: rgb(215, 121, 118);
+$presence-available: rgb(110, 176, 5);
+$presence-away: rgb(250, 201, 20);
+$presence-busy: rgb(233, 0, 27);
+$presence-idle: rgb(172, 172, 172);
 
 /**
  * Toolbar
  */
-$defaultToolbarSize: 50px;
 $newToolbarBackgroundColor: rgba(22, 38, 55, 0.8);
 $newToolbarButtonHoverColor: rgba(255, 255, 255, 0.15);
 $newToolbarButtonToggleColor: rgba(255, 255, 255, 0.2);
@@ -86,10 +89,12 @@ $modalTextColor: #333;
 /**
  * Chat
  */
+$chatActionsSeparatorColor: rgb(173, 105, 112);
 $chatHeaderBackgroundColor: rgba(42, 58, 75, 0.9);
 $chatInputSeparatorColor: #A4B8D1;
-$chatLocalMessageBackgroundColor: rgba(26, 108, 180, 1);
-$chatRemoteMessageBackgroundColor:  rgba(240, 243, 247, 0.15);
+$chatLocalMessageBackgroundColor: rgb(4, 98, 178);
+$chatPrivateMessageBackgroundColor: rgb(153, 69, 77);
+$chatRemoteMessageBackgroundColor:  rgb(86, 101, 114);
 $sidebarWidth: 375px;
 
  /**
@@ -100,6 +105,7 @@ $defaultWatermarkLink: '../images/watermark.png';
 $popoverMenuPadding: 13px;
 $happySoftwareBackground: transparent;
 $desktopAppDragBarHeight: 25px;
+$scrollHeight: 7px;
 
 /**
  * Z-indexes. TODO: Replace this by a function.
@@ -178,8 +184,17 @@ $welcomePageHeaderTextMarginTop: 35px;
 $welcomePageHeaderTextMarginBottom: 35px;
 
 $welcomePageHeaderTextTitleMarginBottom: 16px;
+$welcomePageHeaderTextTitleFontSize: 2.5rem;
+$welcomePageHeaderTextTitleFontWeight: 500;
+$welcomePageHeaderTextTitleLineHeight: 1.18;
+$welcomePageHeaderTextTitleOpacity: 1;
 
 $welcomePageHeaderTextDescriptionDisplay: inherit;
+$welcomePageHeaderTextDescriptionFontSize: 1rem;
+$welcomePageHeaderTextDescriptionFontWeight: 400;
+$welcomePageHeaderTextDescriptionLineHeight: 24px;
+$welcomePageHeaderTextDescriptionMarginBottom: 20px;
+$welcomePageHeaderTextDescriptionAlignSelf: inherit;
 
 $welcomePageEnterRoomWidth: 680px;
 $welcomePageEnterRoomPadding: 25px 30px;
@@ -198,6 +213,8 @@ $welcomePageTabButtonsDisplay: flex;
 $welcomePageTabDisplay: block;
 
 $welcomePageButtonWidth: 51px;
+$welcomePageButtonMinWidth: inherit;
+$welcomePageButtonFontSize: 14px;
 $welcomePageButtonHeight: 35px;
 $welcomePageButtonFontWeight: inherit;
 $welcomePageButtonBorderRadius: 4px;
@@ -207,4 +224,39 @@ $welcomePageButtonLineHeight: 35px;
  * Deep-linking page variables.
  */
 $deepLinkingMobileLogoHeight: 40px;
+
 $deepLinkingMobileHeaderBackground: #f1f2f5;
+
+$deepLinkingMobileLinkColor: inherit;
+$deepLinkingMobileTextFontSize: inherit;
+$deepLinkingMobileTextLineHeight: inherit;
+
+$deepLinkingDialInConferenceIdMargin: 10px 0 10px 0;
+$deepLinkingDialInConferenceIdPadding: inherit;
+$deepLinkingDialInConferenceIdBackgroundColor: inherit;
+$deepLinkingDialInConferenceIdBorderRadius: inherit;
+
+$deepLinkingDialInConferenceNameFontSize: inherit;
+$deepLinkingDialInConferenceNameLineHeight: inherit;
+$deepLinkingDialInConferenceNameMarginBottom: none;
+$deepLinkingDialInConferenceNameFontWeight: inherit;
+
+$deepLinkingDialInConferenceDescriptionFontSize: 0.8em;
+$deepLinkingDialInConferenceDescriptionLineHeight: inherit;
+$deepLinkingDialInConferenceDescriptionMarginBottom: none;
+
+$deepLinkingDialInConferencePinFontSize: inherit;
+$deepLinkingDialInConferencePinLineHeight: inherit;
+
+$depLinkingMobileHrefLineHeight: 2.2857142857142856em;
+$deepLinkingMobileHrefFontWeight: bolder;
+$deepLinkingMobileHrefFontSize: inherit;
+
+$deepLinkingMobileButtonHeight: 2.2857142857142856em;
+$deepLinkingMobileButtonLineHeight: 2.2857142857142856em;
+$deepLinkingMobileButtonMargin: 18px auto 10px;
+$deepLinkingMobileButtonWidth: auto;
+$deepLinkingMobileButtonFontWeight: bold;
+$deepLinkingMobileButtonFontSize: inherit;
+
+$primaryDeepLinkingMobileButtonBorderRadius: inherit;

@@ -29,12 +29,17 @@ import org.jitsi.meet.sdk.log.JitsiMeetLogger;
  */
 @RequiresApi(api = Build.VERSION_CODES.O)
 @ReactModule(name = RNConnectionService.NAME)
-class RNConnectionService
-    extends ReactContextBaseJavaModule {
+class RNConnectionService extends ReactContextBaseJavaModule {
 
     public static final String NAME = "ConnectionService";
 
     private static final String TAG = ConnectionService.TAG;
+
+    /**
+     * Handler for dealing with call state changes. We are acting as a proxy between ConnectionService
+     * and other modules such as {@link AudioModeModule}.
+     */
+    private CallAudioStateListener callAudioStateListener;
 
     /**
      * Sets the audio route on all existing {@link android.telecom.Connection}s
@@ -84,9 +89,17 @@ class RNConnectionService
         ReactApplicationContext ctx = getReactApplicationContext();
 
         Uri address = Uri.fromParts(PhoneAccount.SCHEME_SIP, handle, null);
-        PhoneAccountHandle accountHandle
-            = ConnectionService.registerPhoneAccount(
-                    getReactApplicationContext(), address, callUUID);
+        PhoneAccountHandle accountHandle;
+
+        try {
+            accountHandle
+                = ConnectionService.registerPhoneAccount(getReactApplicationContext(), address, callUUID);
+        } catch (Throwable tr) {
+            JitsiMeetLogger.e(tr, TAG + " error in startCall");
+
+            promise.reject(tr);
+            return;
+        }
 
         Bundle extras = new Bundle();
         extras.putParcelable(
@@ -100,15 +113,23 @@ class RNConnectionService
 
         ConnectionService.registerStartCallPromise(callUUID, promise);
 
-        try {
-            TelecomManager tm
-                = (TelecomManager) ctx.getSystemService(
-                        Context.TELECOM_SERVICE);
+        TelecomManager tm = null;
 
+        try {
+            tm = (TelecomManager) ctx.getSystemService(Context.TELECOM_SERVICE);
             tm.placeCall(address, extras);
-        } catch (Exception e) {
+        } catch (Throwable tr) {
+            JitsiMeetLogger.e(tr, TAG + " error in startCall");
+            if (tm != null) {
+                try {
+                    tm.unregisterPhoneAccount(accountHandle);
+                } catch (Throwable tr1) {
+                    // UnsupportedOperationException: System does not support feature android.software.connectionservice
+                    // was observed here. Ignore.
+                }
+            }
             ConnectionService.unregisterStartCallPromise(callUUID);
-            promise.reject(e);
+            promise.reject(tr);
         }
     }
 
@@ -146,8 +167,11 @@ class RNConnectionService
     @ReactMethod
     public void reportConnectedOutgoingCall(String callUUID, Promise promise) {
         JitsiMeetLogger.d(TAG + " reportConnectedOutgoingCall " + callUUID);
-        ConnectionService.setConnectionActive(callUUID);
-        promise.resolve(null);
+        if (ConnectionService.setConnectionActive(callUUID)) {
+            promise.resolve(null);
+        } else {
+            promise.reject("CONNECTION_NOT_FOUND_ERROR", "Connection wasn't found.");
+        }
     }
 
     @Override
@@ -167,5 +191,29 @@ class RNConnectionService
     @ReactMethod
     public void updateCall(String callUUID, ReadableMap callState) {
         ConnectionService.updateCall(callUUID, callState);
+    }
+
+    public CallAudioStateListener getCallAudioStateListener() {
+        return callAudioStateListener;
+    }
+
+    public void setCallAudioStateListener(CallAudioStateListener callAudioStateListener) {
+        this.callAudioStateListener = callAudioStateListener;
+    }
+
+    /**
+     * Handler for call state changes. {@code ConnectionServiceImpl} will call this handler when the
+     * call audio state changes.
+     *
+     * @param callAudioState The current call's audio state.
+     */
+    void onCallAudioStateChange(android.telecom.CallAudioState callAudioState) {
+        if (callAudioStateListener != null) {
+            callAudioStateListener.onCallAudioStateChange(callAudioState);
+        }
+    }
+
+    interface CallAudioStateListener {
+        void onCallAudioStateChange(android.telecom.CallAudioState callAudioState);
     }
 }

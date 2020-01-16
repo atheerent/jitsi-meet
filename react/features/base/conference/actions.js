@@ -14,6 +14,7 @@ import { JitsiConferenceEvents } from '../lib-jitsi-meet';
 import { setAudioMuted, setVideoMuted } from '../media';
 import {
     dominantSpeakerChanged,
+    getLocalParticipant,
     getNormalizedDisplayName,
     participantConnectionStatusChanged,
     participantKicked,
@@ -34,6 +35,7 @@ import {
     CONFERENCE_JOINED,
     CONFERENCE_LEFT,
     CONFERENCE_SUBJECT_CHANGED,
+    CONFERENCE_TIMESTAMP_CHANGED,
     CONFERENCE_WILL_JOIN,
     CONFERENCE_WILL_LEAVE,
     DATA_CHANNEL_OPENED,
@@ -92,9 +94,15 @@ function _addConferenceListeners(conference, dispatch) {
         (...args) => dispatch(conferenceJoined(conference, ...args)));
     conference.on(
         JitsiConferenceEvents.CONFERENCE_LEFT,
-        (...args) => dispatch(conferenceLeft(conference, ...args)));
+        (...args) => {
+            dispatch(conferenceTimestampChanged(0));
+            dispatch(conferenceLeft(conference, ...args));
+        });
     conference.on(JitsiConferenceEvents.SUBJECT_CHANGED,
         (...args) => dispatch(conferenceSubjectChanged(...args)));
+
+    conference.on(JitsiConferenceEvents.CONFERENCE_CREATED_TIMESTAMP,
+        (...args) => dispatch(conferenceTimestampChanged(...args)));
 
     conference.on(
         JitsiConferenceEvents.KICKED,
@@ -313,6 +321,22 @@ export function conferenceSubjectChanged(subject: string) {
 }
 
 /**
+* Signals that the conference timestamp has been changed.
+*
+* @param {number} conferenceTimestamp - The UTC timestamp.
+* @returns {{
+*       type: CONFERENCE_TIMESTAMP_CHANGED,
+*       conferenceTimestamp
+* }}
+*/
+export function conferenceTimestampChanged(conferenceTimestamp: number) {
+    return {
+        type: CONFERENCE_TIMESTAMP_CHANGED,
+        conferenceTimestamp
+    };
+}
+
+/**
  * Adds any existing local tracks to a specific conference before the conference
  * is joined. Then signals the intention of the application to have the local
  * participant join the specified conference.
@@ -393,14 +417,18 @@ export function createConference() {
             throw new Error('Cannot join a conference without a room name!');
         }
 
+        const config = state['features/base/config'];
+        const { email, name: nick } = getLocalParticipant(state);
         const conference
             = connection.initJitsiConference(
 
                 getBackendSafeRoomName(room), {
-                    ...state['features/base/config'],
+                    ...config,
                     applicationName: getName(),
                     getWiFiStatsMethod: getJitsiMeetGlobalNS().getWiFiStats,
-                    confID: `${locationURL.host}${locationURL.pathname}`
+                    confID: `${locationURL.host}${locationURL.pathname}`,
+                    statisticsDisplayName: config.enableDisplayNameInStats ? nick : undefined,
+                    statisticsId: config.enableEmailInStats ? email : undefined
                 });
 
         connection[JITSI_CONNECTION_CONFERENCE_KEY] = conference;
