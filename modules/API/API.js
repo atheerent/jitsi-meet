@@ -137,6 +137,10 @@ function initCommands() {
             sendAnalytics(createApiEvent('show-keyboard-shortcuts'));
             APP.UI.showKeyboardShortcuts();
         },
+        'apply-zoom': (options = {}) => {
+            const { xValue, yValue, zValue } = options;
+            APP.UI.applyZoom(xValue, yValue, zValue);
+        },
         /**
          * Callback to invoke when the "toggle-share-screen" command is received.
          *

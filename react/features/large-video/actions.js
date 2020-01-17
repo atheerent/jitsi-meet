@@ -24,6 +24,33 @@ declare var APP: Object;
  *
  * @returns {Function}
  */
+export function applyZoom(x, y, z) {
+    if (z === 1) {
+        x = 0.5;
+        y = 0.5;
+    }
+
+    //var zoomView = document.getElementById('zoomWrapper');
+    //if (zoomView) {
+    //    zoomView.style.display = (z === 1 || isReceivingZoom) ? "none" : "block";
+    //}
+
+    var fullViewVideo = document.getElementById('largeVideoWrapper');
+    var translationX = (0.5 - x) * fullViewVideo.offsetWidth * z;
+    var translationY = (0.5 - y) * fullViewVideo.offsetHeight * z;
+
+    //savedScale = z;
+    //savedTranslationX = x;
+    //savedTranslationY = y;
+
+    fullViewVideo.style.transform = "matrix(" + z + ", 0, 0, " + z + ", " + translationX + ", " + translationY + ")";
+}
+
+/**
+ * Signals conference to select a participant.
+ *
+ * @returns {Function}
+ */
 export function selectParticipant() {
     return (dispatch: Dispatch<any>, getState: Function) => {
         const state = getState();

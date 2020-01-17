@@ -28,6 +28,7 @@ import { openDialog, toggleDialog } from '../../react/features/base/dialog';
 import { VideoQualityDialog} from '../../react/features/video-quality';
 import { openSettingsDialog, SETTINGS_TABS } from '../../react/features/settings';
 import { openKeyboardShortcutsDialog } from '../../react/features/keyboard-shortcuts';
+import { applyZoom } from '../../react/features/large-video';
 
 const EventEmitter = require('events');
 
@@ -383,6 +384,11 @@ UI.showSettings = () => APP.store.dispatch(openSettingsDialog(SETTINGS_TABS.DEVI
  * Show keyboard shortcuts
  */
 UI.showKeyboardShortcuts = () => APP.store.dispatch(openKeyboardShortcutsDialog());
+
+/**
+ * applyZoom
+ */
+UI.applyZoom = (x, y, z) => APP.store.dispatch(applyZoom(x, y, z));
 
 /**
  * Handle new user display name.

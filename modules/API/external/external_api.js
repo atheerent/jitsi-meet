@@ -40,6 +40,7 @@ const commands = {
     toggleFilmStrip: 'toggle-film-strip',
     toggleShareScreen: 'toggle-share-screen',
     toggleTileView: 'toggle-tile-view',
+    applyZoom: 'apply-zoom',
     toggleVideo: 'toggle-video',
     showVideoQuality: 'show-video-quality',
     showSettings: 'show-settings',
