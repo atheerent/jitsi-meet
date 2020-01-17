@@ -125,7 +125,18 @@ function initCommands() {
             sendAnalytics(createApiEvent('chat.toggled'));
             APP.UI.toggleChat();
         },
-
+        'show-video-quality': () => {
+            sendAnalytics(createApiEvent('show-video-quality'));
+            APP.UI.showVideoQuality();
+        },
+        'show-settings': () => {
+            sendAnalytics(createApiEvent('show-settings'));
+            APP.UI.showSettings();
+        },
+        'show-keyboard-shortcuts': () => {
+            sendAnalytics(createApiEvent('show-keyboard-shortcuts'));
+            APP.UI.showKeyboardShortcuts();
+        },
         /**
          * Callback to invoke when the "toggle-share-screen" command is received.
          *

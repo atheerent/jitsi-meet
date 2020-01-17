@@ -24,6 +24,11 @@ import {
     showToolbox
 } from '../../react/features/toolbox';
 
+import { openDialog, toggleDialog } from '../../react/features/base/dialog';
+import { VideoQualityDialog} from '../../react/features/video-quality';
+import { openSettingsDialog, SETTINGS_TABS } from '../../react/features/settings';
+import { openKeyboardShortcutsDialog } from '../../react/features/keyboard-shortcuts';
+
 const EventEmitter = require('events');
 
 UI.messageHandler = messageHandler;
@@ -363,6 +368,21 @@ UI.isFilmstripVisible = () => Filmstrip.isFilmstripVisible();
  * Toggles the visibility of the chat panel.
  */
 UI.toggleChat = () => APP.store.dispatch(toggleChat());
+
+/**
+ * Show video quality
+ */
+UI.showVideoQuality = () => APP.store.dispatch(openDialog(VideoQualityDialog));
+
+/**
+ * Show settings dialog
+ */
+UI.showSettings = () => APP.store.dispatch(openSettingsDialog(SETTINGS_TABS.DEVICES));
+
+/**
+ * Show keyboard shortcuts
+ */
+UI.showKeyboardShortcuts = () => APP.store.dispatch(openKeyboardShortcutsDialog());
 
 /**
  * Handle new user display name.

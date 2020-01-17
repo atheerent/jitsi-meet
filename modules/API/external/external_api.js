@@ -40,7 +40,10 @@ const commands = {
     toggleFilmStrip: 'toggle-film-strip',
     toggleShareScreen: 'toggle-share-screen',
     toggleTileView: 'toggle-tile-view',
-    toggleVideo: 'toggle-video'
+    toggleVideo: 'toggle-video',
+    showVideoQuality: 'show-video-quality',
+    showSettings: 'show-settings',
+    showKeyboardShortcuts: 'show-keyboard-shortcuts'
 };
 
 /**
