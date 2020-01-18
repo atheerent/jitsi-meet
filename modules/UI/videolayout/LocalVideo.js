@@ -81,7 +81,6 @@ export default class LocalVideo extends SmallVideo {
             <div class = 'videocontainer__toolbar'></div>
             <div class = 'videocontainer__toptoolbar'></div>
             <div class = 'videocontainer__hoverOverlay'></div>
-            <div class = 'displayNameContainer'></div>
             <div class = 'avatar-container'></div>`;
 
         return containerSpan;

@@ -309,10 +309,6 @@ export default class SmallVideo {
                         ? <VideoMutedIndicator
                             tooltipPosition = { tooltipPosition } />
                         : null }
-                    { this._isModerator && !interfaceConfig.DISABLE_FOCUS_INDICATOR
-                        ? <ModeratorIndicator
-                            tooltipPosition = { tooltipPosition } />
-                        : null }
                 </div>
             </I18nextProvider>,
             statusBarContainer);
