@@ -10,6 +10,8 @@ import { isToolboxVisible } from '../../../toolbox';
 import ConferenceTimer from '../ConferenceTimer';
 import ParticipantsCount from './ParticipantsCount';
 
+declare var interfaceConfig: Object;
+
 /**
  * The type of the React {@code Component} props of {@link Subject}.
  */
@@ -74,7 +76,7 @@ function _mapStateToProps(state) {
 
     return {
         _showParticipantCount: participantCount > 2,
-        _subject: getConferenceName(state),
+        _subject: interfaceConfig.ATHEER_SESSION_INFO.topic + ' - ' + interfaceConfig.ATHEER_SESSION_INFO.session_no,
         _visible: isToolboxVisible(state)
     };
 }

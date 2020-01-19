@@ -188,7 +188,7 @@ var interfaceConfig = {
      *
      * Note: this mode is experimental and subject to breakage.
      */
-    AUTO_PIN_LATEST_SCREEN_SHARE: 'remote-only'
+    AUTO_PIN_LATEST_SCREEN_SHARE: 'remote-only',
 
     /**
      * How many columns the tile view can expand to. The respected range is
@@ -229,6 +229,8 @@ var interfaceConfig = {
      MOBILE_DYNAMIC_LINK
      PHONE_NUMBER_REGEX
     */
+
+    ATHEER_SESSION_INFO: null
 };
 
 /* eslint-enable no-unused-vars, no-var, max-len */
