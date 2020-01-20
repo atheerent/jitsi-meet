@@ -228,6 +228,22 @@ emitter.addListener(ATHEER_LISTENERS.SET_ANNOTATION_MODE, (data) => {
     }
 });
 
+/*
+    required keys:
+    userhash
+*/
+emitter.addListener(ATHEER_LISTENERS.PIN_PARTICIPANT, (data) => {
+    logger.log('atheer jitsi receive ' + ATHEER_LISTENERS.PIN_PARTICIPANT + ' in emitter');
+    if (Store && data != null) {
+        Object.keys(data).forEach((key) => {
+            if (key === ATHEER_LISTENER_KEYS.USERHASH) {
+                logger.log('jitsi emitter receive key' + data[key]);
+                Store.dispatch(pinParticipant(_getJitsiParticipantId(data[key])));
+            }
+        });
+    }
+});
+
 /**
  * Middleware that captures Redux actions and uses the ExternalAPI module to
  * turn them into native events so the application knows about them.
