@@ -73,10 +73,14 @@ class Subject extends Component<Props> {
  */
 function _mapStateToProps(state) {
     const participantCount = getParticipantCount(state);
+    var tempSubject = getConferenceName(state);
+    if (interfaceConfig.ATHEER_SESSION_INFO == undefined || interfaceConfig.ATHEER_SESSION_INFO == null) {
+      tempSubject = interfaceConfig.ATHEER_SESSION_INFO.topic + ' - ' + interfaceConfig.ATHEER_SESSION_INFO.session_no;
+    }
 
     return {
         _showParticipantCount: participantCount > 2,
-        _subject: interfaceConfig.ATHEER_SESSION_INFO.topic + ' - ' + interfaceConfig.ATHEER_SESSION_INFO.session_no,
+        _subject: tempSubject,
         _visible: isToolboxVisible(state)
     };
 }
