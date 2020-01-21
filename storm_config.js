@@ -16,35 +16,35 @@ var config = {
 
     hosts: {
         // XMPP domain.
-        domain: 'session.atheer.dev',
+        domain: 'sessions.atheer.dev',
 
         // When using authentication, domain for guest users.
         // anonymousdomain: 'guest.example.com',
 
         // Domain for authenticated users. Defaults to <domain>.
-        // authdomain: 'session.atheer.dev',
+        // authdomain: 'sessions.atheer.dev',
 
         // Jirecon recording component domain.
-        // jirecon: 'jirecon.session.atheer.dev',
+        // jirecon: 'jirecon.sessions.atheer.dev',
 
         // Call control component (Jigasi).
-        // call_control: 'callcontrol.session.atheer.dev',
+        // call_control: 'callcontrol.sessions.atheer.dev',
 
         // Focus component domain. Defaults to focus.<domain>.
-        // focus: 'focus.session.atheer.dev',
+        // focus: 'focus.sessions.atheer.dev',
 
         // XMPP MUC domain. FIXME: use XEP-0030 to discover it.
-        muc: 'conference.session.atheer.dev'
+        muc: 'conference.sessions.atheer.dev'
     },
 
     // BOSH URL. FIXME: use XEP-0156 to discover it.
-    bosh: '//session.atheer.dev/http-bind',
+    bosh: '//sessions.atheer.dev/http-bind',
 
     // The name of client node advertised in XEP-0115 'c' stanza
     clientNode: 'http://jitsi.org/jitsimeet',
 
     // The real JID of focus participant - can be overridden here
-    // focusUserJid: 'focus@auth.session.atheer.dev',
+    // focusUserJid: 'focus@auth.sessions.atheer.dev',
 
 
     // Testing / experimental features.
@@ -180,9 +180,9 @@ var config = {
     //     appKey: '<APP_KEY>' // Specify your app key here.
     //     // A URL to redirect the user to, after authenticating
     //     // by default uses:
-    //     // 'https://session.atheer.dev/static/oauth.html'
+    //     // 'https://sessions.atheer.dev/static/oauth.html'
     //     redirectURI:
-    //          'https://session.atheer.dev/subfolder/static/oauth.html'
+    //          'https://sessions.atheer.dev/subfolder/static/oauth.html'
     // },
     // When integrations like dropbox are enabled only that will be shown,
     // by enabling fileRecordingsServiceEnabled, we show both the integrations
