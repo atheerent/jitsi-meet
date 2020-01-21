@@ -31,6 +31,9 @@ import {
 
 declare var APP: Object;
 
+
+const logger = require('jitsi-meet-logger').getLogger(__filename);
+
 /**
  * Signals conference to select a participant.
  *
@@ -113,6 +116,7 @@ export function selectParticipantInLargeVideo() {
 }
 
 export function selectLocalUserInLargeVideo() {
+	logger.warn("fuck jitsi selectLocalUserInLargeVideo")
 	return (dispatch: Dispatch < any > , getState: Function) => {
 		const state = getState();
 		const participantId = _electLocalParticipantInLargeVideo(state);
@@ -222,11 +226,13 @@ function _electParticipantInLargeVideo(state) {
 }
 
 function _electLocalParticipantInLargeVideo(state) {
+	logger.warn("fuck jitsi _electLocalParticipantInLargeVideo")
 	// 1. If a participant is pinned, they will be shown in the LargeVideo (
 	//    regardless of whether they are local or remote).
 	const participants = state['features/base/participants'];
 	let participant = participants.find(p => p.local);
 	let id = participant && participant.id;
 
+	logger.warn("fuck jitsi _electLocalParticipantInLargeVideo done " + id)
 	return id;
 }
