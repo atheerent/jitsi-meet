@@ -8,6 +8,7 @@ import {
     SET_ROOM
 } from '../base/conference';
 import {
+    pinParticipant,
     PARTICIPANT_JOINED,
     PARTICIPANT_LEFT
 } from '../base/participants'
