@@ -45,8 +45,7 @@ export function selectParticipant() {
 
 		if (conference) {
 			const ids = shouldDisplayTileView(state) ?
-				getParticipants(state).map(participant => participant.id) :
-				[state['features/large-video'].participantId];
+				getParticipants(state).map(participant => participant.id) : [state['features/large-video'].participantId];
 
 			try {
 				conference.selectParticipants(ids);
@@ -73,6 +72,23 @@ export function selectParticipantInLargeVideo() {
 	return (dispatch: Dispatch < any > , getState: Function) => {
 		const state = getState();
 		const participantId = _electParticipantInLargeVideo(state);
+		const largeVideo = state['features/large-video'];
+
+		if (participantId !== largeVideo.participantId) {
+			dispatch({
+				type: SELECT_LARGE_VIDEO_PARTICIPANT,
+				participantId
+			});
+
+			dispatch(selectParticipant());
+		}
+	};
+}
+
+export function selectLocalUserInLargeVideo() {
+	return (dispatch: Dispatch < any > , getState: Function) => {
+		const state = getState();
+		const participantId = _electLocalParticipantInLargeVideo(state);
 		const largeVideo = state['features/large-video'];
 
 		if (participantId !== largeVideo.participantId) {
@@ -140,8 +156,8 @@ function _electParticipantInLargeVideo(state) {
 		// 2. No participant is pinned so get the dominant speaker. But the
 		//    local participant won't be displayed in LargeVideo even if she is
 		//    the dominant speaker.
-		//participant = participants.find(p => p.dominantSpeaker && !p.local);
-		participant = participants.find(p.local);
+		participant = participants.find(p => p.dominantSpeaker && !p.local);
+		//participant = participants.find(p.local);
 		id = participant && participant.id;
 
 		if (!id) {
@@ -174,6 +190,16 @@ function _electParticipantInLargeVideo(state) {
 			}
 		}
 	}
+
+	return id;
+}
+
+function _electLocalParticipantInLargeVideo(state) {
+	// 1. If a participant is pinned, they will be shown in the LargeVideo (
+	//    regardless of whether they are local or remote).
+	const participants = state['features/base/participants'];
+	let participant = participants.find(p => p.local);
+	let id = participant && participant.id;
 
 	return id;
 }

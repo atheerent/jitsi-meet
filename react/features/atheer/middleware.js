@@ -12,6 +12,7 @@ import {
 } from '../base/conference';
 import {
 	pinParticipant,
+	getLocalParticipant,
 	PARTICIPANT_JOINED,
 	PARTICIPANT_LEFT
 } from '../base/participants'
@@ -28,6 +29,9 @@ import {
 import {
 	setAnnotationMode
 } from '../large-video/atheerActions';
+import {
+	selectLocalUserInLargeVideo
+} from '../large-video/actions';
 import {
 	setParticipantDisplayName,
 	PIN_PARTICIPANT
@@ -254,10 +258,10 @@ emitter.addListener(ATHEER_LISTENERS.PIN_PARTICIPANT, (data) => {
 		Object.keys(data).forEach((key) => {
 			if (key === ATHEER_LISTENER_KEYS.USERHASH) {
 				logger.log('jitsi emitter receive key' + data[key]);
-				logger.log('jitsi attempt to pin participant' + _getJitsiParticipantId(data[key]));
 				if (_getJitsiParticipantId(data[key]) == 'localuser') {
-					Store.dispatch(pinParticipant(_getJitsiParticipantId(null)));
+					Store.dispatch(selectLocalUserInLargeVideo());
 				} else {
+					logger.log('jitsi attempt to pin participant: ' + _getJitsiParticipantId(data[key]));
 					Store.dispatch(pinParticipant(_getJitsiParticipantId(data[key])));
 				}
 			}
