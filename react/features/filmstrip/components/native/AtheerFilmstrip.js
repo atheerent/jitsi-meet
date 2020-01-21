@@ -22,8 +22,6 @@ import styles from './styles';
 import atheerStyles from './atheerStyles';
 import Thumbnail from './AtheerThumbnail';
 
-import Draggable from 'react-native-draggable';
-
 //import { setFilmstripVisible } from '../../atheerActions'
 
 const logger = require('jitsi-meet-logger').getLogger(__filename);

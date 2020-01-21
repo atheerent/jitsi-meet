@@ -32,7 +32,6 @@ import atheerStyles from './atheerStyles';
 import VideoMutedIndicator from './VideoMutedIndicator';
 
 import { createResponder } from 'react-native-gesture-responder';
-import Draggable from 'react-native-draggable';
 
 const logger = require('jitsi-meet-logger').getLogger(__filename);
 
