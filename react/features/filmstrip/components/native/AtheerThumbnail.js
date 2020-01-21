@@ -31,8 +31,6 @@ import styles, { AVATAR_SIZE } from './styles';
 import atheerStyles from './atheerStyles';
 import VideoMutedIndicator from './VideoMutedIndicator';
 
-import { createResponder } from 'react-native-gesture-responder';
-
 const logger = require('jitsi-meet-logger').getLogger(__filename);
 
 export const DEFAULT_THUMBNAIL_RADIUS = 40;
