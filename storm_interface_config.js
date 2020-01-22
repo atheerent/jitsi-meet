@@ -37,7 +37,7 @@ var interfaceConfig = {
     /**
      * If we should show authentication block in profile
      */
-    AUTHENTICATION_ENABLE: true,
+    AUTHENTICATION_ENABLE: false,
 
     /**
      * The name of the toolbar buttons to display in the toolbar. If present,
