@@ -44,7 +44,9 @@ const commands = {
     toggleVideo: 'toggle-video',
     showVideoQuality: 'show-video-quality',
     showSettings: 'show-settings',
-    showKeyboardShortcuts: 'show-keyboard-shortcuts'
+    showKeyboardShortcuts: 'show-keyboard-shortcuts',
+    startRecording: 'start-recording',
+    stopRecording: 'stop-recording'
 };
 
 /**

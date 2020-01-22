@@ -12,6 +12,7 @@ import SharedVideoManager from './shared_video/SharedVideo';
 
 import VideoLayout from './videolayout/VideoLayout';
 import Filmstrip from './videolayout/Filmstrip';
+import { JitsiRecordingConstants } from '../../react/features/base/lib-jitsi-meet';
 
 import { getLocalParticipant } from '../../react/features/base/participants';
 import { toggleChat } from '../../react/features/chat';
@@ -389,6 +390,41 @@ UI.showKeyboardShortcuts = () => APP.store.dispatch(openKeyboardShortcutsDialog(
  * applyZoom
  */
 UI.applyZoom = (x, y, z) => APP.store.dispatch(applyZoom(x, y, z));
+
+/**
+ * Toggles filmstrip.
+ */
+UI.startRecording = function() {
+    let appData = JSON.stringify({
+        'file_recording_metadata': {
+            'share': false
+        }
+    });
+    console.log("Sanjay-Getting-Conference");
+    const { conference } = APP.store.getState()['features/base/conference'];
+    console.log("Sanjay-Test-Conference", conference);
+
+    console.log("Sanjay-Recording-Starting");
+    conference.startRecording({
+        mode: JitsiRecordingConstants.mode.FILE,
+        appData
+    });
+    console.log("Sanjay-Recording-Started");
+};
+
+/**
+ * Toggles filmstrip.
+ */
+UI.stopRecording = function() {
+    let appData = JSON.stringify({
+        'file_recording_metadata': {
+            'share': false
+        }
+    });
+    console.log("Sanjay-Getting-Conference");
+    const { conference } = APP.store.getState()['features/base/conference'];
+    console.log("Sanjay-Stop-Conference", conference);
+};
 
 /**
  * Handle new user display name.

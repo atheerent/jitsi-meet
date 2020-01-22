@@ -141,6 +141,14 @@ function initCommands() {
             const { xValue, yValue, zValue } = options;
             APP.UI.applyZoom(xValue, yValue, zValue);
         },
+        'start-recording': () => {
+            sendAnalytics(createApiEvent('start-recording'));
+            APP.UI.startRecording();
+        },
+        'stop-recording': () => {
+            sendAnalytics(createApiEvent('stop-recording'));
+            APP.UI.stopRecording();
+        },
         /**
          * Callback to invoke when the "toggle-share-screen" command is received.
          *
