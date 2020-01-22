@@ -174,7 +174,11 @@ var config = {
     // Recording
 
     // Whether to enable file recording or not.
-    // fileRecordingsEnabled: false,
+    fileRecordingsEnabled: true,
+
+    //hidden Domain
+    hiddenDomain: 'recorder.sessions.atheer.dev',
+    
     // Enable the dropbox integration.
     // dropbox: {
     //     appKey: '<APP_KEY>' // Specify your app key here.
