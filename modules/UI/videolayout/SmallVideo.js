@@ -562,8 +562,6 @@ export default class SmallVideo {
             // Init / refresh avatar
             this.initializeAvatar();
         } else {
-            logger.error('Unable to init avatar - no id', this);
-
             return;
         }
 
