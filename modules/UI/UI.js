@@ -422,11 +422,10 @@ UI.stopRecording = function() {
     console.log("Sanjay-Got-Conference", conference);
     const fileRecordingSession = getActiveSession(APP.store.getState(), JitsiRecordingConstants.mode.FILE)
     console.log("Sanjay-Got-fileRecordingSession", fileRecordingSession);
-    console.log("Sanjay-Stopped-Conference");
-
     if (fileRecordingSession) {
         conference.stopRecording(fileRecordingSession.id);
     };
+    console.log("Sanjay-Stopped-Conference");
 };
 
 /**
