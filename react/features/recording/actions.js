@@ -58,7 +58,7 @@ export function startRecording(streamType: string) {
 
         var appData = JSON.stringify({
             'file_recording_metadata': {
-                'share': this.state.sharingEnabled
+                'share': true
             }
         });
 
