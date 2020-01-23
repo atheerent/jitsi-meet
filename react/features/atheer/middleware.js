@@ -242,7 +242,7 @@ emitter.addListener(ATHEER_LISTENERS.PIN_PARTICIPANT, (data) => {
         Object.keys(data).forEach((key) => {
             if (key === ATHEER_LISTENER_KEYS.USERHASH) {
                 logger.log('jitsi emitter receive key' + data[key]);
-                if (+_getJitsiParticipantId(data[key]) == 'localuser') {
+                if (_getJitsiParticipantId(data[key]) == 'localuser' || _getJitsiParticipantId(data[key]) == undefined) {
                     Store.dispatch(pinParticipant(null));
                     Store.dispatch(selectLocalParticipantInLargeVideo());
                 } else {
