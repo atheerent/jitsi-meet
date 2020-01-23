@@ -401,31 +401,22 @@ UI.startRecording = function() {
             'share': false
         }
     });
-    console.log("Sanjay-Getting-Conference");
     const { conference } = APP.store.getState()['features/base/conference'];
-    console.log("Sanjay-Test-Conference", conference);
-
-    console.log("Sanjay-Recording-Starting");
     conference.startRecording({
         mode: JitsiRecordingConstants.mode.FILE,
         appData
     });
-    console.log("Sanjay-Recording-Started");
 };
 
 /**
  * Toggles filmstrip.
  */
 UI.stopRecording = function() {
-    console.log("Sanjay-Stopping-Conference");
     const { conference } = APP.store.getState()['features/base/conference'];
-    console.log("Sanjay-Got-Conference", conference);
     const fileRecordingSession = getActiveSession(APP.store.getState(), JitsiRecordingConstants.mode.FILE)
-    console.log("Sanjay-Got-fileRecordingSession", fileRecordingSession);
     if (fileRecordingSession) {
         conference.stopRecording(fileRecordingSession.id);
     };
-    console.log("Sanjay-Stopped-Conference");
 };
 
 /**

@@ -107,7 +107,6 @@ MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
         conference.on(
             JitsiConferenceEvents.RECORDER_STATE_CHANGED,
             recorderSession => {
-                console.log("Sanjay-RECORDER_STATE_CHANGED");
                 if (recorderSession) {
                     recorderSession.getID()
                         && dispatch(
@@ -125,7 +124,6 @@ MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
     }
 
     case RECORDING_SESSION_UPDATED: {
-        console.log("Sanjay-RECORDING_SESSION_UPDATED");
         // When in recorder mode no notifications are shown
         // or extra sounds are also not desired
         if (getState()['features/base/config'].iAmRecorder) {
@@ -134,8 +132,6 @@ MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
 
         const updatedSessionData
             = getSessionById(getState(), action.sessionData.id);
-
-        console.log("Sanjay-RECORDING_SESSION_UPDATED", updatedSessionData);
             
         const { initiator, mode, terminator } = updatedSessionData;
         const { PENDING, OFF, ON } = JitsiRecordingConstants.status;

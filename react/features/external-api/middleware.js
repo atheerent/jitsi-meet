@@ -173,7 +173,6 @@ MiddlewareRegistry.register(store => next => action => {
         break;
 
     case RECORDING_SESSION_UPDATED:
-        console.log("Sanjay-Event-RECORDING_SESSION_UPDATED");
         // When in recorder mode no notifications are shown
         // or extra sounds are also not desired
         if (store.getState()['features/base/config'].iAmRecorder) {
@@ -183,7 +182,6 @@ MiddlewareRegistry.register(store => next => action => {
         const updatedSessionData
             = getSessionById(store.getState(), action.sessionData.id);
 
-        console.log("Sanjay-Event-RECORDING_SESSION_UPDATED", updatedSessionData);
         APP.API.notifyRecorderStatusChanged(updatedSessionData);
         break;
     }
