@@ -134,6 +134,9 @@ MiddlewareRegistry.register(({ dispatch, getState }) => next => action => {
 
         const updatedSessionData
             = getSessionById(getState(), action.sessionData.id);
+
+        console.log("Sanjay-RECORDING_SESSION_UPDATED", updatedSessionData);
+            
         const { initiator, mode, terminator } = updatedSessionData;
         const { PENDING, OFF, ON } = JitsiRecordingConstants.status;
 
