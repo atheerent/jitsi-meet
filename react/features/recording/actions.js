@@ -15,6 +15,8 @@ import {
     SET_STREAM_KEY
 } from './actionTypes';
 
+import { getActiveSession } from './functions';
+
 /**
  * Clears the data of every recording sessions.
  *
@@ -47,6 +49,33 @@ export function hidePendingRecordingNotification(streamType: string) {
                 _setPendingRecordingNotificationUid(
                     undefined, streamType));
         }
+    };
+}
+
+export function startRecording(streamType: string) {
+    return (dispatch: Function, getState: Function) => {
+        const { conference } = getState()['features/base/conference'];
+
+        var appData = JSON.stringify({
+            'file_recording_metadata': {
+                'share': this.state.sharingEnabled
+            }
+        });
+
+        conference.startRecording({
+            mode: JitsiRecordingConstants.mode.FILE,
+            appData
+        });
+    };
+}
+
+export function stopRecording(streamType: string) {
+    return (dispatch: Function, getState: Function) => {
+        const { conference } = getState()['features/base/conference'];
+
+        var fileRecordingSession = getActiveSession(getState(), JitsiRecordingConstants.mode.FILE);
+
+        conference.stopRecording(fileRecordingSession.id);
     };
 }
 

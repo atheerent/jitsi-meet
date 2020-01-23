@@ -27,6 +27,10 @@ import {
     selectLocalParticipantInLargeVideo
 } from '../large-video/actions';
 import {
+    startRecording,
+    stopRecording
+} from '../recording/actions';
+import {
     setParticipantDisplayName,
     PIN_PARTICIPANT
 } from '../base/participants';
@@ -136,6 +140,26 @@ emitter.addListener(ATHEER_LISTENERS.TOGGLE_CAMERA, (data) => {
     logger.log('atheer jitsi receive ' + ATHEER_LISTENERS.TOGGLE_CAMERA + ' in emitter');
     if (Store) {
         Store.dispatch(toggleCameraFacingMode());
+    }
+});
+
+/*
+    required keys:
+*/
+emitter.addListener(ATHEER_LISTENERS.START_RECORDING, (data) => {
+    logger.log('atheer jitsi receive ' + ATHEER_LISTENERS.START_RECORDING + ' in emitter');
+    if (Store) {
+        Store.dispatch(startRecording());
+    }
+});
+
+/*
+    required keys:
+*/
+emitter.addListener(ATHEER_LISTENERS.STOP_RECORDING, (data) => {
+    logger.log('atheer jitsi receive ' + ATHEER_LISTENERS.STOP_RECORDING + ' in emitter');
+    if (Store) {
+        Store.dispatch(stopRecording());
     }
 });
 

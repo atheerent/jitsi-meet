@@ -13,7 +13,9 @@ export const ATHEER_LISTENERS = {
     SET_FILMSTRIP_STYLE: 'setFilmstripStyle',
     HIDE_FILMSTRIP: 'hideFilmstrip',
     SET_ANNOTATION_MODE: 'setAnnotationMode',
-    PIN_PARTICIPANT: 'pinParticipant'
+    PIN_PARTICIPANT: 'pinParticipant',
+    START_RECORDING: 'startRecording',
+    STOP_RECORDING: 'stopRecording'
 };
 
 export const ATHEER_LISTENER_KEYS = {
