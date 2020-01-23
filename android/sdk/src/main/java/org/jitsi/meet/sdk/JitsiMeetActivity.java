@@ -270,6 +270,13 @@ public class JitsiMeetActivity extends FragmentActivity
     }
 
     @Override
+    public void onRecordingSessionUpdated(Map<String, Object> data) {
+        Log.d(TAG, "Recording Session Updated: " + data);
+        on("RECORDING_SESSION_UPDATED", data);
+
+    }
+
+    @Override
     public void onParticipantLeft(Map<String, Object> data) {
         Log.d(TAG, "Participant Left: " + data);
         on("PARTICIPANT_LEFT", data);

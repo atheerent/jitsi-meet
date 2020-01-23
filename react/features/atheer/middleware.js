@@ -30,6 +30,7 @@ import {
     startRecording,
     stopRecording
 } from '../recording/actions';
+import { RECORDING_SESSION_UPDATED } from '../recording/actionTypes'
 import {
     setParticipantDisplayName,
     PIN_PARTICIPANT
@@ -341,6 +342,13 @@ MiddlewareRegistry.register(store => next => action => {
         /* data */ {
             jitsiParticipantId: action.participant.id,
             atheerUser: userHashDict[action.participant.id]
+        });
+        break;
+
+    case RECORDING_SESSION_UPDATED:
+        sendEvent(store, type,
+        /* data */ {
+            status: action.sessionData.status
         });
         break;
 

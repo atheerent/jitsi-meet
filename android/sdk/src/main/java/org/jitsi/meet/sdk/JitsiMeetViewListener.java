@@ -68,4 +68,11 @@ public interface JitsiMeetViewListener {
      * @param data Map with a "url" key with the conference URL.
      */
     void onPinParticipant(Map<String, Object> data);
+
+    /**
+     * Called when recording status changed.
+     *
+     * @param data Map with a "url" key with the conference URL.
+     */
+    void onRecordingSessionUpdated(Map<String, Object> data);
 }
