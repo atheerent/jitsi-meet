@@ -22,6 +22,9 @@ import { appendSuffix } from '../display-name';
 import { SUBMIT_FEEDBACK_ERROR, SUBMIT_FEEDBACK_SUCCESS } from '../feedback';
 import { SET_FILMSTRIP_VISIBLE } from '../filmstrip';
 
+import { RECORDING_SESSION_UPDATED } from '../recording/actionTypes';
+import { getSessionById } from '../recording/functions';
+
 declare var APP: Object;
 declare var interfaceConfig: Object;
 
@@ -167,6 +170,21 @@ MiddlewareRegistry.register(store => next => action => {
 
     case SUBMIT_FEEDBACK_SUCCESS:
         APP.API.notifyFeedbackSubmitted();
+        break;
+
+    case RECORDING_SESSION_UPDATED:
+        console.log("Sanjay-Event-RECORDING_SESSION_UPDATED");
+        // When in recorder mode no notifications are shown
+        // or extra sounds are also not desired
+        if (store.getState()['features/base/config'].iAmRecorder) {
+            break;
+        }
+
+        const updatedSessionData
+            = getSessionById(store.getState(), action.sessionData.id);
+
+        console.log("Sanjay-Event-RECORDING_SESSION_UPDATED", updatedSessionData);
+        APP.API.notifyRecorderStatusChanged(updatedSessionData);
         break;
     }
 

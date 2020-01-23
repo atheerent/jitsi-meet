@@ -799,6 +799,24 @@ class API {
     }
 
     /**
+     * Notify external application (if API is enabled) that the screen sharing
+     * has been turned on/off.
+     *
+     * @param {boolean} on - True if screen sharing is enabled.
+     * @param {Object} details - Additional information about the screen
+     * sharing.
+     * @param {string} details.sourceType - Type of device or window the screen
+     * share is capturing.
+     * @returns {void}
+     */
+    notifyRecorderStatusChanged(sessionData: Object) {
+        this._sendEvent({
+            name: 'recorder-status-changed',
+            sessionData
+        });
+    }
+
+    /**
      * Disposes the allocated resources.
      *
      * @returns {void}
