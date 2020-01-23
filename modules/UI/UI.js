@@ -13,6 +13,7 @@ import SharedVideoManager from './shared_video/SharedVideo';
 import VideoLayout from './videolayout/VideoLayout';
 import Filmstrip from './videolayout/Filmstrip';
 import { JitsiRecordingConstants } from '../../react/features/base/lib-jitsi-meet';
+import { getActiveSession } from '../../react/features/recording/functions';
 
 import { getLocalParticipant } from '../../react/features/base/participants';
 import { toggleChat } from '../../react/features/chat';
@@ -416,14 +417,16 @@ UI.startRecording = function() {
  * Toggles filmstrip.
  */
 UI.stopRecording = function() {
-    let appData = JSON.stringify({
-        'file_recording_metadata': {
-            'share': false
-        }
-    });
-    console.log("Sanjay-Getting-Conference");
+    console.log("Sanjay-Stopping-Conference");
     const { conference } = APP.store.getState()['features/base/conference'];
-    console.log("Sanjay-Stop-Conference", conference);
+    console.log("Sanjay-Got-Conference", conference);
+    const fileRecordingSession = getActiveSession(APP.store.getState(), JitsiRecordingConstants.mode.FILE)
+    console.log("Sanjay-Got-fileRecordingSession", fileRecordingSession);
+    console.log("Sanjay-Stopped-Conference");
+
+    if (fileRecordingSession) {
+        conference.stopRecording(fileRecordingSession.id);
+    };
 };
 
 /**
