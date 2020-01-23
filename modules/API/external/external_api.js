@@ -82,7 +82,7 @@ const events = {
     'subject-change': 'subjectChange',
     'suspend-detected': 'suspendDetected',
     'tile-view-changed': 'tileViewChanged',
-    'recorder-status-changed': 'recorderStatueChanged'
+    'recorder-status-changed': 'recorderStatusChanged'
 };
 
 /**
