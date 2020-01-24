@@ -104,10 +104,11 @@ export default class Video extends Component<Props> {
 
             // VideoTransform implements "pinch to zoom". As part of "pinch to
             // zoom", it implements onPress, of course.
-            if (zoomEnabled) {
+            if (isLargeVideo) {
+                logger.log('jitsi-deep use video transform on large video')
                 return (
                     <VideoTransform
-                        enabled = { zoomEnabled }
+                        enabled = { true }
                         onPress = { onPress }
                         streamId = { stream.id }
                         style = { style }>

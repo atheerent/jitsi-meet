@@ -348,7 +348,11 @@ MiddlewareRegistry.register(store => next => action => {
     case RECORDING_SESSION_UPDATED:
         sendEvent(store, type,
         /* data */ {
-            status: action.sessionData.status
+            status: action.sessionData.status,
+            id: action.sessionData.id,
+            error: action.sessionData.error,
+            initiator: action.sessionData.initiator,
+            mode: action.sessionData.mode
         });
         break;
 
