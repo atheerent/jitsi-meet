@@ -15,7 +15,7 @@ import styles from './styles';
  * The default/initial transform (= no transform).
  */
 const DEFAULT_TRANSFORM = {
-    scale: 1,
+    scale: 1.2,
     translateX: 0,
     translateY: 0
 };
@@ -24,7 +24,7 @@ const DEFAULT_TRANSFORM = {
  * The minimum scale (magnification) multiplier. 1 is equal to objectFit
  * = 'contain'.
  */
-const MIN_SCALE = 1;
+const MIN_SCALE = 1.2;
 
 /*
  * The max distance from the edge of the screen where we let the user move the
