@@ -177,8 +177,9 @@ class Filmstrip extends Component<Props> {
                     showsVerticalScrollIndicator = { false }
                     style = { styles.scrollView } >
                     {
-                        (this.props._participantsNumber === 2 && !this.props._isExternalSession) ?
-                            <Container style = { styles.thumbnailContainer } onClick = { this._onInviteUser }>
+                        this.props._participantsNumber === 2 
+                        && !this.props._isExternalSession
+                            && <Container style = { styles.thumbnailContainer } onClick = { this._onInviteUser }>
                                 <Container style = { [ styles.thumbnail, styleDimension, styleBackground ] }>
                                     {
                                         <Container style = { [ styles.thumbnailToolBackgroundMedium, styles.thumbnailToolBackgroundDisabled ] }
@@ -187,7 +188,7 @@ class Filmstrip extends Component<Props> {
                                         </Container>
                                     }
                                 </Container>
-                            </Container> : null
+                            </Container> 
                     }
                     {
                         !this._separateLocalThumbnail
