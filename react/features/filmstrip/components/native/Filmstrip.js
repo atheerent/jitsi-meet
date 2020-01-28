@@ -134,7 +134,12 @@ class Filmstrip extends Component<Props> {
                                 3 : this.props._participantsNumber;
 
         // TODO(Hao): Make this value dynamic and support all devices
-        var filmStripLength = 100 * participantCount + 20;
+        var filmStripLength = 100 * this.props._participantsNumber + 20
+        
+        if(!this.props._isExternalSession){
+            filmStripLength = 100 * participantCount + 20;
+        }
+        
 
         var hideFilmStripStyle = {
             right: filmStripLength
@@ -177,8 +182,9 @@ class Filmstrip extends Component<Props> {
                     showsVerticalScrollIndicator = { false }
                     style = { styles.scrollView } >
                     {
-                        this.props._participantsNumber === 2 ?
-                            <Container style = { styles.thumbnailContainer } onClick = { this._onInviteUser }>
+                        this.props._participantsNumber === 2 
+                        && !this.props._isExternalSession
+                            && <Container style = { styles.thumbnailContainer } onClick = { this._onInviteUser }>
                                 <Container style = { [ styles.thumbnail, styleDimension, styleBackground ] }>
                                     {
                                         <Container style = { [ styles.thumbnailToolBackgroundMedium, styles.thumbnailToolBackgroundDisabled ] }
@@ -187,7 +193,7 @@ class Filmstrip extends Component<Props> {
                                         </Container>
                                     }
                                 </Container>
-                            </Container> : null
+                            </Container> 
                     }
                     {
                         !this._separateLocalThumbnail
