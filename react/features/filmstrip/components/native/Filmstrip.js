@@ -177,7 +177,7 @@ class Filmstrip extends Component<Props> {
                     showsVerticalScrollIndicator = { false }
                     style = { styles.scrollView } >
                     {
-                        this.props._participantsNumber === 2 ?
+                        (this.props._participantsNumber === 2 && !this.props._isExternalSession) ?
                             <Container style = { styles.thumbnailContainer } onClick = { this._onInviteUser }>
                                 <Container style = { [ styles.thumbnail, styleDimension, styleBackground ] }>
                                     {
