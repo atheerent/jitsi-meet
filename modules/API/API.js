@@ -812,7 +812,11 @@ class API {
     notifyRecorderStatusChanged(sessionData: Object) {
         this._sendEvent({
             name: 'recorder-status-changed',
-            sessionData
+            sessionData: {
+              status: sessionData.status,
+              id: sessionData.id,
+              timestamp: sessionData.timestamp
+            }
         });
     }
 
