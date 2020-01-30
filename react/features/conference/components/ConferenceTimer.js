@@ -5,7 +5,10 @@ import { Component } from 'react';
 import { connect } from '../../base/redux';
 import { getLocalizedDurationFormatter } from '../../base/i18n';
 import { getConferenceTimestamp } from '../../base/conference/functions';
+import { notifiyConferenceStartTime } from '../../base/conference/actions';
 import { renderConferenceTimer } from '../';
+
+const logger = require('jitsi-meet-logger').getLogger(__filename);
 
 /**
  * The type of the React {@code Component} props of {@link ConferenceTimer}.
@@ -131,6 +134,7 @@ class ConferenceTimer extends Component<Props, State> {
      * @returns {void}
      */
     _startTimer() {
+        logger.log('jitsi-deep start timer!!');
         if (!this._interval) {
             this._setStateFromUTC(this.props._startTimestamp, (new Date()).getTime());
 
