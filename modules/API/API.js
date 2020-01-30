@@ -243,9 +243,6 @@ function initCommands() {
         case 'is-video-available':
             callback(videoAvailable);
             break;
-        case 'get-conference-timestamp':
-            callback(APP.UI.getConferenceTimestamp());
-            break;
         default:
             return false;
         }
@@ -820,6 +817,24 @@ class API {
               id: sessionData.id,
               timestamp: sessionData.timestamp
             }
+        });
+    }
+
+    /**
+     * Notify external application (if API is enabled) that the screen sharing
+     * has been turned on/off.
+     *
+     * @param {boolean} on - True if screen sharing is enabled.
+     * @param {Object} details - Additional information about the screen
+     * sharing.
+     * @param {string} details.sourceType - Type of device or window the screen
+     * share is capturing.
+     * @returns {void}
+     */
+    notifyConferenceTimestampChanged(timestamp: Object) {
+        this._sendEvent({
+            name: 'conference-timestamp-changed',
+            timestamp
         });
     }
 

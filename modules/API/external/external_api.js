@@ -82,7 +82,8 @@ const events = {
     'subject-change': 'subjectChange',
     'suspend-detected': 'suspendDetected',
     'tile-view-changed': 'tileViewChanged',
-    'recorder-status-changed': 'recorderStatusChanged'
+    'recorder-status-changed': 'recorderStatusChanged',
+    'conference-timestamp-changed': 'conferenceTimestampChanged'
 };
 
 /**
@@ -838,18 +839,6 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
     isVideoMuted() {
         return this._transport.sendRequest({
             name: 'is-video-muted'
-        });
-    }
-
-    /**
-     * Returns the conference timestamp
-     *
-     * @returns {Promise} - Resolves with the audio mute status and rejects on
-     * failure.
-     */
-    getConferenceTimestamp() {
-        return this._transport.sendRequest({
-            name: 'get-conference-timestamp'
         });
     }
 

@@ -420,14 +420,6 @@ UI.stopRecording = function() {
 };
 
 /**
- * Toggles filmstrip.
- */
-UI.getConferenceTimestamp = function() {
-    const { conferenceTimestamp } = APP.store.getState()['features/base/conference'];
-    return conferenceTimestamp;
-};
-
-/**
  * Handle new user display name.
  */
 UI.inputDisplayNameHandler = function(newDisplayName) {

@@ -16,6 +16,9 @@ import {
     getLocalParticipant,
     getParticipantById
 } from '../base/participants';
+
+import { CONFERENCE_TIMESTAMP_CHANGED } from '../base/conference/actionTypes';
+
 import { MiddlewareRegistry } from '../base/redux';
 import { getBaseUrl } from '../base/util';
 import { appendSuffix } from '../display-name';
@@ -170,6 +173,11 @@ MiddlewareRegistry.register(store => next => action => {
 
     case SUBMIT_FEEDBACK_SUCCESS:
         APP.API.notifyFeedbackSubmitted();
+        break;
+
+    case CONFERENCE_TIMESTAMP_CHANGED:
+        const { conferenceTimestamp } = store.getState()['features/base/conference'];
+        APP.API.notifyConferenceTimestampChanged(conferenceTimestamp);
         break;
 
     case RECORDING_SESSION_UPDATED:
