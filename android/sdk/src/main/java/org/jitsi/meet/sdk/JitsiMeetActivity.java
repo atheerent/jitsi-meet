@@ -288,6 +288,12 @@ public class JitsiMeetActivity extends FragmentActivity
         on("PIN_PARTICIPANT", data);
     }
 
+    @Override
+    public void onNotifyConferenceStartTime(Map<String, Object> data) {
+        Log.d(TAG, "Pin Participant: " + data);
+        on("NOTIFY_CONFERENCE_START_TIME", data);
+    }
+
     private void on(String name, Map<String, Object> data) {
         UiThreadUtil.assertOnUiThread();
 

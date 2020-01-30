@@ -1,6 +1,7 @@
 // @flow
 
 import _ from 'lodash';
+const logger = require('jitsi-meet-logger').getLogger(__filename);
 
 const AVATAR_COLORS = [
     '232, 105, 156',
@@ -42,6 +43,13 @@ export function getAvatarColor(initials: ?string) {
  */
 export function getInitials(s: ?string) {
     // We don't want to use the domain part of an email address, if it is one
+    logger.log('atheer-jitsi-debug trying to get initials', s);
+    if (s != undefined) {
+        var displayNameArray = s.split(':');
+        if (displayNameArray.length > 1) {
+            s = displayNameArray[1];
+        }
+    }
     const initialsBasis = _.split(s, '@')[0];
     const words = _.words(initialsBasis);
     let initials = '';

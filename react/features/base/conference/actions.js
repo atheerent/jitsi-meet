@@ -51,7 +51,8 @@ import {
     SET_PREFERRED_RECEIVER_VIDEO_QUALITY,
     SET_ROOM,
     SET_PENDING_SUBJECT_CHANGE,
-    SET_START_MUTED_POLICY
+    SET_START_MUTED_POLICY,
+    NOTIFY_CONFERENCE_START_TIME
 } from './actionTypes';
 import {
     AVATAR_ID_COMMAND,
@@ -66,7 +67,8 @@ import {
     getCurrentConference,
     sendLocalParticipant
 } from './functions';
-import logger from './logger';
+
+const logger = require('jitsi-meet-logger').getLogger(__filename);
 
 declare var APP: Object;
 
@@ -102,7 +104,10 @@ function _addConferenceListeners(conference, dispatch) {
         (...args) => dispatch(conferenceSubjectChanged(...args)));
 
     conference.on(JitsiConferenceEvents.CONFERENCE_CREATED_TIMESTAMP,
-        (...args) => dispatch(conferenceTimestampChanged(...args)));
+        (...args) => {
+            dispatch(conferenceTimestampChanged(...args));
+            dispatch(notifiyConferenceStartTime(...args));
+        });
 
     conference.on(
         JitsiConferenceEvents.KICKED,
@@ -177,7 +182,10 @@ function _addConferenceListeners(conference, dispatch) {
 
     conference.on(
         JitsiConferenceEvents.PARTICIPANT_CONN_STATUS_CHANGED,
-        (...args) => dispatch(participantConnectionStatusChanged(...args)));
+        (...args) => {
+            logger.log('jitsi deep: conn status changed');
+            dispatch(participantConnectionStatusChanged(...args))
+        });
 
     conference.on(
         JitsiConferenceEvents.USER_JOINED,
@@ -776,5 +784,12 @@ export function setSubject(subject: string = '') {
                 subject
             });
         }
+    };
+}
+
+export function notifiyConferenceStartTime(time: number) {
+    return {
+        type: NOTIFY_CONFERENCE_START_TIME,
+        time
     };
 }

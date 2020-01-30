@@ -5,7 +5,8 @@ import {
     CONFERENCE_JOINED,
     CONFERENCE_LEFT,
     CONFERENCE_WILL_JOIN,
-    SET_ROOM
+    SET_ROOM,
+    NOTIFY_CONFERENCE_START_TIME
 } from '../base/conference';
 import {
     pinParticipant,
@@ -328,6 +329,13 @@ MiddlewareRegistry.register(store => next => action => {
         /* data */ {
             jitsiParticipantId: action.participant.id,
             atheerUser: userHashDict[action.participant.id]
+        });
+        break;
+
+    case NOTIFY_CONFERENCE_START_TIME:
+        sendEvent(store, type,
+        /* data */ {
+            startTime: action.time.toString()
         });
         break;
 
