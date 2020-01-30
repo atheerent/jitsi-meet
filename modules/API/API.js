@@ -243,6 +243,9 @@ function initCommands() {
         case 'is-video-available':
             callback(videoAvailable);
             break;
+        case 'get-conference-timestamp':
+            callback(APP.UI.getConferenceTimestamp());
+            break;
         default:
             return false;
         }

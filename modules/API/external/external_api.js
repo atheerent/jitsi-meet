@@ -842,6 +842,18 @@ export default class JitsiMeetExternalAPI extends EventEmitter {
     }
 
     /**
+     * Returns the conference timestamp
+     *
+     * @returns {Promise} - Resolves with the audio mute status and rejects on
+     * failure.
+     */
+    getConferenceTimestamp() {
+        return this._transport.sendRequest({
+            name: 'get-conference-timestamp'
+        });
+    }
+
+    /**
      * Removes event listener.
      *
      * @param {string} event - The name of the event.
