@@ -62,7 +62,7 @@ import {
 
 const logger = require('jitsi-meet-logger').getLogger(__filename);
 
-const { RNEventEmitter } = NativeModules;
+const { WebRTCModule, RNEventEmitter } = NativeModules;
 const emitter = new NativeEventEmitter(RNEventEmitter);
 
 var userHashDict = {};
@@ -173,6 +173,22 @@ emitter.addListener(ATHEER_LISTENERS.TOGGLE_ATHEER_BUFFER, (data) => {
     if (Store) {
         Store.dispatch(toggleAtheerBuffer());
     }
+});
+
+/*
+    required keys:
+*/
+emitter.addListener(ATHEER_LISTENERS.FLASHLIGHT_ON, (data) => {
+    logger.log('atheer jitsi receive ' + ATHEER_LISTENERS.FLASHLIGHT_ON + ' in emitter');
+    WebRTCModule.toggleFlashlight(true);
+});
+
+/*
+    required keys:
+*/
+emitter.addListener(ATHEER_LISTENERS.FLASHLIGHT_OFF, (data) => {
+    logger.log('atheer jitsi receive ' + ATHEER_LISTENERS.FLASHLIGHT_OFF + ' in emitter');
+    WebRTCModule.toggleFlashlight(false);
 });
 
 /*

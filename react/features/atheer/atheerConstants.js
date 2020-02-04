@@ -15,7 +15,10 @@ export const ATHEER_LISTENERS = {
     SET_ANNOTATION_MODE: 'setAnnotationMode',
     PIN_PARTICIPANT: 'pinParticipant',
     START_RECORDING: 'startRecording',
-    STOP_RECORDING: 'stopRecording'
+    STOP_RECORDING: 'stopRecording',
+    FLASHLIGHT_ON: 'flashlightOn',
+    FLASHLIGHT_OFF: 'flashlightOff',
+    FLASHLIGHT_CHECK: 'flashlightCheck'
 };
 
 export const ATHEER_LISTENER_KEYS = {
