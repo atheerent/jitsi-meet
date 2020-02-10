@@ -514,13 +514,18 @@ class VideoTransform extends Component<Props, State> {
         case 'scale':
             if (value > DEFAULT_TRANSFORM_NO_SCALE.scale) {
                 this.canMove = true;
+                transform = {
+                    ...DEFAULT_TRANSFORM,
+                    scale: value
+                };
             } else {
                 this.canMove = false;
+                transform = {
+                    ...DEFAULT_TRANSFORM,
+                    scale: DEFAULT_TRANSFORM.scale
+                };
             }
-            transform = {
-                ...DEFAULT_TRANSFORM,
-                scale: value
-            };
+
             break;
 
         case 'press': {
@@ -681,7 +686,7 @@ class VideoTransform extends Component<Props, State> {
 
         if (savedTransform) {
             this.setState({
-                transform: savedTransform
+                transform: DEFAULT_TRANSFORM
             });
         }
     }
