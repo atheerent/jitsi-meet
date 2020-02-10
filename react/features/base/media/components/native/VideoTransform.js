@@ -20,6 +20,12 @@ const DEFAULT_TRANSFORM = {
     translateY: 0
 };
 
+const DEFAULT_TRANSFORM_NO_SCALE = {
+    scale: 1,
+    translateX: 0,
+    translateY: 0
+}
+
 /**
  * The minimum scale (magnification) multiplier. 1 is equal to objectFit
  * = 'contain'.
@@ -488,7 +494,7 @@ class VideoTransform extends Component<Props, State> {
         switch (type) {
         case 'move':
             transform = {
-                ...DEFAULT_TRANSFORM,
+                ...DEFAULT_TRANSFORM_NO_SCALE,
                 translateX: value.x,
                 translateY: value.y
             };
