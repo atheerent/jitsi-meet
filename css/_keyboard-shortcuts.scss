@@ -6,5 +6,9 @@
         display: flex;
         justify-content: space-between;
         margin-bottom: em(7, 14);
+
+        &-action span{
+            background-color: #575757;
+        }
     }
 }

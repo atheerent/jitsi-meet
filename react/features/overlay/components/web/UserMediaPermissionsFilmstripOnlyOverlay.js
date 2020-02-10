@@ -36,7 +36,7 @@ class UserMediaPermissionsFilmstripOnlyOverlay
                     <div className = 'inlay-filmstrip-only__title'>
                         {
                             t('startupoverlay.title',
-                                { app: interfaceConfig.APP_NAME })
+                                { app: interfaceConfig.STORM_PERMISSION })
                         }
                     </div>
                     <div className = 'inlay-filmstrip-only__text'>
