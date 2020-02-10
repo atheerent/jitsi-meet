@@ -48,3 +48,21 @@
 .toolbox-button-wth-dialog .eYJELv {
     max-height: initial;
 }
+
+.eoRGoR {
+    background-color: $defaultDialogBackground !important;
+    color: $defaultDialogColor !important
+}
+
+.hRySvC {
+    background-color: $bgBehindLetters !important;
+}
+
+#modal-dialog-ok-button {
+    background: $dialogButton !important;
+}
+
+#modal-dialog-cancel-button {
+    color: $dialogButton !important;
+    border: 1px solid $dialogButton !important;
+}

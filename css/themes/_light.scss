@@ -37,6 +37,8 @@ $buttonShadowColor: #192d4f;
 
 $overlayButtonBg: #0074E0;
 
+$dialogButton: #FAFAFA;
+
 /**
 * Color variables
 **/
@@ -53,11 +55,15 @@ $auiDialogContentBg: #344563;
 $auiBorderColor: #253858;
 $dialogTitleFontWeight: 400;
 $dialogErrorText: #344563;
+$defaultDialogBackground: #343536;
+$defaultDialogColor: #FAFAFA;
+$bgBehindLetters: #575757;
+$dialogLinkColor: #5797F1;
 
 /**
 * Inlay colors
 **/
-$inlayColorBg: lighten($defaultBackground, 20%);
+$inlayColorBg: #343536;
 $inlayBorderColor: lighten($baseLight, 10%);
 $inlayIconBg: #000;
 $inlayIconColor: #fff;
@@ -86,6 +92,7 @@ $popupMenuColor: #ffffff !important;
 $popupMenuHoverColor: #ffffff !important;
 $popupMenuHoverBackground: rgba(255, 255, 255, 0.1);
 $popupSliderColor: #0376da;
+$popoverInlayColor: #FAFAFA;
 
 // Toolbar
 $secondaryToolbarBg: rgba(0, 0, 0, 0.5);
@@ -112,4 +119,7 @@ $selectActiveItemBg: darken($controlBackground, 20%);
 /**
  * TODO: Replace by themed component.
  */
-$videoQualityActive: #4C9AFF;
+$videoQualityActive: #5797F1;
+
+// Avatar Color
+$avatarBg: #DBDBDB;

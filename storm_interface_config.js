@@ -4,6 +4,7 @@ var interfaceConfig = {
     // TO FIX: this needs to be handled from SASS variables. There are some
     // methods allowing to use variables both in css and js.
     DEFAULT_BACKGROUND: '#474747',
+    VIDEO_CONTAINER_BACKGROUND: '#757575',
 
     /**
      * Whether or not the blurred video background for large video should be
@@ -33,6 +34,7 @@ var interfaceConfig = {
     PROVIDER_NAME: 'Jitsi',
     LANG_DETECTION: false, // Allow i18n to detect the system language
     INVITATION_POWERED_BY: true,
+    STORM_WE: 'We',
 
     /**
      * If we should show authentication block in profile
