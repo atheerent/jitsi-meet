@@ -151,6 +151,8 @@ class VideoTransform extends Component<Props, State> {
      */
     lastTap: number;
 
+    canMove: boolean;
+
     /**
      * Constructor of the component.
      *
@@ -176,6 +178,8 @@ class VideoTransform extends Component<Props, State> {
         this._onPanResponderRelease = this._onPanResponderRelease.bind(this);
         this._onStartShouldSetPanResponder
             = this._onStartShouldSetPanResponder.bind(this);
+
+        this.canMove = false;
 
         // The move threshold should be adaptive to the pixel ratio of the
         // screen to avoid making it too sensitive or difficult to handle on
@@ -493,13 +497,26 @@ class VideoTransform extends Component<Props, State> {
 
         switch (type) {
         case 'move':
-            transform = {
-                ...DEFAULT_TRANSFORM_NO_SCALE,
-                translateX: value.x,
-                translateY: value.y
-            };
+            if (this.canMove) {
+                transform = {
+                    ...DEFAULT_TRANSFORM_NO_SCALE,
+                    translateX: value.x,
+                    translateY: value.y
+                };
+            } else {
+                transform = {
+                    ...DEFAULT_TRANSFORM_NO_SCALE,
+                    translateX: 0,
+                    translateY: 0
+                };
+            }
             break;
         case 'scale':
+            if (value > DEFAULT_TRANSFORM_NO_SCALE.scale) {
+                this.canMove = true;
+            } else {
+                this.canMove = false;
+            }
             transform = {
                 ...DEFAULT_TRANSFORM,
                 scale: value
