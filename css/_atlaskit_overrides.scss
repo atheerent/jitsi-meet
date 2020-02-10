@@ -50,19 +50,19 @@
 }
 
 .eoRGoR {
-    background-color: #343536 !important;
-    color: #FAFAFA !important
+    background-color: $defaultDialogBackground !important;
+    color: $defaultDialogColor !important
 }
 
 .hRySvC {
-    background-color: #575757 !important;
+    background-color: $bgBehindLetters !important;
 }
 
 #modal-dialog-ok-button {
-    background: #FAFAFA !important;
+    background: $dialogButton !important;
 }
 
 #modal-dialog-cancel-button {
-    color: #FAFAFA !important;
-    border: 1px solid #FAFAFA !important;
+    color: $dialogButton !important;
+    border: 1px solid $dialogButton !important;
 }

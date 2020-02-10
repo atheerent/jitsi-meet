@@ -37,6 +37,8 @@ $buttonShadowColor: #192d4f;
 
 $overlayButtonBg: #0074E0;
 
+$dialogButton: #FAFAFA;
+
 /**
 * Color variables
 **/
@@ -53,6 +55,10 @@ $auiDialogContentBg: #344563;
 $auiBorderColor: #253858;
 $dialogTitleFontWeight: 400;
 $dialogErrorText: #344563;
+$defaultDialogBackground: #343536;
+$defaultDialogColor: #FAFAFA;
+$bgBehindLetters: #575757;
+$dialogLinkColor: #5797F1;
 
 /**
 * Inlay colors
@@ -114,3 +120,6 @@ $selectActiveItemBg: darken($controlBackground, 20%);
  * TODO: Replace by themed component.
  */
 $videoQualityActive: #5797F1;
+
+// Avatar Color
+$avatarBg: #DBDBDB;
