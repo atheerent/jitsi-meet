@@ -26,7 +26,7 @@ const ALWAYS_ON_TOP_FILENAMES = [
  * Maps the names of the commands expected by the API with the name of the
  * commands expected by jitsi-meet
  */
-const commands = {
+export const commands = {
     avatarUrl: 'avatar-url',
     displayName: 'display-name',
     email: 'email',
@@ -46,7 +46,8 @@ const commands = {
     showSettings: 'show-settings',
     showKeyboardShortcuts: 'show-keyboard-shortcuts',
     startRecording: 'start-recording',
-    stopRecording: 'stop-recording'
+    stopRecording: 'stop-recording',
+    startAnnotation: 'start-annotation'
 };
 
 /**
@@ -85,6 +86,13 @@ const events = {
     'recorder-status-changed': 'recorderStatusChanged',
     'conference-timestamp-changed': 'conferenceTimestampChanged'
 };
+
+export function sendMessage(action, data) {
+    window.parent.postMessage(JSON.stringify({
+        action: action,
+        data: data
+    }), '*');
+}
 
 /**
  * Last id of api object
