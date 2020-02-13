@@ -47,7 +47,8 @@ export const commands = {
     showKeyboardShortcuts: 'show-keyboard-shortcuts',
     startRecording: 'start-recording',
     stopRecording: 'stop-recording',
-    startAnnotation: 'start-annotation'
+    startAnnotation: 'start-annotation',
+    screenShotReady: 'screen-shot-ready'
 };
 
 /**
@@ -84,15 +85,9 @@ const events = {
     'suspend-detected': 'suspendDetected',
     'tile-view-changed': 'tileViewChanged',
     'recorder-status-changed': 'recorderStatusChanged',
-    'conference-timestamp-changed': 'conferenceTimestampChanged'
+    'conference-timestamp-changed': 'conferenceTimestampChanged',
+    'screen-shot-ready': 'screenShotReady'
 };
-
-export function sendMessage(action, data) {
-    window.parent.postMessage(JSON.stringify({
-        action: action,
-        data: data
-    }), '*');
-}
 
 /**
  * Last id of api object

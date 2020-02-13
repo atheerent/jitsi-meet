@@ -5,7 +5,7 @@ import React, { Component } from 'react';
 import { Watermarks } from '../../base/react';
 import { Captions } from '../../subtitles/';
 
-import { commands, sendMessage } from '../../../../modules/API/external/external_api';
+import { commands } from '../../../../modules/API/external/external_api';
 
 var imageQuality = 0.9;
 var context;
@@ -17,6 +17,7 @@ var savedTranslationX = 0;
 var savedTranslationY = 0;
 
 declare var interfaceConfig: Object;
+declare var APP: Object;
 
 /**
  * Implements a React {@link Component} which represents the large video (a.k.a.
@@ -134,7 +135,6 @@ function onMessage(event) {
         }
         context.drawImage(remoteVideo, 0, 0, w, h);
         var dataURI = screenshotCanvas.toDataURL('image/jpeg', imageQuality);
-        console.log(dataURI);
-        sendMessage(commands.startAnnotation,{'DataUri': dataURI});
+        APP.API.notifyScreenShotReady(dataURI);
     }
 } 

@@ -430,6 +430,13 @@ class API {
         });
     }
 
+    notifyScreenShotReady(dataURI) {
+        this._sendEvent({
+            name: 'screen-shot-ready',
+            dataURI
+        })
+    }
+
     /**
      * Notify external application (if API is enabled) that user left the
      * conference.
