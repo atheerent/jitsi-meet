@@ -8,10 +8,7 @@ import { Captions } from '../../subtitles/';
 import { commands } from '../../../../modules/API/external/external_api';
 
 var imageQuality = 0.9;
-var context;
-var screenshotCanvas = document.getElementById('screenshot-canvas');
-var w, h, ratio;
-var annotationService;
+var context, w, h, ratio, screenshotCanvas;
 var savedScale = 1.0;
 var savedTranslationX = 0;
 var savedTranslationY = 0;
@@ -36,7 +33,7 @@ export default class LargeVideo extends Component<{}> {
         let styles = {
             display: 'none'
         };
-        let annotationStyle = {
+        let screenshotStyle = {
             position: 'absolute',
             left: '0px',
             top: '-50px',
@@ -78,9 +75,8 @@ export default class LargeVideo extends Component<{}> {
                             id = 'largeVideo'
                             muted = { true } />
                     </div>
-                    <div id='annotationWrapper' className='w-full' style={annotationStyle} >
+                    <div id='screenshotWrapper' className='w-full' style={screenshotStyle} >
                         <canvas id='screenshot-canvas' className='w-full' style={styles}></canvas>
-                        <div className="annotation"></div>
                     </div>
                 </div>
                 { interfaceConfig.DISABLE_TRANSCRIPTION_SUBTITLES
@@ -109,23 +105,13 @@ function onMessage(event) {
             return;
         }
     }
-    receivedData = receivedData.params.data ? receivedData.params.data : receivedData;
+    receivedData = receivedData.params && receivedData.params.data ? receivedData.params.data : receivedData;
 
-    if(receivedData.name == commands.startAnnotation){
-        onStartAnnotation();
+    if(receivedData.name == commands.captureScreenShot){
+        onCaptureScreenshot();
     }
 
-    function initScreenshotCanvas(video) {
-        screenshotCanvas = document.getElementById('screenshot-canvas');
-        context = screenshotCanvas.getContext('2d');
-        ratio = video.videoWidth / video.videoHeight;
-        w = 2 * video.videoWidth;
-        h = parseInt(w / ratio, 10);
-        screenshotCanvas.width = w;
-        screenshotCanvas.height = h;
-    }
-
-    function onStartAnnotation() {
+    function onCaptureScreenshot() {
         var remoteVideo = document.getElementById('largeVideo');
         initScreenshotCanvas(remoteVideo);
         context.fillRect(0, 0, w, h);
@@ -136,5 +122,15 @@ function onMessage(event) {
         context.drawImage(remoteVideo, 0, 0, w, h);
         var dataURI = screenshotCanvas.toDataURL('image/jpeg', imageQuality);
         APP.API.notifyScreenShotReady(dataURI);
+    }
+
+    function initScreenshotCanvas(video) {
+        screenshotCanvas = document.getElementById('screenshot-canvas');
+        context = screenshotCanvas.getContext('2d');
+        ratio = video.videoWidth / video.videoHeight;
+        w = 2 * video.videoWidth;
+        h = parseInt(w / ratio, 10);
+        screenshotCanvas.width = w;
+        screenshotCanvas.height = h;
     }
 } 

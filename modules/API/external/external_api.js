@@ -47,8 +47,8 @@ export const commands = {
     showKeyboardShortcuts: 'show-keyboard-shortcuts',
     startRecording: 'start-recording',
     stopRecording: 'stop-recording',
-    startAnnotation: 'start-annotation',
-    screenShotReady: 'screen-shot-ready'
+    captureScreenShot: 'capture-screenshot',
+    screenShotReady: 'screenshot-ready'
 };
 
 /**
@@ -86,7 +86,7 @@ const events = {
     'tile-view-changed': 'tileViewChanged',
     'recorder-status-changed': 'recorderStatusChanged',
     'conference-timestamp-changed': 'conferenceTimestampChanged',
-    'screen-shot-ready': 'screenShotReady'
+    'screenshot-ready': 'screenShotReady'
 };
 
 /**

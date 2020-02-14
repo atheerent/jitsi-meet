@@ -432,7 +432,7 @@ class API {
 
     notifyScreenShotReady(dataURI) {
         this._sendEvent({
-            name: 'screen-shot-ready',
+            name: 'screenshot-ready',
             dataURI
         })
     }
