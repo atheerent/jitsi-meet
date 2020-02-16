@@ -8,10 +8,7 @@ import { Captions } from '../../subtitles/';
 import { commands } from '../../../../modules/API/external/external_api';
 
 var imageQuality = 0.9;
-var context, w, h, ratio, screenshotCanvas;
-var savedScale = 1.0;
-var savedTranslationX = 0;
-var savedTranslationY = 0;
+var context, screenshotCanvas;
 
 declare var interfaceConfig: Object;
 declare var APP: Object;
@@ -113,24 +110,17 @@ function onMessage(event) {
 
     function onCaptureScreenshot() {
         var remoteVideo = document.getElementById('largeVideo');
-        initScreenshotCanvas(remoteVideo);
-        context.fillRect(0, 0, w, h);
-        if (savedScale > 1) {
-            context.setTransform(savedScale, 0, 0, savedScale, (0.5 - savedTranslationX * savedScale) * screenshotCanvas.width,
-                (0.5 - savedTranslationY * savedScale) * screenshotCanvas.height);
-        }
-        context.drawImage(remoteVideo, 0, 0, w, h);
-        var dataURI = screenshotCanvas.toDataURL('image/jpeg', imageQuality);
-        APP.API.notifyScreenShotReady(dataURI);
-    }
-
-    function initScreenshotCanvas(video) {
         screenshotCanvas = document.getElementById('screenshot-canvas');
         context = screenshotCanvas.getContext('2d');
-        ratio = video.videoWidth / video.videoHeight;
-        w = 2 * video.videoWidth;
-        h = parseInt(w / ratio, 10);
-        screenshotCanvas.width = w;
-        screenshotCanvas.height = h;
+        screenshotCanvas.width = remoteVideo.videoWidth;
+        screenshotCanvas.height = remoteVideo.videoHeight;
+        context.fillRect(0, 0, remoteVideo.videoWidth, remoteVideo.videoHeight);
+        context.drawImage(remoteVideo, 0, 0, remoteVideo.videoWidth, remoteVideo.videoHeight);
+        var image = {
+            width: remoteVideo.videoWidth,
+            height: remoteVideo.videoHeight,
+            dataURI: screenshotCanvas.toDataURL('image/jpeg', imageQuality)
+        };
+        APP.API.notifyScreenShotReady(image);
     }
 } 

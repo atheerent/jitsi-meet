@@ -430,10 +430,10 @@ class API {
         });
     }
 
-    notifyScreenShotReady(dataURI) {
+    notifyScreenShotReady(imageData) {
         this._sendEvent({
             name: 'screenshot-ready',
-            dataURI
+            imageData
         })
     }
 
