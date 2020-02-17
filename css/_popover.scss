@@ -13,8 +13,9 @@
 
 %vertical-popover-padding {
     height: 100%;
+    min-height: 70px;
     position: absolute;
-    top: 0;
+    top: -25px;
     width: 40px;
 }
 
