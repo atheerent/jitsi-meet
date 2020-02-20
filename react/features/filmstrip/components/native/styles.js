@@ -46,6 +46,14 @@ export default {
         position: 'absolute'
     },
 
+    thumbnailToolTopSmall: {
+        top: 32
+    },
+
+    thumbanilToolTopMedium: {
+        top: 43
+    },
+
     thumbnailToolBackgroundMedium: {
         borderRadius: 20,
         padding: 20,

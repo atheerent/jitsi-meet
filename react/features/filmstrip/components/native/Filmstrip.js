@@ -21,6 +21,7 @@ import Thumbnail from './Thumbnail';
 import { setFilmstripVisible, inviteUser } from '../../actions';
 
 const logger = require('jitsi-meet-logger').getLogger(__filename);
+const device = require('react-native-device-detection');
 
 export const DEFAULT_THUMBNAIL_HEIGHT = 80;
 export const DEFAULT_THUMBNAIL_WIDTH = 100;
@@ -163,14 +164,16 @@ class Filmstrip extends Component<Props> {
                         && <Thumbnail participant = { this.props._localParticipant }  />
                 }
                 { !this.props._forceHidden && !this.props._visible && !this.props._isGlass && <Container
-                    style = { [ styles.thumbnailToolBackgroundSmall, styles.thumbnailToolBackgroundDark ] }
+                    style = { [ styles.thumbnailToolBackgroundSmall, styles.thumbnailToolBackgroundDark, 
+                    device.isPhone ? styles.thumbnailToolTopSmall : styles.thumbanilToolTopMedium ] }
                     onClick = { this._onExpandFilmstrip } >
                         <Icon name = 'navigate_before'
                         style = { [ styles.thumbnailToolIcon, styles.thumbnailToolIconPressed ] } />
                 </Container>
                 }
                 { !this.props._forceHidden && this.props._visible && !this.props._isGlass && <Container
-                    style = { [ styles.thumbnailToolBackgroundSmall, styles.thumbnailToolBackgroundDark, hideFilmStripStyle ] }
+                    style = { [ styles.thumbnailToolBackgroundSmall, styles.thumbnailToolBackgroundDark, hideFilmStripStyle, 
+                    device.isPhone ? styles.thumbnailToolTopSmall : styles.thumbanilToolTopMedium ] }
                     onClick = { this._onHideFilmstrip } >
                         <Icon name = 'navigate_next'
                         style = { [ styles.thumbnailToolIcon, styles.thumbnailToolIconPressed ] } />
@@ -184,7 +187,8 @@ class Filmstrip extends Component<Props> {
                     {
                         this.props._participantsNumber === 2 
                         && !this.props._isExternalSession
-                            && <Container style = { styles.thumbnailContainer } onClick = { this._onInviteUser }>
+                            && <Container style = { [ styles.thumbnailContainer, 
+                                device.isPhone ? styles.thumbnailToolTopSmall : styles.thumbanilToolTopMedium ] } onClick = { this._onInviteUser }>
                                 <Container style = { [ styles.thumbnail, styleDimension, styleBackground ] }>
                                     {
                                         <Container style = { [ styles.thumbnailToolBackgroundMedium, styles.thumbnailToolBackgroundDisabled ] }
