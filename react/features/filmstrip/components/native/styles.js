@@ -46,11 +46,30 @@ export default {
         position: 'absolute'
     },
 
+    thumbnailToolTopSmall: {
+        top: 32
+    },
+
+    thumbanilToolTopMedium: {
+        top: 43
+    },
+
     thumbnailToolBackgroundMedium: {
         borderRadius: 20,
         padding: 20,
         marginTop: 20,
         marginLeft: 30,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'absolute'
+    },
+
+    thumbnailToolsBackgroundMedium: {
+        borderRadius: 20,
+        padding: 15,
+        marginTop: 10,
+        marginLeft: 20,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -95,7 +114,7 @@ export default {
         alignItems: 'center',
         justifyContent: 'center',
         color: ColorPalette.black,
-        fontSize: 20,
+        fontSize: 16,
         position: 'absolute'
     },
 
@@ -203,7 +222,7 @@ export default {
 
     thumbnailToolsMedium: {
         position: 'relative',
-        height: 50,
+        height: 42,
         width: 110,
         flexDirection: 'row',
         alignItems: 'center',

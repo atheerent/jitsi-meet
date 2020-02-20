@@ -279,7 +279,8 @@ class Thumbnail extends Component<Props> {
         }
 
         return (
-          <Container style = { styles.thumbnailContainer }>
+          <Container style = {[ styles.thumbnailContainer, 
+                device.isPhone ? styles.thumbnailToolTopSmall : styles.thumbanilToolTopMedium ]}>
                 <GestureRecognizer
                   onSwipeRight={this._onSwipeRight}
                   config={config} >
@@ -360,7 +361,7 @@ class Thumbnail extends Component<Props> {
                         <Container
                             onClick = { this._onClickMute }
                             style = { [ device.isPhone ? styles.thumbnailToolsMedium : styles.thumbnailTools, styles.thumbnailToolsTopMargin ] }>
-                            <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundMedium : styles.thumbnailToolBackground,
+                            <View style = { [ device.isPhone ? styles.thumbnailToolsBackgroundMedium : styles.thumbnailToolBackground,
                                             audioMuted ? styles.thumbnailToolBackgroundDisabled : styles.thumbnailToolBackgroundNormal ] }
                                 onPress = { this._onClickMute }>
                                 <Icon name = 'atheer-mic'
@@ -371,7 +372,7 @@ class Thumbnail extends Component<Props> {
                         <Container
                             onClick = { this._onClickFlashlight }
                             style = { [ device.isPhone ? styles.thumbnailToolsMedium : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
-                            <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundMedium : styles.thumbnailToolBackground,
+                            <View style = { [ device.isPhone ? styles.thumbnailToolsBackgroundMedium : styles.thumbnailToolBackground,
                                             !hasTorch ? styles.thumbnailToolBackgroundDisabled : null,
                                             (hasTorch && flashlightOn) ? styles.thumbnailToolBackgroundHighlighted : null,
                                             (hasTorch && !flashlightOn) ? styles.thumbnailToolBackgroundNormal : null ] }
@@ -385,7 +386,7 @@ class Thumbnail extends Component<Props> {
                         !this.props.isExternalSession && <Container
                             onClick = { this._onClickChat }
                             style = { [ device.isPhone ? styles.thumbnailToolsMedium : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
-                            <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundMedium : styles.thumbnailToolBackground , styles.thumbnailToolBackgroundNormal ] }
+                            <View style = { [ device.isPhone ? styles.thumbnailToolsBackgroundMedium : styles.thumbnailToolBackground , styles.thumbnailToolBackgroundNormal ] }
                                 onPress = { this._onClickChat }>
                                 <Icon name = 'atheer-message'
                                 style = { [ device.isPhone ? styles.thumbnailToolIconSmall : styles.thumbnailToolIcon , styles.thumbnailToolIconNoraml ] } />
@@ -396,7 +397,7 @@ class Thumbnail extends Component<Props> {
                         !this.props.isExternalSession && <Container
                             onClick = { this._onClickFileShare }
                             style = { [ device.isPhone ? styles.thumbnailToolsMedium : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
-                            <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundMedium : styles.thumbnailToolBackground, styles.thumbnailToolBackgroundNormal ] }
+                            <View style = { [ device.isPhone ? styles.thumbnailToolsBackgroundMedium : styles.thumbnailToolBackground, styles.thumbnailToolBackgroundNormal ] }
                                 onPress = { this._onClickFileShare }>
                                 <Icon name = 'atheer-share-file'
                                 style = { [ device.isPhone ? styles.thumbnailToolIconSmall : styles.thumbnailToolIcon, styles.thumbnailToolIconNoraml ] } />
