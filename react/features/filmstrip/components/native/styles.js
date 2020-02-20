@@ -65,6 +65,17 @@ export default {
         position: 'absolute'
     },
 
+    thumbnailToolsBackgroundMedium: {
+        borderRadius: 20,
+        padding: 15,
+        marginTop: 10,
+        marginLeft: 20,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'absolute'
+    },
+
     marginLeftNegative: {
         marginLeft: -20
     },
