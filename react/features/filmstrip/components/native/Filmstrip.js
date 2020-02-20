@@ -138,10 +138,10 @@ class Filmstrip extends Component<Props> {
                                 3 : this.props._participantsNumber;
 
         // TODO(Hao): Make this value dynamic and support all devices
-        var filmStripLength = 100 * this.props._participantsNumber + 20
+        var filmStripLength = device.isPhone ? 80 * this.props._participantsNumber + 20 : 100 * this.props._participantsNumber + 20
         
         if(!this.props._isExternalSession){
-            filmStripLength = 100 * participantCount + 20;
+            filmStripLength = device.isPhone ? 80 * participantCount + 20 : 100 * participantCount + 20;
         }
         
 
