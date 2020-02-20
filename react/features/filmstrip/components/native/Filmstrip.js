@@ -187,7 +187,7 @@ class Filmstrip extends Component<Props> {
                     {
                         this.props._participantsNumber === 2 
                         && !this.props._isExternalSession
-                            && <Container style = { [ styles.thumbnailContainer, 
+                            && <Container style = { [ device.isPhone ? styles.thumbnailContainerSmall : styles.thumbnailContainer, 
                                 device.isPhone ? styles.thumbnailToolTopSmall : styles.thumbanilToolTopMedium ] } onClick = { this._onInviteUser }>
                                 <Container style = { [ styles.thumbnail, styleDimension, styleBackground ] }>
                                     {

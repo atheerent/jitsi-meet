@@ -279,7 +279,7 @@ class Thumbnail extends Component<Props> {
         }
 
         return (
-          <Container style = {[ styles.thumbnailContainer, 
+          <Container style = {[ device.isPhone ? styles.thumbnailContainerSmall : styles.thumbnailContainer, 
                 device.isPhone ? styles.thumbnailToolTopSmall : styles.thumbanilToolTopMedium ]}>
                 <GestureRecognizer
                   onSwipeRight={this._onSwipeRight}
