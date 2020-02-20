@@ -360,8 +360,8 @@ class Thumbnail extends Component<Props> {
                     showTools && <View>
                         <Container
                             onClick = { this._onClickMute }
-                            style = { [ device.isPhone ? styles.thumbnailToolsSmall : styles.thumbnailTools, styles.thumbnailToolsTopMargin ] }>
-                            <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundSmall : styles.thumbnailToolBackground,
+                            style = { [ device.isPhone ? styles.thumbnailToolsMedium : styles.thumbnailTools, styles.thumbnailToolsTopMargin ] }>
+                            <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundMedium : styles.thumbnailToolBackground,
                                             audioMuted ? styles.thumbnailToolBackgroundDisabled : styles.thumbnailToolBackgroundNormal ] }
                                 onPress = { this._onClickMute }>
                                 <Icon name = 'atheer-mic'
@@ -371,8 +371,8 @@ class Thumbnail extends Component<Props> {
                         </Container>
                         <Container
                             onClick = { this._onClickFlashlight }
-                            style = { [ device.isPhone ? styles.thumbnailToolsSmall : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
-                            <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundSmall : styles.thumbnailToolBackground,
+                            style = { [ device.isPhone ? styles.thumbnailToolsMedium : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
+                            <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundMedium : styles.thumbnailToolBackground,
                                             !hasTorch ? styles.thumbnailToolBackgroundDisabled : null,
                                             (hasTorch && flashlightOn) ? styles.thumbnailToolBackgroundHighlighted : null,
                                             (hasTorch && !flashlightOn) ? styles.thumbnailToolBackgroundNormal : null ] }
@@ -385,8 +385,8 @@ class Thumbnail extends Component<Props> {
                         {
                         !this.props.isExternalSession && <Container
                             onClick = { this._onClickChat }
-                            style = { [ device.isPhone ? styles.thumbnailToolsSmall : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
-                            <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundSmall : styles.thumbnailToolBackground , styles.thumbnailToolBackgroundNormal ] }
+                            style = { [ device.isPhone ? styles.thumbnailToolsMedium : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
+                            <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundMedium : styles.thumbnailToolBackground , styles.thumbnailToolBackgroundNormal ] }
                                 onPress = { this._onClickChat }>
                                 <Icon name = 'atheer-message'
                                 style = { [ device.isPhone ? styles.thumbnailToolIconSmall : styles.thumbnailToolIcon , styles.thumbnailToolIconNoraml ] } />
@@ -396,8 +396,8 @@ class Thumbnail extends Component<Props> {
                         {
                         !this.props.isExternalSession && <Container
                             onClick = { this._onClickFileShare }
-                            style = { [ device.isPhone ? styles.thumbnailToolsSmall : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
-                            <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundSmall : styles.thumbnailToolBackground, styles.thumbnailToolBackgroundNormal ] }
+                            style = { [ device.isPhone ? styles.thumbnailToolsMedium : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
+                            <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundMedium : styles.thumbnailToolBackground, styles.thumbnailToolBackgroundNormal ] }
                                 onPress = { this._onClickFileShare }>
                                 <Icon name = 'atheer-share-file'
                                 style = { [ device.isPhone ? styles.thumbnailToolIconSmall : styles.thumbnailToolIcon, styles.thumbnailToolIconNoraml ] } />

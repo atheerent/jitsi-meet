@@ -211,7 +211,7 @@ export default {
 
     thumbnailToolsMedium: {
         position: 'relative',
-        height: 50,
+        height: 42,
         width: 110,
         flexDirection: 'row',
         alignItems: 'center',
