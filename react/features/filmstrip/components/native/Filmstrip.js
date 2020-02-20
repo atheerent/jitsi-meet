@@ -26,6 +26,9 @@ const device = require('react-native-device-detection');
 export const DEFAULT_THUMBNAIL_HEIGHT = 80;
 export const DEFAULT_THUMBNAIL_WIDTH = 100;
 
+export const DEFAULT_THUMBNAIL_HEIGHT_SMALL = 60;
+export const DEFAULT_THUMBNAIL_WIDTH_SMALL = 80;
+
 /**
  * Filmstrip component's property types.
  */
@@ -150,6 +153,12 @@ class Filmstrip extends Component<Props> {
             width: DEFAULT_THUMBNAIL_WIDTH,
             height: DEFAULT_THUMBNAIL_HEIGHT
         }
+
+        let styleDimensionSmall = {
+            width: DEFAULT_THUMBNAIL_WIDTH_SMALL,
+            height: DEFAULT_THUMBNAIL_HEIGHT_SMALL
+        }
+
         let styleBackground = {
             opacity: 0.3
         }
@@ -189,7 +198,7 @@ class Filmstrip extends Component<Props> {
                         && !this.props._isExternalSession
                             && <Container style = { [ device.isPhone ? styles.thumbnailContainerSmall : styles.thumbnailContainer, 
                                 device.isPhone ? styles.thumbnailToolTopSmall : styles.thumbanilToolTopMedium ] } onClick = { this._onInviteUser }>
-                                <Container style = { [ styles.thumbnail, styleDimension, styleBackground ] }>
+                                <Container style = { [ styles.thumbnail, device.isPhone? styleDimensionSmall : styleDimension, styleBackground ] }>
                                     {
                                         <Container style = { [ styles.thumbnailToolBackgroundMedium, styles.thumbnailToolBackgroundDisabled ] }
                                             onClick = { this._onInviteUser }>

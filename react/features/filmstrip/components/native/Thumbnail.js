@@ -43,6 +43,9 @@ const logger = require('jitsi-meet-logger').getLogger(__filename);
 export const DEFAULT_THUMBNAIL_HEIGHT = 80;
 export const DEFAULT_THUMBNAIL_WIDTH = 100;
 
+export const DEFAULT_THUMBNAIL_HEIGHT_SMALL = 60;
+export const DEFAULT_THUMBNAIL_WIDTH_SMALL = 80;
+
 /**
  * Thumbnail component's property types.
  */
@@ -234,6 +237,11 @@ class Thumbnail extends Component<Props> {
             height: DEFAULT_THUMBNAIL_HEIGHT
         }
 
+        let styleDimensionSmall = {
+            width: DEFAULT_THUMBNAIL_WIDTH_SMALL,
+            height: DEFAULT_THUMBNAIL_HEIGHT_SMALL
+        }
+
         // We don't render audio in any of the following:
         // 1. The audio (source) is muted. There's no practical reason (that we
         //    know of, anyway) why we'd want to render it given that it's
@@ -288,7 +296,8 @@ class Thumbnail extends Component<Props> {
                         onClick = { this._onClick }
                         onPress = { this._onPress }
                         style = { [
-                            style, styleDimension,
+                            style, 
+                            device.isPhone ? styleDimensionSmall : styleDimension,
                             participant.pinned && !tileView
                                 ? _styles.thumbnailPinned : null,
                             this.props.styleOverrides || null
