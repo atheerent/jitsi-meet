@@ -114,7 +114,7 @@ export default {
         alignItems: 'center',
         justifyContent: 'center',
         color: ColorPalette.black,
-        fontSize: 20,
+        fontSize: 16,
         position: 'absolute'
     },
 
