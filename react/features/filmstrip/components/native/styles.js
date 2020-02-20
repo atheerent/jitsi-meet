@@ -195,18 +195,6 @@ export default {
         position: 'relative'
     },
 
-    thumbnailContainerSmall: {
-        height: 80,
-        width: 80,
-        alignItems: 'flex-start',
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'flex-start',
-        margin: 2,
-        overflow: 'visible',
-        position: 'relative'
-    },
-
     thumbnailVideo: {
         height: 150,
         width: 110

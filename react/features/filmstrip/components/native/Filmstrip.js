@@ -26,9 +26,6 @@ const device = require('react-native-device-detection');
 export const DEFAULT_THUMBNAIL_HEIGHT = 80;
 export const DEFAULT_THUMBNAIL_WIDTH = 100;
 
-export const DEFAULT_THUMBNAIL_HEIGHT_SMALL = 60;
-export const DEFAULT_THUMBNAIL_WIDTH_SMALL = 80;
-
 /**
  * Filmstrip component's property types.
  */
@@ -138,10 +135,10 @@ class Filmstrip extends Component<Props> {
                                 3 : this.props._participantsNumber;
 
         // TODO(Hao): Make this value dynamic and support all devices
-        var filmStripLength = device.isPhone ? 80 * this.props._participantsNumber + 20 : 100 * this.props._participantsNumber + 20
+        var filmStripLength = 100 * this.props._participantsNumber + 20
         
         if(!this.props._isExternalSession){
-            filmStripLength = device.isPhone ? 80 * participantCount + 20 : 100 * participantCount + 20;
+            filmStripLength = 100 * participantCount + 20;
         }
         
 
@@ -152,11 +149,6 @@ class Filmstrip extends Component<Props> {
         let styleDimension = {
             width: DEFAULT_THUMBNAIL_WIDTH,
             height: DEFAULT_THUMBNAIL_HEIGHT
-        }
-
-        let styleDimensionSmall = {
-            width: DEFAULT_THUMBNAIL_WIDTH_SMALL,
-            height: DEFAULT_THUMBNAIL_HEIGHT_SMALL
         }
 
         let styleBackground = {
@@ -196,9 +188,9 @@ class Filmstrip extends Component<Props> {
                     {
                         this.props._participantsNumber === 2 
                         && !this.props._isExternalSession
-                            && <Container style = { [ device.isPhone ? styles.thumbnailContainerSmall : styles.thumbnailContainer, 
+                            && <Container style = { [ styles.thumbnailContainer, 
                                 device.isPhone ? styles.thumbnailToolTopSmall : styles.thumbanilToolTopMedium ] } onClick = { this._onInviteUser }>
-                                <Container style = { [ styles.thumbnail, device.isPhone? styleDimensionSmall : styleDimension, styleBackground ] }>
+                                <Container style = { [ styles.thumbnail, styleDimension, styleBackground ] }>
                                     {
                                         <Container style = { [ styles.thumbnailToolBackgroundMedium, styles.thumbnailToolBackgroundDisabled ] }
                                             onClick = { this._onInviteUser }>

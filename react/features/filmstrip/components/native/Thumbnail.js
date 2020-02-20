@@ -43,9 +43,6 @@ const logger = require('jitsi-meet-logger').getLogger(__filename);
 export const DEFAULT_THUMBNAIL_HEIGHT = 80;
 export const DEFAULT_THUMBNAIL_WIDTH = 100;
 
-export const DEFAULT_THUMBNAIL_HEIGHT_SMALL = 60;
-export const DEFAULT_THUMBNAIL_WIDTH_SMALL = 80;
-
 /**
  * Thumbnail component's property types.
  */
@@ -237,11 +234,6 @@ class Thumbnail extends Component<Props> {
             height: DEFAULT_THUMBNAIL_HEIGHT
         }
 
-        let styleDimensionSmall = {
-            width: DEFAULT_THUMBNAIL_WIDTH_SMALL,
-            height: DEFAULT_THUMBNAIL_HEIGHT_SMALL
-        }
-
         // We don't render audio in any of the following:
         // 1. The audio (source) is muted. There's no practical reason (that we
         //    know of, anyway) why we'd want to render it given that it's
@@ -287,7 +279,7 @@ class Thumbnail extends Component<Props> {
         }
 
         return (
-          <Container style = {[ device.isPhone ? styles.thumbnailContainerSmall : styles.thumbnailContainer, 
+          <Container style = {[ styles.thumbnailContainer, 
                 device.isPhone ? styles.thumbnailToolTopSmall : styles.thumbanilToolTopMedium ]}>
                 <GestureRecognizer
                   onSwipeRight={this._onSwipeRight}
@@ -296,8 +288,7 @@ class Thumbnail extends Component<Props> {
                         onClick = { this._onClick }
                         onPress = { this._onPress }
                         style = { [
-                            style, 
-                            device.isPhone ? styleDimensionSmall : styleDimension,
+                            style, styleDimension,
                             participant.pinned && !tileView
                                 ? _styles.thumbnailPinned : null,
                             this.props.styleOverrides || null
@@ -369,8 +360,8 @@ class Thumbnail extends Component<Props> {
                     showTools && <View>
                         <Container
                             onClick = { this._onClickMute }
-                            style = { [ device.isPhone ? styles.thumbnailToolsMedium : styles.thumbnailTools, styles.thumbnailToolsTopMargin ] }>
-                            <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundMedium : styles.thumbnailToolBackground,
+                            style = { [ device.isPhone ? styles.thumbnailToolsSmall : styles.thumbnailTools, styles.thumbnailToolsTopMargin ] }>
+                            <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundSmall : styles.thumbnailToolBackground,
                                             audioMuted ? styles.thumbnailToolBackgroundDisabled : styles.thumbnailToolBackgroundNormal ] }
                                 onPress = { this._onClickMute }>
                                 <Icon name = 'atheer-mic'
@@ -380,8 +371,8 @@ class Thumbnail extends Component<Props> {
                         </Container>
                         <Container
                             onClick = { this._onClickFlashlight }
-                            style = { [ device.isPhone ? styles.thumbnailToolsMedium : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
-                            <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundMedium : styles.thumbnailToolBackground,
+                            style = { [ device.isPhone ? styles.thumbnailToolsSmall : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
+                            <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundSmall : styles.thumbnailToolBackground,
                                             !hasTorch ? styles.thumbnailToolBackgroundDisabled : null,
                                             (hasTorch && flashlightOn) ? styles.thumbnailToolBackgroundHighlighted : null,
                                             (hasTorch && !flashlightOn) ? styles.thumbnailToolBackgroundNormal : null ] }
@@ -394,8 +385,8 @@ class Thumbnail extends Component<Props> {
                         {
                         !this.props.isExternalSession && <Container
                             onClick = { this._onClickChat }
-                            style = { [ device.isPhone ? styles.thumbnailToolsMedium : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
-                            <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundMedium : styles.thumbnailToolBackground , styles.thumbnailToolBackgroundNormal ] }
+                            style = { [ device.isPhone ? styles.thumbnailToolsSmall : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
+                            <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundSmall : styles.thumbnailToolBackground , styles.thumbnailToolBackgroundNormal ] }
                                 onPress = { this._onClickChat }>
                                 <Icon name = 'atheer-message'
                                 style = { [ device.isPhone ? styles.thumbnailToolIconSmall : styles.thumbnailToolIcon , styles.thumbnailToolIconNoraml ] } />
@@ -405,8 +396,8 @@ class Thumbnail extends Component<Props> {
                         {
                         !this.props.isExternalSession && <Container
                             onClick = { this._onClickFileShare }
-                            style = { [ device.isPhone ? styles.thumbnailToolsMedium : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
-                            <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundMedium : styles.thumbnailToolBackground, styles.thumbnailToolBackgroundNormal ] }
+                            style = { [ device.isPhone ? styles.thumbnailToolsSmall : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
+                            <View style = { [ device.isPhone ? styles.thumbnailToolBackgroundSmall : styles.thumbnailToolBackground, styles.thumbnailToolBackgroundNormal ] }
                                 onPress = { this._onClickFileShare }>
                                 <Icon name = 'atheer-share-file'
                                 style = { [ device.isPhone ? styles.thumbnailToolIconSmall : styles.thumbnailToolIcon, styles.thumbnailToolIconNoraml ] } />
