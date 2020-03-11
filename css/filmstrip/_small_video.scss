@@ -5,6 +5,9 @@
     border: $thumbnailVideoBorder solid transparent;
     border-radius: $borderRadius;
     margin: 0 $thumbnailVideoMargin;
+    height: 70px !important;
+    min-height: 70px !important;
+
 
     &.videoContainerFocused, &:hover {
         cursor: hand;
