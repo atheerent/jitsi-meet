@@ -9,6 +9,7 @@ import { commands } from '../../../../modules/API/external/external_api';
 
 var imageQuality = 0.9;
 var context, screenshotCanvas;
+var previousTrack;
 
 declare var interfaceConfig: Object;
 declare var APP: Object;
@@ -36,6 +37,16 @@ export default class LargeVideo extends Component<{}> {
             top: '-50px',
             width: '100%',
             height: '100%'
+        };
+
+        let zoomStyle = {
+            position: 'absolute',
+            height: '160px',
+            width: '240px',
+            right: '31px',
+            bottom: '71px',
+            zIndex: '200',
+            objectFit: 'fill'
         };
 
         return (
@@ -75,6 +86,10 @@ export default class LargeVideo extends Component<{}> {
                     <div id='screenshotWrapper' className='w-full' style={screenshotStyle} >
                         <canvas id='screenshot-canvas' className='w-full' style={styles}></canvas>
                     </div>
+                    <div id='zoomWrapper' style={styles} className='w-full'>
+                        <video autoPlay={true} id='previewVideo' 
+                        muted={true} style={zoomStyle}/>
+                    </div>
                 </div>
                 { interfaceConfig.DISABLE_TRANSCRIPTION_SUBTITLES
                     || <Captions /> }
@@ -106,6 +121,9 @@ function onMessage(event) {
 
     if(receivedData.name == commands.captureScreenShot){
         onCaptureScreenshot();
+    } else if (receivedData.name == commands.applyZoom) {
+        var data = receivedData.data[0];
+        applyZoom(data.xValue, data.yValue, data.zValue);
     }
 
     function onCaptureScreenshot() {
@@ -123,4 +141,30 @@ function onMessage(event) {
         };
         APP.API.notifyScreenShotReady(image);
     }
+
+    function applyZoom(x, y, z) {
+        if(z === 1) {
+            x = 0.5;
+            y = 0.5;
+        }
+
+        var zoomView = document.getElementById('zoomWrapper');
+        if(zoomView) {
+            zoomView.style.display = z == 1 ? "none" : "block";
+        }
+
+        var fullViewVideo = document.getElementById('largeVideoWrapper');
+        var translationX = (0.5 - x) * fullViewVideo.offsetWidth * z;
+        var translationY = (0.5 - y) * fullViewVideo.offsetHeight * z;
+
+        fullViewVideo.style.transform = "matrix(" + z + ", 0, 0, " + z + ", " + translationX + ", " + translationY + ")";
+    }
+} 
+
+export function setPreviewTrack(track) {
+    var previewVideo = document.getElementById('previewVideo');
+    if (previousTrack !== undefined) {
+        previousTrack.detach(previewVideo)
+    }
+    track.attach(previewVideo);
 } 

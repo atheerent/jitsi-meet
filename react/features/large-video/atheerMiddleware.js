@@ -17,6 +17,8 @@ import {
 } from '../base/tracks';
 
 import { selectParticipant, selectParticipantInLargeVideo } from './actions';
+import { MEDIA_TYPE } from '../base/media';
+import { setPreviewTrack } from './components/AtheerLargeVideo.web';
 
 /**
  * Middleware that catches actions related to participants and tracks and
@@ -32,6 +34,12 @@ MiddlewareRegistry.register(store => next => action => {
     case DOMINANT_SPEAKER_CHANGED:
     case PARTICIPANT_JOINED:
     case TRACK_ADDED:
+        const state = store.getState();
+        const largeVideo = state['features/large-video'];
+        const addedTrack = action.track;
+        if (addedTrack.participantId === largeVideo.participantId && addedTrack.mediaType === MEDIA_TYPE.VIDEO) {
+            setPreviewTrack(addedTrack.jitsiTrack);
+        }
         break;
     case PIN_PARTICIPANT:
     case PARTICIPANT_LEFT:
