@@ -9,7 +9,6 @@ import { commands } from '../../../../modules/API/external/external_api';
 
 var imageQuality = 0.9;
 var context, screenshotCanvas;
-var previousTrack;
 
 declare var interfaceConfig: Object;
 declare var APP: Object;
@@ -163,8 +162,5 @@ function onMessage(event) {
 
 export function setPreviewTrack(track) {
     var previewVideo = document.getElementById('previewVideo');
-    if (previousTrack !== undefined) {
-        previousTrack.detach(previewVideo)
-    }
     track.attach(previewVideo);
 } 

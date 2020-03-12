@@ -137,10 +137,6 @@ function initCommands() {
             sendAnalytics(createApiEvent('show-keyboard-shortcuts'));
             APP.UI.showKeyboardShortcuts();
         },
-        'apply-zoom': (options = {}) => {
-            const { xValue, yValue, zValue } = options;
-            APP.UI.applyZoom(xValue, yValue, zValue);
-        },
         'start-recording': () => {
             sendAnalytics(createApiEvent('start-recording'));
             APP.UI.startRecording();
