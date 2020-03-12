@@ -33,6 +33,7 @@ MiddlewareRegistry.register(store => next => action => {
     switch (action.type) {
     case DOMINANT_SPEAKER_CHANGED:
     case PARTICIPANT_JOINED:
+        break;
     case TRACK_ADDED:
         const state = store.getState();
         const largeVideo = state['features/large-video'];

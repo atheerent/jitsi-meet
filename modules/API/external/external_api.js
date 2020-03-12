@@ -86,7 +86,8 @@ const events = {
     'tile-view-changed': 'tileViewChanged',
     'recorder-status-changed': 'recorderStatusChanged',
     'conference-timestamp-changed': 'conferenceTimestampChanged',
-    'screenshot-ready': 'screenShotReady'
+    'screenshot-ready': 'screenShotReady',
+    'on-stage-participant-changed': 'onStageParticipantChanged'
 };
 
 /**
