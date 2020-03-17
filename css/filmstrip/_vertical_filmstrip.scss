@@ -1,7 +1,7 @@
 .vertical-filmstrip .filmstrip {
     &.hide-videos {
         .remote-videos-container {
-            opacity: 0;
+            opacity: 1;
             pointer-events: none;
         }
     }

@@ -66,13 +66,11 @@ ReducerRegistry.register(
             };
 
         case SET_FILMSTRIP_VISIBLE:
-            /*
-            Disable the meet default filmstrip visibility setup
+            /* Disable the meet default filmstrip visibility setup */
             return {
                 ...state,
                 visible: action.visible
             };
-            */
             return {
                 ...state
             }
