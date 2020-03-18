@@ -43,7 +43,7 @@ export default class LargeVideo extends Component<{}> {
             height: '160px',
             width: '240px',
             right: '31px',
-            bottom: '71px',
+            bottom: '7px',
             zIndex: '200',
             objectFit: 'fill'
         };
