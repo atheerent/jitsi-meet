@@ -316,7 +316,8 @@ export class VideoContainer extends LargeContainer {
     getStreamSize() {
         const video = this.$video[0];
 
-
+        APP.API.notifyVideoData(video.videoWidth, video.videoHeight);
+        
         return {
             width: video.videoWidth,
             height: video.videoHeight

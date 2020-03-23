@@ -87,7 +87,8 @@ const events = {
     'recorder-status-changed': 'recorderStatusChanged',
     'conference-timestamp-changed': 'conferenceTimestampChanged',
     'screenshot-ready': 'screenShotReady',
-    'on-stage-participant-changed': 'onStageParticipantChanged'
+    'on-stage-participant-changed': 'onStageParticipantChanged',
+    'video-data': 'videoData'
 };
 
 /**

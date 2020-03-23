@@ -639,6 +639,18 @@ class API {
         });
     }
 
+    notifyVideoData(width: number, height: number) {
+        var videoData = {
+            height: height,
+            width: width
+        };
+        
+        this._sendEvent({
+            name: 'video-data',
+            videoData
+        });
+    }
+
     /**
      * Notify external application of an unexpected camera-related error having
      * occurred.
