@@ -8,7 +8,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
  * development with webpack-dev-server.
  */
 const devServerProxyTarget
-    = process.env.WEBPACK_DEV_SERVER_PROXY_TARGET || 'https://sessions.atheer.dev';
+    = process.env.WEBPACK_DEV_SERVER_PROXY_TARGET || 'https://meet.airsuite-live.atheerair.com';
 
 const analyzeBundle = process.argv.indexOf('--analyze-bundle') !== -1;
 

@@ -433,6 +433,13 @@ class API {
         })
     }
 
+    notifyVideoDimentions(data) {
+        this._sendEvent({
+            name: 'video-dimentions-ready',
+            data
+        })
+    }
+
     /**
      * Notify external application (if API is enabled) that user left the
      * conference.
@@ -636,18 +643,6 @@ class API {
         this._sendEvent({
             name: 'on-stage-participant-changed',
             id
-        });
-    }
-
-    notifyVideoData(width: number, height: number) {
-        var videoData = {
-            height: height,
-            width: width
-        };
-        
-        this._sendEvent({
-            name: 'video-data',
-            videoData
         });
     }
 

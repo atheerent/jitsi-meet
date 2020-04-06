@@ -123,6 +123,18 @@ function onMessage(event) {
     } else if (receivedData.name == commands.applyZoom) {
         var data = receivedData.data[0];
         applyZoom(data.xValue, data.yValue, data.zValue);
+    } else if(receivedData.name == commands.getVideoDimentions){
+        onGetVideoDimentions();
+    }
+
+    function onGetVideoDimentions() {
+        var remoteVideo = document.getElementById('largeVideo');
+        var data = {
+            width: remoteVideo.clientWidth,
+            height: remoteVideo.clientHeight
+        }
+        APP.API.notifyVideoDimentions(data);
+
     }
 
     function onCaptureScreenshot() {

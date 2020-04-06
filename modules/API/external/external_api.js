@@ -48,7 +48,9 @@ export const commands = {
     startRecording: 'start-recording',
     stopRecording: 'stop-recording',
     captureScreenShot: 'capture-screenshot',
-    screenShotReady: 'screenshot-ready'
+    screenShotReady: 'screenshot-ready',
+    getVideoDimentions: 'get-video-dimentions',
+    videoDimentionsReady: 'video-dimentions-ready'
 };
 
 /**
@@ -88,7 +90,7 @@ const events = {
     'conference-timestamp-changed': 'conferenceTimestampChanged',
     'screenshot-ready': 'screenShotReady',
     'on-stage-participant-changed': 'onStageParticipantChanged',
-    'video-data': 'videoData'
+    'video-dimentions-ready': 'videoDimentionsReady'
 };
 
 /**
