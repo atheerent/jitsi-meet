@@ -520,7 +520,7 @@ export class VideoContainer extends LargeContainer {
         const flipX = stream.isLocal() && this.localFlipX;
 
         this.$video.css({
-            transform: flipX ? 'scaleX(-1)' : 'none'
+            transform: 'scaleX(-1)'
         });
 
         this._updateBackground();
