@@ -50,7 +50,8 @@ export const commands = {
     captureScreenShot: 'capture-screenshot',
     screenShotReady: 'screenshot-ready',
     getVideoDimentions: 'get-video-dimentions',
-    videoDimentionsReady: 'video-dimentions-ready'
+    videoDimentionsReady: 'video-dimentions-ready',
+    switchUser: 'switch-user'
 };
 
 /**
@@ -90,7 +91,8 @@ const events = {
     'conference-timestamp-changed': 'conferenceTimestampChanged',
     'screenshot-ready': 'screenShotReady',
     'on-stage-participant-changed': 'onStageParticipantChanged',
-    'video-dimentions-ready': 'videoDimentionsReady'
+    'video-dimentions-ready': 'videoDimentionsReady',
+    'ar-annotation-ready': 'arAnnotationReady'
 };
 
 /**

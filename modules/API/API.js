@@ -440,6 +440,13 @@ class API {
         })
     }
 
+    notifyArAnnotationReady(data) {
+        this._sendEvent({
+            name: 'ar-annotation-ready',
+            data
+        })
+    }
+
     /**
      * Notify external application (if API is enabled) that user left the
      * conference.

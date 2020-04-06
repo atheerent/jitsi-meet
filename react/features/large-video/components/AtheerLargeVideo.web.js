@@ -7,6 +7,8 @@ import { Captions } from '../../subtitles/';
 
 import { commands } from '../../../../modules/API/external/external_api';
 
+import VideoLayout from '../../../../modules/UI/videolayout/VideoLayout';
+
 var imageQuality = 0.9;
 var context, screenshotCanvas;
 
@@ -125,14 +127,27 @@ function onMessage(event) {
         applyZoom(data.xValue, data.yValue, data.zValue);
     } else if(receivedData.name == commands.getVideoDimentions){
         onGetVideoDimentions();
+    } else if(receivedData.name == commands.switchUser) {
+        onSwitchUser(receivedData.data[0]);
     }
 
-    function onGetVideoDimentions() {
+    function setOrUpdateRemoteVideoDimension() {
         var remoteVideo = document.getElementById('largeVideo');
         var data = {
             width: remoteVideo.clientWidth,
             height: remoteVideo.clientHeight
         }
+        return data;
+    }
+
+    function onSwitchUser(participantId) {
+        VideoLayout.updateLargeVideo(participantId);
+        var data = setOrUpdateRemoteVideoDimension();
+        APP.API.notifyArAnnotationReady(data);
+    }
+
+    function onGetVideoDimentions() {
+        var data = setOrUpdateRemoteVideoDimension();
         APP.API.notifyVideoDimentions(data);
 
     }
