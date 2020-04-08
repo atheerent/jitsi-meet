@@ -52,23 +52,23 @@ export default class LargeVideo extends Component<{}> {
 
         return (
             <div
-                className = 'videocontainer'
-                id = 'largeVideoContainer'>
-                <div id = 'sharedVideo'>
-                    <div id = 'sharedVideoIFrame' />
+                className='videocontainer'
+                id='largeVideoContainer'>
+                <div id='sharedVideo'>
+                    <div id='sharedVideoIFrame' />
                 </div>
-                <div id = 'etherpad' />
+                <div id='etherpad' />
 
                 <Watermarks />
 
-                <div id = 'dominantSpeaker'>
-                    <div className = 'dynamic-shadow' />
-                    <div id = 'dominantSpeakerAvatarContainer' />
+                <div id='dominantSpeaker'>
+                    <div className='dynamic-shadow' />
+                    <div id='dominantSpeakerAvatarContainer' />
                 </div>
-                <div id = 'remotePresenceMessage' />
-                <span id = 'remoteConnectionMessage' />
-                <div id = 'largeVideoElementsContainer'>
-                    <div id = 'largeVideoBackgroundContainer' />
+                <div id='remotePresenceMessage' />
+                <span id='remoteConnectionMessage' />
+                <div id='largeVideoElementsContainer'>
+                    <div id='largeVideoBackgroundContainer' />
 
                     {/*
                       * FIXME: the architecture of elements related to the large
@@ -78,23 +78,23 @@ export default class LargeVideo extends Component<{}> {
                       * another container for the background and the
                       * largeVideoWrapper in order to hide/show them.
                       */}
-                    <div id = 'largeVideoWrapper'>
+                    <div id='largeVideoWrapper'>
                         <video
-                            autoPlay = { true }
-                            id = 'largeVideo'
-                            muted = { true } />
+                            autoPlay={true}
+                            id='largeVideo'
+                            muted={true} />
                     </div>
                     <div id='screenshotWrapper' className='w-full' style={screenshotStyle} >
                         <canvas id='screenshot-canvas' className='w-full' style={styles}></canvas>
                     </div>
                     <div id='zoomWrapper' style={styles} className='w-full'>
-                        <video autoPlay={true} id='previewVideo' 
-                        muted={true} style={zoomStyle}/>
+                        <video autoPlay={true} id='previewVideo'
+                            muted={true} style={zoomStyle} />
                     </div>
                 </div>
-                { interfaceConfig.DISABLE_TRANSCRIPTION_SUBTITLES
-                    || <Captions /> }
-                <span id = 'localConnectionMessage' />
+                {interfaceConfig.DISABLE_TRANSCRIPTION_SUBTITLES
+                    || <Captions />}
+                <span id='localConnectionMessage' />
             </div>
         );
     }
@@ -120,18 +120,18 @@ function onMessage(event) {
     }
     receivedData = receivedData.params && receivedData.params.data ? receivedData.params.data : receivedData;
 
-    if(receivedData.name == commands.captureScreenShot){
+    if (receivedData.name == commands.captureScreenShot) {
         onCaptureScreenshot();
     } else if (receivedData.name == commands.applyZoom) {
         var data = receivedData.data[0];
         applyZoom(data.xValue, data.yValue, data.zValue);
-    } else if(receivedData.name == commands.getVideoDimentions){
+    } else if (receivedData.name == commands.getVideoDimentions) {
         onGetVideoDimentions();
-    } else if(receivedData.name == commands.switchUser) {
-        onSwitchUser(receivedData.data[0]);
+    } else if (receivedData.name == commands.lockArAnnotation) {
+        onLockArAnnotation(receivedData.data[0]);
     }
 
-    function setOrUpdateRemoteVideoDimension() {
+    function getVideoDimentions() {
         var remoteVideo = document.getElementById('largeVideo');
         var data = {
             width: remoteVideo.clientWidth,
@@ -140,14 +140,14 @@ function onMessage(event) {
         return data;
     }
 
-    function onSwitchUser(participantId) {
+    function onLockArAnnotation(participantId) {
         VideoLayout.updateLargeVideo(participantId);
-        var data = setOrUpdateRemoteVideoDimension();
+        var data = getVideoDimentions();
         APP.API.notifyArAnnotationReady(data);
     }
 
     function onGetVideoDimentions() {
-        var data = setOrUpdateRemoteVideoDimension();
+        var data = getVideoDimentions();
         APP.API.notifyVideoDimentions(data);
 
     }
@@ -169,13 +169,13 @@ function onMessage(event) {
     }
 
     function applyZoom(x, y, z) {
-        if(z === 1) {
+        if (z === 1) {
             x = 0.5;
             y = 0.5;
         }
 
         var zoomView = document.getElementById('zoomWrapper');
-        if(zoomView) {
+        if (zoomView) {
             zoomView.style.display = z == 1 ? "none" : "block";
         }
 
@@ -185,7 +185,7 @@ function onMessage(event) {
 
         fullViewVideo.style.transform = "matrix(" + z + ", 0, 0, " + z + ", " + translationX + ", " + translationY + ")";
     }
-} 
+}
 
 export function setPreviewTrack(track) {
     var previewVideo = document.getElementById('previewVideo');
