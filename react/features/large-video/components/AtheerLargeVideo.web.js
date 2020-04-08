@@ -128,7 +128,8 @@ function onMessage(event) {
     } else if (receivedData.name == commands.getVideoDimentions) {
         onGetVideoDimentions();
     } else if (receivedData.name == commands.lockArAnnotation) {
-        onLockArAnnotation(receivedData.data[0]);
+        var data = receivedData.data[0];
+        onLockArAnnotation(data.participantId, data.isLocked);
     }
 
     function getVideoDimentions() {
@@ -140,10 +141,12 @@ function onMessage(event) {
         return data;
     }
 
-    function onLockArAnnotation(participantId) {
+    function onLockArAnnotation(participantId, isLocked) {
         VideoLayout.updateLargeVideo(participantId);
-        var data = getVideoDimentions();
-        APP.API.notifyArAnnotationReady(data);
+        if(isLocked) {
+            var data = getVideoDimentions();
+            APP.API.notifyArAnnotationReady(data);
+        }
     }
 
     function onGetVideoDimentions() {

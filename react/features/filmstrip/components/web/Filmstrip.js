@@ -18,6 +18,8 @@ import { shouldRemoteVideosBeVisible } from '../../functions';
 
 import Toolbar from './Toolbar';
 
+import { commands } from '../../../../../modules/API/external/external_api';
+
 declare var APP: Object;
 declare var interfaceConfig: Object;
 
@@ -143,7 +145,7 @@ class Filmstrip extends Component <Props> {
         // modified, then the views will get blown away.
 
         return (
-            <div className = { `filmstrip ${this.props._className}` }>
+            <div className = { `filmstrip ${this.props._className}` } id="filmstrip__container">
                 { this.props._filmstripOnly
                     ? <Toolbar /> : this._renderToggleButton() }
                 <div
@@ -321,3 +323,33 @@ function _mapStateToProps(state) {
 }
 
 export default connect(_mapStateToProps)(Filmstrip);
+
+window.addEventListener("message", onMessage, false);
+
+function onMessage(event) {
+    var receivedData;
+    if (!event.data) {
+        console.error('Message event contains no readable data.');
+        return;
+    }
+    if (typeof event.data === 'object') {
+        receivedData = event.data;
+    } else {
+        try {
+            receivedData = JSON.parse(event.data);
+        } catch (e) {
+            receivedData = {};
+            return;
+        }
+    }
+    receivedData = receivedData.params && receivedData.params.data ? receivedData.params.data : receivedData;
+
+    if (receivedData.name == commands.hideThumbnails) {
+        var filmstripContainer = document.getElementById('filmstrip__container');
+        if(receivedData.data[0]) {
+            filmstripContainer.style.display = 'none';
+        } else {
+            filmstripContainer.style.display = 'flex';
+        }
+    }  
+}

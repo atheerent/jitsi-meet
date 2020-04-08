@@ -50,7 +50,8 @@ export const commands = {
     captureScreenShot: 'capture-screenshot',
     screenShotReady: 'screenshot-ready',
     getVideoDimentions: 'get-video-dimentions',
-    lockArAnnotation: 'lock-ar-annotation'
+    lockArAnnotation: 'lock-ar-annotation',
+    hideThumbnails: 'hide-thumbnails'
 };
 
 /**
