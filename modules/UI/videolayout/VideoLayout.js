@@ -633,6 +633,12 @@ const VideoLayout = {
             largeVideo.updateContainerSize();
             largeVideo.resize(animate);
         }
+        var video = document.getElementById('largeVideo');
+        var data = {
+            width: video.clientWidth,
+            height: video.clientHeight
+        };
+        APP.API.notifyOnVideoResize(data);
     },
 
     getSmallVideo(id) {

@@ -447,6 +447,13 @@ class API {
         })
     }
 
+    notifyOnVideoResize(data) {
+        this._sendEvent({
+            name: 'resize-video-dimentions',
+            data
+        })
+    }
+
     /**
      * Notify external application (if API is enabled) that user left the
      * conference.

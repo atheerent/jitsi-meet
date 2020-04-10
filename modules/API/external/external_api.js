@@ -92,7 +92,8 @@ const events = {
     'screenshot-ready': 'screenShotReady',
     'on-stage-participant-changed': 'onStageParticipantChanged',
     'video-dimentions-ready': 'videoDimentionsReady',
-    'ar-annotation-ready': 'arAnnotationReady'
+    'ar-annotation-ready': 'arAnnotationReady',
+    'resize-video-dimentions': 'resizeVideoDimentions'
 };
 
 /**
