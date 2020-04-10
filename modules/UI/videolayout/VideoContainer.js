@@ -315,8 +315,6 @@ export class VideoContainer extends LargeContainer {
      */
     getStreamSize() {
         const video = this.$video[0];
-
-
         return {
             width: video.videoWidth,
             height: video.videoHeight
@@ -522,7 +520,7 @@ export class VideoContainer extends LargeContainer {
         const flipX = stream.isLocal() && this.localFlipX;
 
         this.$video.css({
-            transform: flipX ? 'scaleX(-1)' : 'none'
+            transform: 'scaleX(-1)'
         });
 
         this._updateBackground();
