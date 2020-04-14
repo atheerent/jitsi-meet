@@ -131,11 +131,14 @@ function computeCameraVideoSize( // eslint-disable-line max-params
         const maxWidth = videoSpaceWidth * maxZoomCoefficient;
         const maxHeight = videoSpaceHeight * maxZoomCoefficient;
 
-        if (width > maxWidth) {
-            width = maxWidth;
+        if (width > videoSpaceWidth) {
+            width = videoSpaceWidth;
             height = width / aspectRatio;
-        } else if (height > maxHeight) {
-            height = maxHeight;
+        } else if ( height > videoSpaceHeight) {
+            height = videoSpaceHeight;
+            width = height * aspectRatio;
+        } else {
+            height = width / aspectRatio;
             width = height * aspectRatio;
         }
 
