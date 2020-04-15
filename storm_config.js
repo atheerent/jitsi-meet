@@ -50,7 +50,7 @@ var config = {
     // Testing / experimental features.
     //
 
-    //testing: {
+    testing: {
         // Enables experimental simulcast support on Firefox.
       //  enableFirefoxSimulcast: false,
 
@@ -60,7 +60,10 @@ var config = {
 
         // Enables the test specific features consumed by jitsi-meet-torture
         // testMode: false
-    //},
+        octo: {
+            probability: 1,
+        },
+    },
 
     // Disables ICE/UDP by filtering out local and remote UDP candidates in
     // signalling.
@@ -178,7 +181,7 @@ var config = {
 
     //hidden Domain
     hiddenDomain: 'recorder.sessions.atheer.dev',
-    
+
     // Enable the dropbox integration.
     // dropbox: {
     //     appKey: '<APP_KEY>' // Specify your app key here.
@@ -380,9 +383,9 @@ var config = {
     // Information about the jitsi-meet instance we are connecting to, including
     // the user region as seen by the server.
     deploymentInfo: {
-        // shard: "shard1",
-        // region: "europe",
-        // userRegion: "asia"
+        shard: "{{SHARD}}",
+        region: "{{REGION}}",
+        userRegion: "{{USEREGION}}"
     }
 
     // Local Recording
