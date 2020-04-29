@@ -142,6 +142,13 @@ function computeCameraVideoSize( // eslint-disable-line max-params
             width = height * aspectRatio;
         }
 
+        var data = {
+            width: width,
+            height: height
+        };
+
+        APP.API.notifyOnVideoResize(data);       
+
         return [ width, height ];
     }
     default:
