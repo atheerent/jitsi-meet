@@ -20,6 +20,8 @@ import {
     _VIDEO_INITIAL_MEDIA_STATE
 } from './reducer';
 
+import { VIDEO_MUTISM_AUTHORITY } from './constants';
+
 const logger = require('jitsi-meet-logger').getLogger(__filename);
 
 // TODO (Karim): this is a hack!!! but couldn't find a better way to access dispatch in RCTDeviceEventEmitter
@@ -31,6 +33,25 @@ const { WebRTCModule, DeviceModule } = NativeModules;
 
 const { RNEventEmitter } = NativeModules;
 const emitter = new NativeEventEmitter(RNEventEmitter);
+
+RCTDeviceEventEmitter.addListener('toggleVideo', function(data) {
+    Object.keys(data).forEach((key) => {
+        if (key == 'videoState' && Store) {
+            logger.log('Event:toggleVideo videoState=' + data[key]);
+            Store.dispatch(setVideoMuted(data[key], VIDEO_MUTISM_AUTHORITY.USER, true))
+        }
+    });
+});
+
+emitter.addListener(
+    'toggleVideo',
+    (data) => {
+        if (Store) {
+            console.log('Event:toggleVideo videoState=' + data['videoState']);
+            Store.dispatch(setVideoMuted((data['videoState'] == 'true' ? true : false), VIDEO_MUTISM_AUTHORITY.USER, true));
+        }
+    }
+);
 
 RCTDeviceEventEmitter.addListener('toggleAudio', function(data) {
     Object.keys(data).forEach((key) => {
