@@ -12,6 +12,8 @@ import AbstractConnectionIndicator, {
 
 import { CONNECTOR_INDICATOR_COLORS } from './styles';
 
+import { ConfirmDialog } from '../../../base/dialog';
+
 /**
  * Implements an indicator to show the quality of the connection of a participant.
  */
@@ -24,11 +26,16 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
     constructor(props: Props) {
         super(props);
 
+        logger.warn('here');
+
         this.state = {
             autoHideTimeout: undefined,
             showIndicator: false,
             stats: {}
         };
+
+        this._onCancel = this._onCancel.bind(this);
+
     }
 
     /**
@@ -41,20 +48,38 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
         const { showIndicator, stats } = this.state;
         const { percent } = stats;
 
-        if (!showIndicator || typeof percent === 'undefined') {
+        if (typeof percent === 'undefined') {
             return null;
         }
 
+        var band = "no result";
+        var upload = "no bitrate speed";
+        if (stats.bitrate != 'undefined') {
+            bitrate = "some result";
+            if (stats.bitrate.upload != 'undefined') {
+                upload = 'bitrate up: ' + stats.bitrate.upload + 'kbps';
+            }
+        }
+
         // Signal level on a scale 0..2
-        const signalLevel = Math.floor(percent / 33.4);
+        const signalLevel = 'signal level: ' + Math.floor(percent / 33.4);
 
         return (
-            <BaseIndicator
-                icon = { `signal_cellular_${signalLevel}` }
-                iconStyle = {{
-                    color: CONNECTOR_INDICATOR_COLORS[signalLevel]
-                }} />
+            <Container>
+                <ConfirmDialog
+                    cancelKey='dialog.dismiss'
+                    onCancel={this._onCancel}>
+                    <Text>
+                        {signalLevel}
+                    </Text>
+                </ConfirmDialog>
+            </Container>
         );
+    }
+
+
+    _onCancel() {
+        this.props.dispatch(hideDialog());
     }
 
 }
