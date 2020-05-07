@@ -36,6 +36,8 @@ import VideoMutedIndicator from './VideoMutedIndicator';
 import { selectParticipant, selectParticipantInLargeVideo } from '../../../large-video/actions';
 import { muteMic, toggleFlashlight, openChat, shareFile, setFilmstripVisible } from '../../actions';
 
+import Dialog from "react-native-dialog";
+
 const device = require('react-native-device-detection');
 
 const logger = require('jitsi-meet-logger').getLogger(__filename);
@@ -111,6 +113,8 @@ type Props = {
     _onSwipeRight: ?Function,
 
     _onClickConnectionIndicator: ?Function,
+
+    _onClickDismiss: ?Function,
 
     /**
      * The color-schemed stylesheet of the feature.
@@ -192,7 +196,7 @@ class Thumbnail extends Component<Props> {
 
         this.state = {
             showStats: false
-        }
+        };
 
         // Bind event handlers so they are only bound once for every instance.
         this._onClick = this._onClick.bind(this);
@@ -204,7 +208,8 @@ class Thumbnail extends Component<Props> {
         this._onHideTools = this._onHideTools.bind(this);
         this._onClickChat = this._onClickChat.bind(this);
         this._onClickFileShare = this._onClickFileShare.bind(this);
-        this.__onClickConnectionIndicator = this.__onClickConnectionIndicator.bind(this);
+        this._onClickConnectionIndicator = this._onClickConnectionIndicator.bind(this);
+        this._onClickDismiss = this._onClickDismiss.bind(this);
     }
     /**
      * Implements React's {@link Component#render()}.
@@ -412,7 +417,12 @@ class Thumbnail extends Component<Props> {
                         </Container>
                         }   
                         {
-                            this.state.showStats && <ConnectionIndicator participantId={participant.id} />
+                            <Dialog.Container visible={this.state.showStats}>
+                                <Dialog.Description>
+                                    {participantId}
+                                </Dialog.Description>
+                                <Dialog.Button label="Dismiss" onPress={this._onClickDismiss} />
+                            </Dialog.Container>
                         }
                     </View>
                 }
@@ -493,6 +503,12 @@ class Thumbnail extends Component<Props> {
     _onClickConnectionIndicator() {
         this.setState({
             showStats: true
+        });
+    }
+
+    _onClickDismiss() {
+        this.setState({
+            showStats: false
         });
     }
 

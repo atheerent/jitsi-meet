@@ -12,8 +12,6 @@ import AbstractConnectionIndicator, {
 
 import { CONNECTOR_INDICATOR_COLORS } from './styles';
 
-import { ConfirmDialog } from '../../../base/dialog';
-
 /**
  * Implements an indicator to show the quality of the connection of a participant.
  */
@@ -66,20 +64,10 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
 
         return (
             <Container>
-                <ConfirmDialog
-                    cancelKey='dialog.dismiss'
-                    onCancel={this._onCancel}>
-                    <Text>
-                        {signalLevel}
-                    </Text>
-                </ConfirmDialog>
+                <Text>{signalLevel}</Text>
+                <Text>{upload}</Text>
             </Container>
         );
-    }
-
-
-    _onCancel() {
-        this.props.dispatch(hideDialog());
     }
 
 }
