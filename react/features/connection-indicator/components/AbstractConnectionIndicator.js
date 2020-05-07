@@ -163,7 +163,7 @@ export default class AbstractConnectionIndicator<P: Props, S: State> extends Com
         } else {
             this.autoHideTimeout = setTimeout(() => {
                 this.setState({
-                    showIndicator: true
+                    showIndicator: false
                 });
             }, typeof interfaceConfig === 'undefined'
                 ? 5000
