@@ -37,6 +37,7 @@ import { selectParticipant, selectParticipantInLargeVideo } from '../../../large
 import { muteMic, toggleFlashlight, openChat, shareFile, setFilmstripVisible } from '../../actions';
 
 import Dialog from "react-native-dialog";
+import statsEmitter from '../../../connection-indicator/statsEmitter';
 
 const device = require('react-native-device-detection');
 
@@ -195,7 +196,8 @@ class Thumbnail extends Component<Props> {
         super(props);
 
         this.state = {
-            showStats: false
+            showStats: false,
+            stats: {}
         };
 
         // Bind event handlers so they are only bound once for every instance.
@@ -210,6 +212,7 @@ class Thumbnail extends Component<Props> {
         this._onClickFileShare = this._onClickFileShare.bind(this);
         this._onClickConnectionIndicator = this._onClickConnectionIndicator.bind(this);
         this._onClickDismiss = this._onClickDismiss.bind(this);
+        this._onStatsUpdated = this._onStatsUpdated.bind(this);
     }
     /**
      * Implements React's {@link Component#render()}.
@@ -420,6 +423,7 @@ class Thumbnail extends Component<Props> {
                             <Dialog.Container visible={this.state.showStats}>
                                 <Dialog.Description>
                                     {participantId}
+                                    {JSON.stringify(this.state.stats)}
                                 </Dialog.Description>
                                 <Dialog.Button label="Dismiss" onPress={this._onClickDismiss} />
                             </Dialog.Container>
@@ -428,6 +432,58 @@ class Thumbnail extends Component<Props> {
                 }
             </Container>
         );
+    }
+
+    /**
+     * Starts listening for stat updates.
+     *
+     * @inheritdoc
+     * returns {void}
+     */
+    componentDidMount() {
+        logger.log('subscribing client stat:::'+ this.props.participant.id)
+        statsEmitter.subscribeToClientStats(
+            this.props.participant.id, this._onStatsUpdated);
+    }
+
+    /**
+     * Cleans up any queued processes, which includes listening for new stats
+     * and clearing any timeout to hide the indicator.
+     *
+     * @private
+     * @returns {void}
+     */
+    componentWillUnmount() {
+        statsEmitter.unsubscribeToClientStats(
+            this.props.participant.id, this._onStatsUpdated);
+
+    }
+
+    /**
+     * Callback invoked when new connection stats associated with the passed in
+     * user ID are available. Will update the component's display of current
+     * statistics.
+     *
+     * @param {Object} stats - Connection stats from the library.
+     * @private
+     * @returns {void}
+     */
+    _onStatsUpdated(stats = {}) {
+        // Rely on React to batch setState actions.
+        logger.log('updated client stat:::'+ JSON.stringify(stats))
+        const { connectionQuality } = stats;
+        const newPercentageState = typeof connectionQuality === 'undefined'
+            ? {} : { percent: connectionQuality };
+        const newStats = Object.assign(
+            {},
+            this.state.stats,
+            stats,
+            newPercentageState);
+
+        this.setState({
+            stats: newStats
+        });
+        logger.log('updated client stat:::'+ JSON.stringify(newStats))
     }
 
     /**
