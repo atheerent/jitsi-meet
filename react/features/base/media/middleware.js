@@ -47,7 +47,6 @@ emitter.addListener(
     'toggleVideo',
     (data) => {
         if (Store) {
-            console.log('Event:toggleVideo videoState=' + data['videoState']);
             Store.dispatch(setVideoMuted((data['videoState'] == 'true' ? true : false), VIDEO_MUTISM_AUTHORITY.USER, true));
         }
     }
@@ -66,7 +65,6 @@ emitter.addListener(
     'toggleAudio',
     (data) => {
         if (Store) {
-            console.log('Event:toggleMute audioState=' + data['audioState']);
             Store.dispatch(setAudioMuted((data['audioState'] == 'true' ? true : false), true));
         }
     }
@@ -107,9 +105,7 @@ RCTDeviceEventEmitter.addListener('hasTorch', function() {
 emitter.addListener(
     'initCameraFacingMode',
     (data) => {
-        console.log("initCameraFacingMode");
         if (Store) {
-            console.log('Event:initCameraFacingMode facingMode=' + data['facingMode']);
             Store.dispatch(setCameraFacingMode(data['facingMode'] == 'user' ? CAMERA_FACING_MODE.USER : CAMERA_FACING_MODE.ENVIRONMENT));
         }
     }

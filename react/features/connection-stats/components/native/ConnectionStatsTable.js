@@ -133,7 +133,6 @@ class ConnectionStatsTable extends Component<Props> {
      * @returns {ReactElement}
      */
     render() {
-        console.log("Sanjay-render");
         const isRemoteVideo = !this.props.isLocalVideo;
 
         const { _dialogStyles, isLocalVideo } = this.props;
@@ -168,7 +167,7 @@ class ConnectionStatsTable extends Component<Props> {
         return (
             <View>
                 <Text style={{ color: "black"}}>
-                { this.props.t('connectionindicator.bandwidth') } : &darr;{ download ? `${download} Kbps` : 'N/A' } &uarr; { upload ? `${upload} Kbps` : 'N/A' }
+                { this.props.t('connectionindicator.bandwidth') } &darr;{ download ? `${download} Kbps` : 'N/A' } &uarr; { upload ? `${upload} Kbps` : 'N/A' }
                 </Text>
             </View>
         );
@@ -187,7 +186,7 @@ class ConnectionStatsTable extends Component<Props> {
         return (
             <View>
                 <Text style={{ color: "black"}}>
-                { this.props.t('connectionindicator.bitrate') } : &darr;{ download ? `${download} Kbps` : 'N/A' } &uarr;{ upload ? `${upload} Kbps` : 'N/A' }
+                { this.props.t('connectionindicator.bitrate') } &darr;{ download ? `${download} Kbps` : 'N/A' } &uarr;{ upload ? `${upload} Kbps` : 'N/A' }
                 </Text>
             </View>
         );
@@ -203,7 +202,7 @@ class ConnectionStatsTable extends Component<Props> {
     _renderConnectionSummary() {
         return (
             <View>
-                <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.status') } : { this.props.connectionSummary }</Text>
+                <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.status') } { this.props.connectionSummary }</Text>
             </View>
         );
     }
@@ -221,7 +220,7 @@ class ConnectionStatsTable extends Component<Props> {
 
         return (
             <View>
-                <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.e2e_rtt') } : { str }</Text>
+                <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.e2e_rtt') } { str }</Text>
             </View>
         );
     }
@@ -248,7 +247,7 @@ class ConnectionStatsTable extends Component<Props> {
 
         return (
             <View>
-                <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.connectedTo') } : { str }</Text>
+                <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.connectedTo') } { str }</Text>
             </View>
         );
     }
@@ -270,7 +269,7 @@ class ConnectionStatsTable extends Component<Props> {
 
         return (
             <View>
-                <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.bridgeCount') } : { bridgeCount }</Text>
+                <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.bridgeCount') } { bridgeCount }</Text>
             </View>
         );
     }
@@ -290,7 +289,7 @@ class ConnectionStatsTable extends Component<Props> {
 
         return (
             <View>
-                <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.framerate') } : { frameRateString }</Text>
+                <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.framerate') } { frameRateString }</Text>
             </View>
         );
     }
@@ -311,13 +310,13 @@ class ConnectionStatsTable extends Component<Props> {
 
             return (
                 <View>
-                    <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.packetloss') } : &darr;{ download === null ? 'N/A' : `${download}%` } &uarr;{ upload === null ? 'N/A' : `${upload}%` }</Text>
+                    <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.packetloss') } &darr;{ download === null ? 'N/A' : `${download}%` } &uarr;{ upload === null ? 'N/A' : `${upload}%` }</Text>
                 </View>
             );
         } else {
             return (
                 <View>
-                    <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.packetloss') } : N/A</Text>
+                    <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.packetloss') } N/A</Text>
                 </View>
             );
         }
@@ -342,7 +341,7 @@ class ConnectionStatsTable extends Component<Props> {
 
         return (
             <View>
-                <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.resolution') } : { resolutionString }</Text>
+                <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.resolution') } { resolutionString }</Text>
             </View>
         );
     }
@@ -358,10 +357,9 @@ class ConnectionStatsTable extends Component<Props> {
         const { t, transport } = this.props;
 
         if (!transport || transport.length === 0) {
-
             return (
                 <View>
-                    <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.address') } : N/A</Text>
+                    <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.address') } N/A</Text>
                 </View>
             );
         }
@@ -413,11 +411,10 @@ class ConnectionStatsTable extends Component<Props> {
         const additionalData = [];
 
         if (isP2P) {
-            additionalData.push(
-                <span>{ t('connectionindicator.peer_to_peer') }</span>);
+            additionalData.push(t('connectionindicator.peer_to_peer'));
         }
         if (isTURN) {
-            additionalData.push(<span>{ t('connectionindicator.turn') }</span>);
+            additionalData.push(t('connectionindicator.turn'));
         }
 
         // First show remote statistics, then local, and then transport type.
@@ -475,9 +472,11 @@ class ConnectionStatsTable extends Component<Props> {
     _renderTransportTableRow(config: Object) {
         const { additionalData, data, key, label } = config;
 
-        <View>
-            <Text style={{ color: "black"}}>{ key } : { label } { getStringFromArray(data) }{ additionalData || null }</Text>
-        </View>
+        return (
+            <View>
+                <Text style={{ color: "black"}}>{ label } { getStringFromArray(data) }{ additionalData || null }</Text>
+            </View>
+        );
     }
 }
 

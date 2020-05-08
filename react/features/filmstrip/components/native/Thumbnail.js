@@ -309,7 +309,7 @@ class Thumbnail extends Component<Props> {
                   config={config} >
                     <Container
                         onClick = { this._onClick }
-                        onPress = { this._onPress }
+                        onPress = { this._onClickConnectionIndicator }
                         style = { [
                             style, styleDimension,
                             participant.pinned && !tileView
@@ -418,17 +418,6 @@ class Thumbnail extends Component<Props> {
                         }
                         {
                         !this.props.isExternalSession && <Container
-                            onClick = { this._onClickConnectionIndicator }
-                            style = { [ device.isPhone ? styles.thumbnailToolsMedium : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
-                            <View style = { [ device.isPhone ? styles.thumbnailToolsBackgroundMedium : styles.thumbnailToolBackground , styles.thumbnailToolBackgroundNormal ] }
-                                onPress = { this._onClickConnectionIndicator }>
-                                <Icon name = 'atheer-message'
-                                style = { [ device.isPhone ? styles.thumbnailToolIconSmall : styles.thumbnailToolIcon , styles.thumbnailToolIconNoraml ] } />
-                            </View>
-                        </Container>
-                        }
-                        {
-                        !this.props.isExternalSession && <Container
                             onClick = { this._onClickFileShare }
                             style = { [ device.isPhone ? styles.thumbnailToolsMedium : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
                             <View style = { [ device.isPhone ? styles.thumbnailToolsBackgroundMedium : styles.thumbnailToolBackground, styles.thumbnailToolBackgroundNormal ] }
@@ -517,24 +506,10 @@ class Thumbnail extends Component<Props> {
     _onClickConnectionIndicator() {
         const { dispatch, participant, isLocalVideo } = this.props;
 
-        console.log("Sanjay-_onClickConnectionIndicator");
-
         dispatch(openDialog(ConnectionInfo, {
             participantId: participant.id,
             isLocalVideo: isLocalVideo
         }));
-        // dispatch(openDialog(ConnectionIndicatorDialog, {
-        //     participantId: this.props.participant.id,
-        //     contentKey: {
-        //         key: 'dialog.kickTitle',
-        //         params: {
-        //             participantDisplayName: 'Sanjay'
-        //         }
-        //     },
-        //     onSubmit: () => {
-        //         return true;
-        //     }
-        // }));
     }
 
     static setRemoteViewSize(width, height) {

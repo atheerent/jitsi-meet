@@ -35,6 +35,7 @@ export const ColorPalette = {
     greyTrans: '#A0A1A3E0',
     brightGreen: '#6df07a',
     blackTrans: '#16231EE0',
+    atheerGreen: '#278585',
 
     /**
      * These are colors from the atlaskit to be used on mobile, when needed.

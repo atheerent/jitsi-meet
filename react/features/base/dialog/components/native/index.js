@@ -5,7 +5,6 @@ export { default as ConfirmDialog } from './ConfirmDialog';
 export { default as CustomDialog } from './CustomDialog';
 export { default as DialogContainer } from './DialogContainer';
 export { default as AlertDialog } from './AlertDialog';
-export { default as ConnectionIndicatorDialog } from './ConnectionIndicatorDialog';
 export { default as InputDialog } from './InputDialog';
 export { default as CustomSubmitDialog } from './CustomSubmitDialog';
 

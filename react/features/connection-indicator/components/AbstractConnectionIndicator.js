@@ -67,8 +67,6 @@ export default class AbstractConnectionIndicator<P: Props, S: State> extends Com
     constructor(props: P) {
         super(props);
 
-        console.log("Sanjay->AbstractConnectionIndicator");
-
         // Bind event handlers so they are only bound once for every instance.
         this._onStatsUpdated = this._onStatsUpdated.bind(this);
     }

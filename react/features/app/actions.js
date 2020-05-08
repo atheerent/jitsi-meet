@@ -209,7 +209,6 @@ export function appNavigate(uri: ?string) {
             xmlHttp.open( 'GET', apiurl + 'features/jitsiConfig/' + userId, false); // false for synchronous request
             xmlHttp.send( null );
             if (xmlHttp.responseText != undefined && xmlHttp.responseText != '') {
-                console.log('hao check here??', xmlHttp.responseText);
                 var jsonObj = JSON.parse(xmlHttp.responseText);
                 if (jsonObj != undefined) {
                     console.log('jitsi updating config file with org specific file', jsonObj);

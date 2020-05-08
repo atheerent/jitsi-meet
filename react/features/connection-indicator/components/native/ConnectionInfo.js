@@ -97,7 +97,6 @@ class ConnectionInfo extends AbstractConnectionIndicator<Props, State> {
      */
     constructor(props: Props) {
         super(props);
-        console.log("Sanjay->Render");
         this.state = {
             autoHideTimeout: undefined,
             showIndicator: false,
@@ -130,8 +129,6 @@ class ConnectionInfo extends AbstractConnectionIndicator<Props, State> {
         } = this.state.stats;
         const colorClass = this._getConnectionColorClass();
         const indicatorContainerClassNames = `connection-indicator indicator ${colorClass}`;
-
-        console.log("Sanjay->Render->bandwidth" + JSON.stringify(this.state.stats));
 
         return (
             <CustomSubmitDialog

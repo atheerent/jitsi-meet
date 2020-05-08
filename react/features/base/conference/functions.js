@@ -59,7 +59,6 @@ const emitter = new NativeEventEmitter(RNEventEmitter);
 const subscription = emitter.addListener(
     'setParticipantName',
     (data) => {
-        console.log(data.userHash);
         ParticipantName = data.userHash;
     }
 );

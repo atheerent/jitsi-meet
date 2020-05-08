@@ -14,7 +14,7 @@ export default {
     'Dialog': {
         background: ColorPalette.white,
         border: getRGBAFormat(ColorPalette.white, 0.2),
-        buttonBackground: ColorPalette.blue,
+        buttonBackground: ColorPalette.atheerGreen,
         buttonLabel: ColorPalette.white,
         icon: ColorPalette.white,
         text: ColorPalette.black
