@@ -13,7 +13,9 @@ import {
     openDialog
 } from '../../../base/dialog';
 
-import { ConnectionInfo } from '../../../connection-indicator/components/native/ConnectionInfo';
+import { ConnectionInfo } from '../../../connection-indicator/components';
+
+import { WaitForOwnerDialog } from '../../../authentication/components';
 
 import { Audio, MEDIA_TYPE } from '../../../base/media';
 import {
@@ -514,6 +516,8 @@ class Thumbnail extends Component<Props> {
 
     _onClickConnectionIndicator() {
         const { dispatch, participant, isLocalVideo } = this.props;
+
+        console.log("Sanjay-_onClickConnectionIndicator");
 
         dispatch(openDialog(ConnectionInfo, {
             participantId: participant.id,

@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 
 import React, { Component } from 'react';
 
-import { translate } from '../../base/i18n';
+import { translate } from '../../../base/i18n';
 
-import { getResolutionString } from '../../../../atheer';
+import { getResolutionString } from '../../../../../atheer';
 
 type Props = {
 
@@ -28,7 +28,7 @@ type Props = {
 class ConnectionStatsTable extends Component<Props> {
     /**
      * {@code ConnectionStatsTable} component's property types.
-     * 
+     *
      * @static
      **/
     static propTypes = {
@@ -177,7 +177,7 @@ class ConnectionStatsTable extends Component<Props> {
                 { isRemoteVideo ? null : this._renderRegion() }
                 { isRemoteVideo ? this._renderE2eRtt() : null }
                 { isRemoteVideo ? this._renderRegion() : null }
-                { isRemoteVideo ? null : this._renderBridgeCount() }  
+                { isRemoteVideo ? null : this._renderBridgeCount() }
                 </tbody>
             </table>
         );
@@ -621,7 +621,7 @@ class ConnectionStatsTable extends Component<Props> {
         const infoTobBarClass = `connection-info-top-bar ${this.props.connectionStatusClass}`;
         return (<div className={infoTobBarClass}></div>);
     }
-    
+
     _renderPopupTitle() {
         return (
         <div className='connection-info-title-div'>
@@ -630,7 +630,7 @@ class ConnectionStatsTable extends Component<Props> {
         </div>
         );
     }
-    
+
     _renderCallSettingsNote() {
         const { t, transport } = this.props;
         const isRemoteVideo = !this.props.isLocalVideo;
