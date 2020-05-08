@@ -162,7 +162,7 @@ class Filmstrip extends Component<Props> {
                     this._separateLocalThumbnail
                         && !isNarrowAspectRatio_
                         && this.props._visible
-                        && <Thumbnail participant = { this.props._localParticipant }  />
+                        && <Thumbnail participant = { this.props._localParticipant } isLocalVideo = { true } />
                 }
                 { !this.props._forceHidden && !this.props._visible && !this.props._isGlass && <Container
                     style = { [ styles.thumbnailToolBackgroundSmall, styles.thumbnailToolBackgroundDark, 
@@ -203,7 +203,7 @@ class Filmstrip extends Component<Props> {
                     {
                         !this._separateLocalThumbnail
                             && !isNarrowAspectRatio_
-                            && <Thumbnail participant = { this.props._localParticipant }  />
+                            && <Thumbnail participant = { this.props._localParticipant } isLocalVideo = { true } />
                     }
                     {
                         /* eslint-disable react/jsx-wrap-multilines */
@@ -217,14 +217,15 @@ class Filmstrip extends Component<Props> {
                                     extendedToolsParticipant = { this.props._extendedToolsParticipant }
                                     participantsFlashOn = {this.props._participantsFlashOn }
                                     isExternalSession = {this.props._isExternalSession}
-                                    allowToolTips = { true } />)
+                                    allowToolTips = { true } 
+                                    isLocalVideo = { false } />)
 
                         /* eslint-enable react/jsx-wrap-multilines */
                     }
                     {
                         !this._separateLocalThumbnail
                             && isNarrowAspectRatio_
-                            && <Thumbnail participant = { this.props._localParticipant }  />
+                            && <Thumbnail participant = { this.props._localParticipant } isLocalVideo = { true } />
                     }
                 </ScrollView>
                 }
@@ -232,7 +233,7 @@ class Filmstrip extends Component<Props> {
                     this._separateLocalThumbnail
                         && isNarrowAspectRatio_
                         && this.props._visible
-                        && <Thumbnail participant = { this.props._localParticipant }  />
+                        && <Thumbnail participant = { this.props._localParticipant } isLocalVideo = { true } />
                 }
             </Container>
         );

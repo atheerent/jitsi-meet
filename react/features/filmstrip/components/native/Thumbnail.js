@@ -13,6 +13,8 @@ import {
     openDialog
 } from '../../../base/dialog';
 
+import { ConnectionInfo } from '../../../connection-indicator/components/native/ConnectionInfo';
+
 import { Audio, MEDIA_TYPE } from '../../../base/media';
 import {
     PARTICIPANT_ROLE,
@@ -180,7 +182,9 @@ type Props = {
 
     _toZoomParticipantLevel: Object,
 
-    _isExternalSession: Object
+    _isExternalSession: Object,
+
+    isLocalVideo: Object
 };
 
 /**
@@ -241,7 +245,8 @@ class Thumbnail extends Component<Props> {
             _fromZoomParticipantId: _fromZoomParticipantId,
             _fromZoomParticipantLevel: _fromZoomParticipantLevel,
             _toZoomParticipantId: _toZoomParticipantId,
-            _toZoomParticipantLevel: _toZoomParticipantLevel
+            _toZoomParticipantLevel: _toZoomParticipantLevel,
+            isLocalVideo: isLocalVideo
         } = this.props;
 
         let style = styles.thumbnail;
@@ -508,20 +513,24 @@ class Thumbnail extends Component<Props> {
     }
 
     _onClickConnectionIndicator() {
-        const { dispatch, participant } = this.props;
+        const { dispatch, participant, isLocalVideo } = this.props;
 
-        dispatch(openDialog(ConnectionIndicatorDialog, {
-            participantId: this.props.participant.id,
-            contentKey: {
-                key: 'dialog.kickTitle',
-                params: {
-                    participantDisplayName: 'Sanjay'
-                }
-            },
-            onSubmit: () => {
-                return true;
-            }
+        dispatch(openDialog(ConnectionInfo, {
+            participantId: participant.id,
+            isLocalVideo: isLocalVideo
         }));
+        // dispatch(openDialog(ConnectionIndicatorDialog, {
+        //     participantId: this.props.participant.id,
+        //     contentKey: {
+        //         key: 'dialog.kickTitle',
+        //         params: {
+        //             participantDisplayName: 'Sanjay'
+        //         }
+        //     },
+        //     onSubmit: () => {
+        //         return true;
+        //     }
+        // }));
     }
 
     static setRemoteViewSize(width, height) {
