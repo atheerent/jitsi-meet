@@ -101,12 +101,8 @@ class ConnectionInfo extends AbstractConnectionIndicator<Props, State> {
         this.state = {
             autoHideTimeout: undefined,
             showIndicator: false,
-            showMoreStats: true,
             stats: {}
         };
-
-        // Bind event handlers so they are only bound once for every instance.
-        this._onToggleShowMore = this._onToggleShowMore.bind(this);
     }
 
     /**
@@ -149,12 +145,10 @@ class ConnectionInfo extends AbstractConnectionIndicator<Props, State> {
                           e2eRtt = { e2eRtt }
                           framerate = { framerate }
                           isLocalVideo = { this.props.isLocalVideo }
-                          onShowMore = { this._onToggleShowMore }
                           packetLoss = { packetLoss }
                           region = { region }
                           resolution = { resolution }
                           serverRegion = { serverRegion }
-                          shouldShowMore = { this.state.showMoreStats }
                           transport = { transport }
                           connectionStatusClass = { colorClass } >
                       </ConnectionStatsTable>
@@ -227,19 +221,6 @@ class ConnectionInfo extends AbstractConnectionIndicator<Props, State> {
      */
     _getVisibilityClass() {
         return 'show-connection-indicator';
-    }
-
-    _onToggleShowMore: () => void;
-
-    /**
-     * Callback to invoke when the show more link in the popover content is
-     * clicked. Sets the state which will determine if the popover should show
-     * additional statistics about the connection.
-     *
-     * @returns {void}
-     */
-    _onToggleShowMore() {
-        this.setState({ showMoreStats: !this.state.showMoreStats });
     }
 
     /**

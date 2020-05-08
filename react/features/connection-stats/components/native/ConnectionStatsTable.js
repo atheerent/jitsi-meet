@@ -86,11 +86,6 @@ class ConnectionStatsTable extends Component<Props> {
         isLocalVideo: PropTypes.bool,
 
         /**
-         * Callback to invoke when the show additional stats link is clicked.
-         */
-        onShowMore: PropTypes.func,
-
-        /**
          * Statistics related to packet loss.
          * {{
          *     download: Number,
@@ -121,12 +116,6 @@ class ConnectionStatsTable extends Component<Props> {
         serverRegion: PropTypes.string,
 
         /**
-         * Whether or not additional stats about bandwidth and transport should
-         * be displayed. Will not display even if true for remote participants.
-         */
-        shouldShowMore: PropTypes.bool,
-
-        /**
          * Invoked to obtain translated strings.
          */
         t: PropTypes.func,
@@ -144,29 +133,15 @@ class ConnectionStatsTable extends Component<Props> {
      * @returns {ReactElement}
      */
     render() {
-        const { isLocalVideo } = this.props;
-
-        console.log("Sanjay-render" + this.props.bandwidth);
-        
-        return (
-            <Text>
-                { this.props.bandwidth }
-            </Text>
-        );
-    }
-
-    /**
-     * Creates a table as ReactElement that will display additional statistics
-     * related to bandwidth and transport for the local user.
-     *
-     * @private
-     * @returns {ReactElement}
-     */
-    _renderAdditionalStats() {
+        console.log("Sanjay-render");
         const isRemoteVideo = !this.props.isLocalVideo;
+
+        const { _dialogStyles, isLocalVideo } = this.props;
+
         return (
-            <table className = 'connection-info__container'>
-                <tbody>
+            <View>
+                { this._renderConnectionSummary() }
+                { this._renderResolution() }
                 { this._renderFrameRate() }
                 { isRemoteVideo ? null : this._renderBandwidth() }
                 { this._renderBitrate() }
@@ -176,8 +151,7 @@ class ConnectionStatsTable extends Component<Props> {
                 { isRemoteVideo ? this._renderE2eRtt() : null }
                 { isRemoteVideo ? this._renderRegion() : null }
                 { isRemoteVideo ? null : this._renderBridgeCount() }
-                </tbody>
-            </table>
+            </View>
         );
     }
 
@@ -192,21 +166,11 @@ class ConnectionStatsTable extends Component<Props> {
         const { download, upload } = this.props.bandwidth || {};
 
         return (
-            <tr>
-                <td>
-                    { this.props.t('connectionindicator.bandwidth') }
-                </td>
-                <td>
-                    <span className = 'connection-info__download'>
-                        &darr;
-                    </span>
-                    { download ? `${download} Kbps` : 'N/A' }
-                    <span className = 'connection-info__upload'>
-                        &uarr;
-                    </span>
-                    { upload ? `${upload} Kbps` : 'N/A' }
-                </td>
-            </tr>
+            <View>
+                <Text style={{ color: "black"}}>
+                { this.props.t('connectionindicator.bandwidth') } : &darr;{ download ? `${download} Kbps` : 'N/A' } &uarr; { upload ? `${upload} Kbps` : 'N/A' }
+                </Text>
+            </View>
         );
     }
 
@@ -221,23 +185,11 @@ class ConnectionStatsTable extends Component<Props> {
         const { download, upload } = this.props.bitrate || {};
 
         return (
-            <tr>
-                <td>
-                    <span>
-                        { this.props.t('connectionindicator.bitrate') }
-                    </span>
-                </td>
-                <td>
-                    <span className = 'connection-info__download'>
-                        &darr;
-                    </span>
-                    { download ? `${download} Kbps` : 'N/A' }
-                    <span className = 'connection-info__upload'>
-                        &uarr;
-                    </span>
-                    { upload ? `${upload} Kbps` : 'N/A' }
-                </td>
-            </tr>
+            <View>
+                <Text style={{ color: "black"}}>
+                { this.props.t('connectionindicator.bitrate') } : &darr;{ download ? `${download} Kbps` : 'N/A' } &uarr;{ upload ? `${upload} Kbps` : 'N/A' }
+                </Text>
+            </View>
         );
     }
 
@@ -250,12 +202,9 @@ class ConnectionStatsTable extends Component<Props> {
      */
     _renderConnectionSummary() {
         return (
-            <tr className = 'connection-info__status'>
-                <td>
-                    <span className = 'bandwidth-indicator'>{ this.props.t('connectionindicator.status') }</span>
-                </td>
-                <td>{ this.props.connectionSummary }</td>
-            </tr>
+            <View>
+                <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.status') } : { this.props.connectionSummary }</Text>
+            </View>
         );
     }
 
@@ -271,12 +220,9 @@ class ConnectionStatsTable extends Component<Props> {
         const str = e2eRtt ? `${e2eRtt.toFixed(0)}ms` : 'N/A';
 
         return (
-            <tr>
-                <td>
-                    <span>{ t('connectionindicator.e2e_rtt') }</span>
-                </td>
-                <td>{ str }</td>
-            </tr>
+            <View>
+                <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.e2e_rtt') } : { str }</Text>
+            </View>
         );
     }
 
@@ -301,12 +247,9 @@ class ConnectionStatsTable extends Component<Props> {
         }
 
         return (
-            <tr>
-                <td>
-                    <span>{ t('connectionindicator.connectedTo') }</span>
-                </td>
-                <td>{ str }</td>
-            </tr>
+            <View>
+                <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.connectedTo') } : { str }</Text>
+            </View>
         );
     }
 
@@ -326,12 +269,9 @@ class ConnectionStatsTable extends Component<Props> {
         }
 
         return (
-            <tr>
-                <td>
-                    <span>{ t('connectionindicator.bridgeCount') }</span>
-                </td>
-                <td>{ bridgeCount }</td>
-            </tr>
+            <View>
+                <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.bridgeCount') } : { bridgeCount }</Text>
+            </View>
         );
     }
 
@@ -349,12 +289,9 @@ class ConnectionStatsTable extends Component<Props> {
             .join(', ') || 'N/A';
 
         return (
-            <tr>
-                <td>
-                    <span>{ t('connectionindicator.framerate') }</span>
-                </td>
-                <td>{ frameRateString }</td>
-            </tr>
+            <View>
+                <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.framerate') } : { frameRateString }</Text>
+            </View>
         );
     }
 
@@ -372,32 +309,18 @@ class ConnectionStatsTable extends Component<Props> {
         if (packetLoss) {
             const { download, upload } = packetLoss;
 
-            packetLossTableData = (
-                <td>
-                    <span className = 'connection-info__download'>
-                        &darr;
-                    </span>
-                    { download === null ? 'N/A' : `${download}%` }
-                    <span className = 'connection-info__upload'>
-                        &uarr;
-                    </span>
-                    { upload === null ? 'N/A' : `${upload}%` }
-                </td>
+            return (
+                <View>
+                    <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.packetloss') } : &darr;{ download === null ? 'N/A' : `${download}%` } &uarr;{ upload === null ? 'N/A' : `${upload}%` }</Text>
+                </View>
             );
         } else {
-            packetLossTableData = <td>N/A</td>;
+            return (
+                <View>
+                    <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.packetloss') } : N/A</Text>
+                </View>
+            );
         }
-
-        return (
-            <tr>
-                <td>
-                    <span>
-                        { t('connectionindicator.packetloss') }
-                    </span>
-                </td>
-                { packetLossTableData }
-            </tr>
-        );
     }
 
     /**
@@ -413,56 +336,14 @@ class ConnectionStatsTable extends Component<Props> {
             .map(ssrc => {
                 const { width, height } = resolution[ssrc];
 
-                return getResolutionString(width);
+                return `${width}x${height}`;
             })
             .join(', ') || 'N/A';
 
         return (
-            <tr>
-                <td>
-                    <span>{ t('connectionindicator.resolution') }</span>
-                </td>
-                <td>{ t(resolutionString) }</td>
-            </tr>
-        );
-    }
-
-    /**
-     * Creates a ReactElement for display a link to toggle showing additional
-     * statistics.
-     *
-     * @private
-     * @returns {ReactElement}
-     */
-    _renderShowMoreLink() {
-        const translationKey
-            = this.props.shouldShowMore
-                ? 'connectionindicator.less'
-                : 'connectionindicator.more';
-
-        return (
-            <a
-                className = 'showmore link'
-                onClick = { this.props.onShowMore } >
-                { this.props.t(translationKey) }
-            </a>
-        );
-    }
-
-    /**
-     * Creates a table as a ReactElement for displaying connection statistics.
-     *
-     * @private
-     * @returns {ReactElement}
-     */
-    _renderStatistics() {
-        return (
-            <table className = 'connection-info__container'>
-                <tbody>
-                { this._renderConnectionSummary() }
-                { this._renderResolution() }
-                </tbody>
-            </table>
+            <View>
+                <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.resolution') } : { resolutionString }</Text>
+            </View>
         );
     }
 
@@ -477,18 +358,12 @@ class ConnectionStatsTable extends Component<Props> {
         const { t, transport } = this.props;
 
         if (!transport || transport.length === 0) {
-            const NA = (
-                <tr key = 'address'>
-                    <td>
-                        <span>{ t('connectionindicator.address') }</span>
-                    </td>
-                    <td>
-                        N/A
-                    </td>
-                </tr>
-            );
 
-            return [ NA ];
+            return (
+                <View>
+                    <Text style={{ color: "black"}}>{ this.props.t('connectionindicator.address') } : N/A</Text>
+                </View>
+            );
         }
 
         const data = {
@@ -600,47 +475,9 @@ class ConnectionStatsTable extends Component<Props> {
     _renderTransportTableRow(config: Object) {
         const { additionalData, data, key, label } = config;
 
-        return (
-            <tr key = { key }>
-                <td>
-                    <span>
-                        { label }
-                    </span>
-                </td>
-                <td>
-                    { getStringFromArray(data) }
-                    { additionalData || null }
-                </td>
-            </tr>
-        );
-    }
-
-    _renderTopPopupBar() {
-        const infoTobBarClass = `connection-info-top-bar ${this.props.connectionStatusClass}`;
-        return (<div className={infoTobBarClass}></div>);
-    }
-
-    _renderPopupTitle() {
-        return (
-        <div className='connection-info-title-div'>
-        { this.props.children }
-        <span className='connection-info-title'>Connection Information</span>
-        </div>
-        );
-    }
-
-    _renderCallSettingsNote() {
-        const { t, transport } = this.props;
-        const isRemoteVideo = !this.props.isLocalVideo;
-        let note = isRemoteVideo ? t('atheer.videoThumbnail.callQualityNote.remote') : t('atheer.videoThumbnail.callQualityNote.local');
-        var noteIconClass = isRemoteVideo ? '' : 'icon-info';
-        var noteTextClass = isRemoteVideo ? 'hide-note-tooltip' : 'note-tooltip';
-        return (
-        <div className='connection-info-note'>
-            <i className={noteIconClass}/>{note}
-            <div className={noteTextClass}>{t('atheer.videoThumbnail.noteTooltip')}</div>
-        </div>
-        );
+        <View>
+            <Text style={{ color: "black"}}>{ key } : { label } { getStringFromArray(data) }{ additionalData || null }</Text>
+        </View>
     }
 }
 

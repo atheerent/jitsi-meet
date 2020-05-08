@@ -12,12 +12,12 @@ export default {
         label: ColorPalette.white
     },
     'Dialog': {
-        background: ColorPalette.blackBlue,
+        background: ColorPalette.white,
         border: getRGBAFormat(ColorPalette.white, 0.2),
         buttonBackground: ColorPalette.blue,
         buttonLabel: ColorPalette.white,
         icon: ColorPalette.white,
-        text: ColorPalette.white
+        text: ColorPalette.black
     },
     'Header': {
         background: ColorPalette.blue,
