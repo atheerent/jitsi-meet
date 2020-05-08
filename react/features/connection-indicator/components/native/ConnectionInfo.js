@@ -131,24 +131,22 @@ class ConnectionInfo extends AbstractConnectionIndicator<Props, State> {
         const indicatorContainerClassNames = `connection-indicator indicator ${colorClass}`;
 
         return (
-            <CustomSubmitDialog
-                cancelKey = 'dialog.dismiss'
-                onCancel = { this._onCancel }>
-                      <ConnectionStatsTable
-                          bandwidth = { bandwidth }
-                          bitrate = { bitrate }
-                          bridgeCount = { bridgeCount }
-                          connectionSummary = { this._getConnectionStatusTip() }
-                          e2eRtt = { e2eRtt }
-                          framerate = { framerate }
-                          isLocalVideo = { this.props.isLocalVideo }
-                          packetLoss = { packetLoss }
-                          region = { region }
-                          resolution = { resolution }
-                          serverRegion = { serverRegion }
-                          transport = { transport }
-                          connectionStatusClass = { colorClass } >
-                      </ConnectionStatsTable>
+            <CustomSubmitDialog>
+                  <ConnectionStatsTable
+                      bandwidth = { bandwidth }
+                      bitrate = { bitrate }
+                      bridgeCount = { bridgeCount }
+                      connectionSummary = { this._getConnectionStatusTip() }
+                      e2eRtt = { e2eRtt }
+                      framerate = { framerate }
+                      isLocalVideo = { this.props.isLocalVideo }
+                      packetLoss = { packetLoss }
+                      region = { region }
+                      resolution = { resolution }
+                      serverRegion = { serverRegion }
+                      transport = { transport }
+                      connectionStatusClass = { colorClass } >
+                  </ConnectionStatsTable>
             </CustomSubmitDialog>
         );
     }
