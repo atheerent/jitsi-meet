@@ -13,6 +13,8 @@ import BaseSubmitDialog from './BaseSubmitDialog';
 
 import statsEmitter from '../../../../connection-indicator/statsEmitter';
 
+import { ConnectionStatsTable } from '../../../../connection-stats';
+
 type Props = AbstractProps & {
     participantId: string,
     contentKey: string | { key: string, params: Object},
@@ -104,10 +106,35 @@ class ConnectionIndicatorDialog extends BaseSubmitDialog<Props, State> {
                 ? t(contentKey)
                 : this._renderHTML(t(contentKey.key, contentKey.params));
 
+        const {
+            bandwidth,
+            bitrate,
+            bridgeCount,
+            e2eRtt,
+            framerate,
+            packetLoss,
+            region,
+            resolution,
+            serverRegion,
+            transport
+        } = this.state.stats;
+
         return (
-            <Text style = { _dialogStyles.text }>
-                { JSON.stringify(this.state.stats) }
-            </Text>
+            // <Text style = { _dialogStyles.text }>
+            //     { JSON.stringify(this.state.stats) }
+            // </Text>
+            <ConnectionStatsTable
+                bandwidth = { bandwidth }
+                bitrate = { bitrate }
+                bridgeCount = { bridgeCount }
+                e2eRtt = { e2eRtt }
+                framerate = { framerate }
+                packetLoss = { packetLoss }
+                region = { region }
+                resolution = { resolution }
+                serverRegion = { serverRegion }
+                transport = { transport }>
+            </ConnectionStatsTable>
         );
     }
 

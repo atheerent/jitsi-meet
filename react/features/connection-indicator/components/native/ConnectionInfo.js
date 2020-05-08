@@ -2,7 +2,7 @@ import React from 'react';
 
 import { translate } from '../../../base/i18n';
 import { CustomSubmitDialog, hideDialog } from '../../../base/dialog';
-import { ConnectionStatsTable } from '../../../connection-stats/components/ConnectionStatsTable';
+import { ConnectionStatsTable } from '../../../connection-stats/';
 
 import AbstractConnectionIndicator, {
     INDICATOR_DISPLAY_THRESHOLD,
