@@ -7,7 +7,12 @@ import { Icon } from '../../../base/font-icons';
 import GestureRecognizer, {swipeDirections} from 'react-native-swipe-gestures';
 
 import { ColorSchemeRegistry } from '../../../base/color-scheme';
-import { openDialog } from '../../../base/dialog';
+
+import {
+    ConnectionIndicatorDialog,
+    openDialog
+} from '../../../base/dialog';
+
 import { Audio, MEDIA_TYPE } from '../../../base/media';
 import {
     PARTICIPANT_ROLE,
@@ -36,7 +41,6 @@ import VideoMutedIndicator from './VideoMutedIndicator';
 import { selectParticipant, selectParticipantInLargeVideo } from '../../../large-video/actions';
 import { muteMic, toggleFlashlight, openChat, shareFile, setFilmstripVisible } from '../../actions';
 
-import Dialog from "react-native-dialog";
 import statsEmitter from '../../../connection-indicator/statsEmitter';
 
 const device = require('react-native-device-detection');
@@ -115,7 +119,6 @@ type Props = {
 
     _onClickConnectionIndicator: ?Function,
 
-    _onClickDismiss: ?Function,
 
     /**
      * The color-schemed stylesheet of the feature.
@@ -211,8 +214,6 @@ class Thumbnail extends Component<Props> {
         this._onClickChat = this._onClickChat.bind(this);
         this._onClickFileShare = this._onClickFileShare.bind(this);
         this._onClickConnectionIndicator = this._onClickConnectionIndicator.bind(this);
-        this._onClickDismiss = this._onClickDismiss.bind(this);
-        this._onStatsUpdated = this._onStatsUpdated.bind(this);
     }
     /**
      * Implements React's {@link Component#render()}.
@@ -294,7 +295,7 @@ class Thumbnail extends Component<Props> {
         }
 
         return (
-          <Container style = {[ styles.thumbnailContainer, 
+          <Container style = {[ styles.thumbnailContainer,
                 device.isPhone ? styles.thumbnailToolTopSmall : styles.thumbanilToolTopMedium ]}>
                 <GestureRecognizer
                   onSwipeRight={this._onSwipeRight}
@@ -399,6 +400,17 @@ class Thumbnail extends Component<Props> {
                         </Container>
                         {
                         !this.props.isExternalSession && <Container
+                            onClick = { this._onClickChat }
+                            style = { [ device.isPhone ? styles.thumbnailToolsMedium : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
+                            <View style = { [ device.isPhone ? styles.thumbnailToolsBackgroundMedium : styles.thumbnailToolBackground , styles.thumbnailToolBackgroundNormal ] }
+                                onPress = { this._onClickChat }>
+                                <Icon name = 'atheer-message'
+                                style = { [ device.isPhone ? styles.thumbnailToolIconSmall : styles.thumbnailToolIcon , styles.thumbnailToolIconNoraml ] } />
+                            </View>
+                        </Container>
+                        }
+                        {
+                        !this.props.isExternalSession && <Container
                             onClick = { this._onClickConnectionIndicator }
                             style = { [ device.isPhone ? styles.thumbnailToolsMedium : styles.thumbnailTools, styles.thumbnailToolsMiddleMargin ] }>
                             <View style = { [ device.isPhone ? styles.thumbnailToolsBackgroundMedium : styles.thumbnailToolBackground , styles.thumbnailToolBackgroundNormal ] }
@@ -418,72 +430,11 @@ class Thumbnail extends Component<Props> {
                                 style = { [ device.isPhone ? styles.thumbnailToolIconSmall : styles.thumbnailToolIcon, styles.thumbnailToolIconNoraml ] } />
                             </View>
                         </Container>
-                        }   
-                        {
-                            <Dialog.Container visible={this.state.showStats}>
-                                <Dialog.Description>
-                                    {participantId}
-                                    {JSON.stringify(this.state.stats)}
-                                </Dialog.Description>
-                                <Dialog.Button label="Dismiss" onPress={this._onClickDismiss} />
-                            </Dialog.Container>
                         }
                     </View>
                 }
             </Container>
         );
-    }
-
-    /**
-     * Starts listening for stat updates.
-     *
-     * @inheritdoc
-     * returns {void}
-     */
-    componentDidMount() {
-        logger.log('subscribing client stat:::'+ this.props.participant.id)
-        statsEmitter.subscribeToClientStats(
-            this.props.participant.id, this._onStatsUpdated);
-    }
-
-    /**
-     * Cleans up any queued processes, which includes listening for new stats
-     * and clearing any timeout to hide the indicator.
-     *
-     * @private
-     * @returns {void}
-     */
-    componentWillUnmount() {
-        statsEmitter.unsubscribeToClientStats(
-            this.props.participant.id, this._onStatsUpdated);
-
-    }
-
-    /**
-     * Callback invoked when new connection stats associated with the passed in
-     * user ID are available. Will update the component's display of current
-     * statistics.
-     *
-     * @param {Object} stats - Connection stats from the library.
-     * @private
-     * @returns {void}
-     */
-    _onStatsUpdated(stats = {}) {
-        // Rely on React to batch setState actions.
-        logger.log('updated client stat:::'+ JSON.stringify(stats))
-        const { connectionQuality } = stats;
-        const newPercentageState = typeof connectionQuality === 'undefined'
-            ? {} : { percent: connectionQuality };
-        const newStats = Object.assign(
-            {},
-            this.state.stats,
-            stats,
-            newPercentageState);
-
-        this.setState({
-            stats: newStats
-        });
-        logger.log('updated client stat:::'+ JSON.stringify(newStats))
     }
 
     /**
@@ -557,17 +508,21 @@ class Thumbnail extends Component<Props> {
     }
 
     _onClickConnectionIndicator() {
-        this.setState({
-            showStats: true
-        });
-    }
+        const { dispatch, participant } = this.props;
 
-    _onClickDismiss() {
-        this.setState({
-            showStats: false
-        });
+        dispatch(openDialog(ConnectionIndicatorDialog, {
+            participantId: this.props.participant.id,
+            contentKey: {
+                key: 'dialog.kickTitle',
+                params: {
+                    participantDisplayName: 'Sanjay'
+                }
+            },
+            onSubmit: () => {
+                return true;
+            }
+        }));
     }
-
 
     static setRemoteViewSize(width, height) {
         Thumbnail.remoteViewWidth = DEFAULT_THUMBNAIL_WIDTH;

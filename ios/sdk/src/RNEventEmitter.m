@@ -14,7 +14,7 @@ RCT_EXPORT_MODULE();
 
 - (NSArray<NSString *> *)supportedEvents
 {
-    return @[@"setParticipantName", @"hangUp", @"toggleCamera", @"toggleAudio", @"toggleVideo", @"initCameraFacingMode", @"hideRemoteView", @"showRemoteView", @"setExternalSession"];
+    return @[@"setParticipantName", @"updateFlashlightStatus", @"disableFlashlight", @"enableFlashlight", @"hangUp", @"toggleCamera", @"toggleAudio", @"toggleVideo", @"initCameraFacingMode", @"hideRemoteView", @"showRemoteView", @"setExternalSession", @"videoCallZoom"];
 }
 
 - (void)sendNotificationToReactNativeEventOnly:(NSString *)eventName
