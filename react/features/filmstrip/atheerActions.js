@@ -4,7 +4,8 @@ import {
     SET_THUMBNAIL_STYLE,
     SET_FILMSTRIP_STYLE,
     SET_FILMSTRIP_HIDDEN,
-    SHOW_CONNECTIONS
+    SHOW_CONNECTIONS,
+    UPDATE_CONNECTIONS
 } from './atheerActionTypes';
 
 const logger = require('jitsi-meet-logger').getLogger(__filename);
@@ -12,6 +13,14 @@ const logger = require('jitsi-meet-logger').getLogger(__filename);
 export function showConnectionStats(speed: string) {
     return {
         type: SHOW_CONNECTIONS,
+        speed: speed
+    };
+}
+
+export function updateConnectionStats(participant: string, speed: string) {
+    return {
+        type: UPDATE_CONNECTIONS,
+        participant: participant,
         speed: speed
     };
 }

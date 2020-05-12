@@ -12,7 +12,7 @@ import AbstractConnectionIndicator, {
     type State
 } from '../AbstractConnectionIndicator';
 
-import { showConnectionStats } from '../../../filmstrip/atheerActions';
+import { updateConnectionStats } from '../../../filmstrip/atheerActions';
 
 import { CONNECTOR_INDICATOR_COLORS } from './styles';
 
@@ -61,9 +61,9 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
     render() {
         const { showIndicator, stats } = this.state;
         const { percent } = stats;
-        const { _broadcastStats } = this.props;
+        const { _broadcastStats, participantId } = this.props;
 
-        this.props._broadcastStats('hi');
+        this.props._broadcastStats(participantId, stats);
 
         if (!showIndicator || typeof percent === 'undefined') {
             return null;
@@ -86,8 +86,12 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
 function _mapDispatchToProps(dispatch: Function, ownProps): Object {
     logger.log('deeep _mapDispatchToProps called');
     return {
-        _broadcastStats(stats) {
-            dispatch(showConnectionStats('fuckkkkkkk'));
+        _broadcastStats(participantId, stats) {
+            var percent = 0;
+            if (stats.percent) {
+                percent = stats.percent;
+            }
+            dispatch(updateConnectionStats(participantId, percent));
         }
     };
 }

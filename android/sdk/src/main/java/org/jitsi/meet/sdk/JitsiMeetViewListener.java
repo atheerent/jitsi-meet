@@ -84,6 +84,13 @@ public interface JitsiMeetViewListener {
     void onShowConnections(Map<String, Object> data);
 
     /**
+     * Called when a conference start time changed.
+     *
+     * @param data Map with a "url" key with the conference URL.
+     */
+    void onUpdateConnections(Map<String, Object> data);
+
+    /**
      * Called when recording status changed.
      *
      * @param data Map with a "url" key with the conference URL.

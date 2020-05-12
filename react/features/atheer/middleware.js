@@ -45,7 +45,7 @@ import {
     setFilmstripHidden
 } from '../filmstrip/atheerActions';
 
-import { SHOW_CONNECTIONS } from '../filmstrip/atheerActionTypes';
+import { SHOW_CONNECTIONS, UPDATE_CONNECTIONS } from '../filmstrip/atheerActionTypes';
 
 import {
     setAudioMuted,
@@ -361,6 +361,15 @@ MiddlewareRegistry.register(store => next => action => {
     case SHOW_CONNECTIONS:
         sendEvent(store, type,
         /* data */ {
+            speed: action.speed.toString()
+        });
+        break;
+
+    case UPDATE_CONNECTIONS:
+        sendEvent(store, type,
+        /* data */ {
+            jitsiParticipantId: action.participant,
+            atheerUser: userHashDict[action.participant],
             speed: action.speed.toString()
         });
         break;
