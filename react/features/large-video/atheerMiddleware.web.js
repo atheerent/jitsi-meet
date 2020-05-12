@@ -19,7 +19,6 @@ import {
 
 import { selectParticipant, selectParticipantInLargeVideo } from './actions';
 import { MEDIA_TYPE } from '../base/media';
-import { setPreviewTrack } from './components/AtheerLargeVideo.web';
 import { SELECT_LARGE_VIDEO_PARTICIPANT } from './actionTypes';
 /**
  * Middleware that catches actions related to participants and tracks and
@@ -84,3 +83,8 @@ MiddlewareRegistry.register(store => next => action => {
 
     return result;
 });
+
+function setPreviewTrack(track) {
+    var previewVideo = document.getElementById('previewVideo');
+    track.attach(previewVideo);
+}
