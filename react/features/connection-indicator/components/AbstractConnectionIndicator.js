@@ -6,6 +6,8 @@ import statsEmitter from '../statsEmitter';
 
 declare var interfaceConfig: Object;
 
+const logger = require('jitsi-meet-logger').getLogger(__filename);
+
 /**
  * The connection quality percentage that must be reached to be considered of
  * good quality and can result in the connection indicator being hidden.
@@ -124,6 +126,8 @@ export default class AbstractConnectionIndicator<P: Props, S: State> extends Com
      */
     _onStatsUpdated(stats = {}) {
         // Rely on React to batch setState actions.
+
+        logger.log('deeep stats updated');
         const { connectionQuality } = stats;
         const newPercentageState = typeof connectionQuality === 'undefined'
             ? {} : { percent: connectionQuality };

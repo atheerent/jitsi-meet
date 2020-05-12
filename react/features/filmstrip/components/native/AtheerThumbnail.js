@@ -19,6 +19,7 @@ import { connect } from '../../../base/redux';
 import { StyleType } from '../../../base/styles';
 import { getTrackByMediaTypeAndParticipant } from '../../../base/tracks';
 import { ConnectionIndicator } from '../../../connection-indicator';
+//import { statsEmitter } from '../../../connection-indicator/statsEmitter';
 import { DisplayNameLabel } from '../../../display-name';
 import { RemoteVideoMenu } from '../../../remote-video-menu';
 import { toggleToolboxVisible } from '../../../toolbox';
@@ -192,6 +193,10 @@ function Thumbnail(props: Props) {
                     zOrder = { 1 }
                     isLargeVideo = { false } />
 
+                <View>
+                    <ConnectionIndicator participantId = { participantId }/>
+                </View>
+
                 { renderDisplayName && <DisplayNameLabel participantId = { participantId } /> }
 
                 { audioMuted
@@ -236,7 +241,7 @@ function _mapDispatchToProps(dispatch: Function, ownProps): Object {
          */
         _onShowRemoteVideoMenu() {
             const { participant } = ownProps;
-
+            logger.log('deeep sending show connection stats event');
             dispatch(showConnectionStats('test value'));
         }
     };
