@@ -44,6 +44,9 @@ import {
     setFilmstripStyle,
     setFilmstripHidden
 } from '../filmstrip/atheerActions';
+
+import { SHOW_CONNECTIONS } from '../filmstrip/atheerActionTypes';
+
 import {
     setAudioMuted,
     setVideoMuted,
@@ -352,6 +355,13 @@ MiddlewareRegistry.register(store => next => action => {
         sendEvent(store, type,
         /* data */ {
             startTime: action.time.toString()
+        });
+        break;
+
+    case SHOW_CONNECTIONS:
+        sendEvent(store, type,
+        /* data */ {
+            speed: action.speed.toString()
         });
         break;
 

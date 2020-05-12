@@ -289,6 +289,12 @@ public class JitsiMeetActivity extends FragmentActivity
     }
 
     @Override
+    public void onShowConnections(Map<String, Object> data) {
+        Log.d(TAG, "Show Connections: " + data);
+        on("SHOW_CONNECTIONS", data);
+    }
+
+    @Override
     public void onNotifyConferenceStartTime(Map<String, Object> data) {
         Log.d(TAG, "Pin Participant: " + data);
         on("NOTIFY_CONFERENCE_START_TIME", data);

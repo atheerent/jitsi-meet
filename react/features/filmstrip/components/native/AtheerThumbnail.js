@@ -31,6 +31,8 @@ import styles, { AVATAR_SIZE } from './styles';
 import atheerStyles from './atheerStyles';
 import VideoMutedIndicator from './VideoMutedIndicator';
 
+import { showConnectionStats } from '../../atheerActions';
+
 const logger = require('jitsi-meet-logger').getLogger(__filename);
 
 export const DEFAULT_THUMBNAIL_RADIUS = 40;
@@ -170,7 +172,7 @@ function Thumbnail(props: Props) {
     return (
             <Container
                 onClick = { _onClick }
-                onLongPress = { participant.local ? undefined : _onShowRemoteVideoMenu }
+                onLongPress = { _onShowRemoteVideoMenu }
                 style = { [
                     atheerStyles.atheerThumbnail, thumbnailStyleOverride,
                     participant.pinned && !tileView
@@ -235,9 +237,7 @@ function _mapDispatchToProps(dispatch: Function, ownProps): Object {
         _onShowRemoteVideoMenu() {
             const { participant } = ownProps;
 
-            dispatch(openDialog(RemoteVideoMenu, {
-                participant
-            }));
+            dispatch(showConnectionStats('test value'));
         }
     };
 }
