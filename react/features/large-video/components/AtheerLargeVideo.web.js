@@ -7,7 +7,7 @@ import { Captions } from '../../subtitles/';
 
 import { commands } from '../../../../modules/API/external/external_api';
 
-import VideoLayout from '../../../../modules/UI/videolayout/VideoLayout';
+//import VideoLayout from '../../../../modules/UI/videolayout/VideoLayout';
 
 var imageQuality = 0.9;
 var context, screenshotCanvas;
@@ -89,7 +89,7 @@ export default class LargeVideo extends Component<{}> {
                     </div>
                     <div id='zoomWrapper' style={styles} className='w-full'>
                         <video autoPlay={true} id='previewVideo'
-                            muted={true} style={zoomStyle} />
+                        muted={true} style={zoomStyle}/>
                     </div>
                 </div>
                 {interfaceConfig.DISABLE_TRANSCRIPTION_SUBTITLES
@@ -142,16 +142,16 @@ function onMessage(event) {
     }
 
     function onLockArAnnotation(participantId, isLocked) {
-        VideoLayout.updateLargeVideo(participantId);
+        /*VideoLayout.updateLargeVideo(participantId);
         if(isLocked) {
             var data = getVideoDimentions();
             APP.API.notifyArAnnotationReady(data);
-        }
+        }*/
     }
 
     function onGetVideoDimentions() {
-        var data = getVideoDimentions();
-        APP.API.notifyVideoDimentions(data);
+        /*var data = getVideoDimentions();
+        APP.API.notifyVideoDimentions(data);*/
 
     }
 
@@ -193,4 +193,4 @@ function onMessage(event) {
 export function setPreviewTrack(track) {
     var previewVideo = document.getElementById('previewVideo');
     track.attach(previewVideo);
-} 
+}
