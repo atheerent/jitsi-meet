@@ -19,7 +19,6 @@ import {
 
 import { selectParticipant, selectParticipantInLargeVideo } from './actions';
 import { MEDIA_TYPE } from '../base/media';
-//import { setPreviewTrack } from './components/AtheerLargeVideo.web';
 import { SELECT_LARGE_VIDEO_PARTICIPANT } from './actionTypes';
 /**
  * Middleware that catches actions related to participants and tracks and
@@ -38,9 +37,9 @@ MiddlewareRegistry.register(store => next => action => {
     case TRACK_ADDED:
         const largeVideo = state['features/large-video'];
         const addedTrack = action.track;
-        /*if (addedTrack.participantId === largeVideo.participantId && addedTrack.mediaType === MEDIA_TYPE.VIDEO) {
+        if (addedTrack.participantId === largeVideo.participantId && addedTrack.mediaType === MEDIA_TYPE.VIDEO) {
             setPreviewTrack(addedTrack.jitsiTrack);
-        }*/
+        }
         break;
     case PIN_PARTICIPANT:
     case PARTICIPANT_LEFT:
@@ -84,3 +83,8 @@ MiddlewareRegistry.register(store => next => action => {
 
     return result;
 });
+
+function setPreviewTrack(track) {
+    var previewVideo = document.getElementById('previewVideo');
+    track.attach(previewVideo);
+}

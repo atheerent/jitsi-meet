@@ -189,8 +189,3 @@ function onMessage(event) {
         fullViewVideo.style.transform = "matrix(" + z + ", 0, 0, " + z + ", " + translationX + ", " + translationY + ")";
     }
 }
-
-export function setPreviewTrack(track) {
-    var previewVideo = document.getElementById('previewVideo');
-    track.attach(previewVideo);
-}
