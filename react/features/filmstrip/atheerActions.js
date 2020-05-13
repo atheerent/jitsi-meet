@@ -17,11 +17,13 @@ export function showConnectionStats(speed: string) {
     };
 }
 
-export function updateConnectionStats(participant: string, speed: string) {
+export function updateConnectionStats(participant: string, speed: string, bandwidthUp: string, bandwidthDown: string) {
     return {
         type: UPDATE_CONNECTIONS,
         participant: participant,
-        speed: speed
+        speed: speed,
+        bandwidthUp: bandwidthUp,
+        bandwidthDown: bandwidthDown
     };
 }
 

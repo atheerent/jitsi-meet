@@ -370,7 +370,9 @@ MiddlewareRegistry.register(store => next => action => {
         /* data */ {
             jitsiParticipantId: action.participant,
             atheerUser: userHashDict[action.participant],
-            speed: action.speed.toString()
+            speed: action.speed.toString(),
+            bandwidthUp: action.bandwidthUp.toString(),
+            bandwidthDown: action.bandwidthDown.toString()
         });
         break;
 

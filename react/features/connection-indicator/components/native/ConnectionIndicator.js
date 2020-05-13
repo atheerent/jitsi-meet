@@ -88,10 +88,18 @@ function _mapDispatchToProps(dispatch: Function, ownProps): Object {
     return {
         _broadcastStats(participantId, stats) {
             var percent = 0;
+            var bandwidthUp = 0;
+            var bandwidthDown = 0;
             if (stats.percent) {
                 percent = stats.percent;
             }
-            dispatch(updateConnectionStats(participantId, percent));
+            if (stats.bandwidth && stats.bandwidth.upload) {
+                bandwidthUp = stats.bandwidth.upload;
+            }
+            if (stats.bandwidth && stats.bandwidth.download) {
+                bandwidthDown = stats.bandwidth.download;
+            }
+            dispatch(updateConnectionStats(participantId, percent, bandwidthUp, bandwidthDown));
         }
     };
 }
