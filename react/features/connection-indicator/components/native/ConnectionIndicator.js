@@ -90,6 +90,16 @@ function _mapDispatchToProps(dispatch: Function, ownProps): Object {
             var percent = 0;
             var bandwidthUp = 0;
             var bandwidthDown = 0;
+            var bitrateUp = 0;
+            var bitrateDown = 0;
+            var bridgeCount = 0;
+            var e2eRtt = 0;
+            var framerate = '';
+            var packetLossUp = 0;
+            var packetLossDown = 0;
+            var region = '';
+            var resolution = '';
+            var serverRegion = '';
             if (stats.percent) {
                 percent = stats.percent;
             }
@@ -99,7 +109,47 @@ function _mapDispatchToProps(dispatch: Function, ownProps): Object {
             if (stats.bandwidth && stats.bandwidth.download) {
                 bandwidthDown = stats.bandwidth.download;
             }
-            dispatch(updateConnectionStats(participantId, percent, bandwidthUp, bandwidthDown));
+            if (stats.bitrate && stats.bitrate.upload) {
+                bitrateUp = stats.bitrate.upload;
+            }
+            if (stats.bitrate && stats.bitrate.download) {
+                bitrateDown = stats.bitrate.download;
+            }
+            if (stats.bridgeCount) {
+                bridgeCount = stats.bridgeCount;
+            }
+            if (stats.e2eRtt) {
+                e2eRtt = stats.e2eRtt;
+            }
+            if (stats.framerate) {
+                framerate = Object.keys(framerate || {})
+                    .map(ssrc => framerate[ssrc])
+                    .join(', ') || 'N/A';
+            }
+            if (stats.packetLoss && stats.packetLoss.upload) {
+                packetLossUp = stats.packetLoss.upload;
+            }
+            if (stats.packetLoss && stats.packetLoss.download) {
+                packetLossDown = stats.packetLoss.download;
+            }
+            if (stats.region) {
+                region = stats.region;
+            }
+            if (stats.resolution) {
+                resolution = Object.keys(resolution || {})
+                    .map(ssrc => {
+                        const { width, height } = resolution[ssrc];
+
+                        return `${width}x${height}`;
+                    })
+                    .join(', ') || 'N/A';
+            }
+            if (stats.serverRegion) {
+                serverRegion = stats.serverRegion;
+            }
+            dispatch(updateConnectionStats(participantId, percent, bandwidthUp, bandwidthDown,
+                bitrateUp, bitrateDown, bridgeCount, e2eRtt, framerate, packetLossUp, packetLossDown,
+                region, resolution, serverRegion));
         }
     };
 }

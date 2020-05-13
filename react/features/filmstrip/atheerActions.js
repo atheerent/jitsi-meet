@@ -17,13 +17,25 @@ export function showConnectionStats(speed: string) {
     };
 }
 
-export function updateConnectionStats(participant: string, speed: string, bandwidthUp: string, bandwidthDown: string) {
+export function updateConnectionStats(participantId: string, percent: string, bandwidthUp: string, bandwidthDown: string,
+    bitrateUp: string, bitrateDown: string, bridgeCount: string, e2eRtt: string, framerate: string, packetLossUp: string, packetLossDown: string,
+    region: string, resolution: string, serverRegion: string) {
     return {
         type: UPDATE_CONNECTIONS,
-        participant: participant,
+        participant: participantId,
         speed: speed,
         bandwidthUp: bandwidthUp,
-        bandwidthDown: bandwidthDown
+        bandwidthDown: bandwidthDown,
+        bitrateUp: bitrateUp,
+        bitrateDown: bitrateDown,
+        bridgeCount: bridgeCount,
+        e2eRtt: e2eRtt,
+        framerate: framerate,
+        packetLossUp: packetLossUp,
+        packetLossDown: packetLossDown,
+        region: region,
+        resolution: resolution,
+        serverRegion: serverRegion
     };
 }
 

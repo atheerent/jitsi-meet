@@ -372,7 +372,17 @@ MiddlewareRegistry.register(store => next => action => {
             atheerUser: userHashDict[action.participant],
             speed: action.speed.toString(),
             bandwidthUp: action.bandwidthUp.toString(),
-            bandwidthDown: action.bandwidthDown.toString()
+            bandwidthDown: action.bandwidthDown.toString(),
+            bitrateUp: action.bitrateUp.toString(),
+            bitrateDown: action.bitrateDown.toString(),
+            bridgeCount: action.bridgeCount.toString(),
+            e2eRtt: action.e2eRtt.toString(),
+            framerate: action.framerate,
+            packetLossUp: action.packetLossUp.toString(),
+            packetLossDown: action.packetLossDown.toString(),
+            region: action.region,
+            resolution: action.resolution,
+            serverRegion: action.serverRegion
         });
         break;
 
