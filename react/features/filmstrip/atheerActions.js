@@ -10,10 +10,10 @@ import {
 
 const logger = require('jitsi-meet-logger').getLogger(__filename);
 
-export function showConnectionStats(speed: string) {
+export function showConnectionStats(participantId: string) {
     return {
         type: SHOW_CONNECTIONS,
-        speed: speed
+        participantId: participantId
     };
 }
 
@@ -23,7 +23,7 @@ export function updateConnectionStats(participantId: string, percent: string, ba
     return {
         type: UPDATE_CONNECTIONS,
         participant: participantId,
-        speed: speed,
+        speed: percent,
         bandwidthUp: bandwidthUp,
         bandwidthDown: bandwidthDown,
         bitrateUp: bitrateUp,

@@ -361,7 +361,7 @@ MiddlewareRegistry.register(store => next => action => {
     case SHOW_CONNECTIONS:
         sendEvent(store, type,
         /* data */ {
-            speed: action.speed.toString()
+            participantId: action.participantId
         });
         break;
 
