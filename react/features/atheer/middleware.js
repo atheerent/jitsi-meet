@@ -382,7 +382,10 @@ MiddlewareRegistry.register(store => next => action => {
             packetLossDown: action.packetLossDown.toString(),
             region: action.region,
             resolution: action.resolution,
-            serverRegion: action.serverRegion
+            serverRegion: action.serverRegion,
+            localIP: action.localIP,
+            remoteIP: action.remoteIP,
+            transportType: action.transportType
         });
         break;
 

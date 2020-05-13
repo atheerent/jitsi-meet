@@ -19,7 +19,7 @@ export function showConnectionStats(participantId: string) {
 
 export function updateConnectionStats(participantId: string, percent: string, bandwidthUp: string, bandwidthDown: string,
     bitrateUp: string, bitrateDown: string, bridgeCount: string, e2eRtt: string, framerate: string, packetLossUp: string, packetLossDown: string,
-    region: string, resolution: string, serverRegion: string) {
+    region: string, resolution: string, serverRegion: string, localIP: string, remoteIP: string, transportType: string) {
     return {
         type: UPDATE_CONNECTIONS,
         participant: participantId,
@@ -35,7 +35,10 @@ export function updateConnectionStats(participantId: string, percent: string, ba
         packetLossDown: packetLossDown,
         region: region,
         resolution: resolution,
-        serverRegion: serverRegion
+        serverRegion: serverRegion,
+        localIP: localIP,
+        remoteIP: remoteIP,
+        transportType: transportType
     };
 }
 

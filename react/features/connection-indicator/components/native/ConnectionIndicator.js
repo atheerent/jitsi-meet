@@ -100,6 +100,9 @@ function _mapDispatchToProps(dispatch: Function, ownProps): Object {
             var region = '';
             var resolution = '';
             var serverRegion = '';
+            var localIP = '';
+            var remoteIP = '';
+            var transportType = '';
             if (stats.percent) {
                 percent = stats.percent;
             }
@@ -147,9 +150,14 @@ function _mapDispatchToProps(dispatch: Function, ownProps): Object {
             if (stats.serverRegion) {
                 serverRegion = stats.serverRegion;
             }
+            if (stats.transport && stats.transport.length > 0) {
+                localIP = stats.transport[0].localip;
+                remoteIP = stats.transport[0].ip;
+                transportType = stats.transport[0].type;
+            }
             dispatch(updateConnectionStats(participantId, percent, bandwidthUp, bandwidthDown,
                 bitrateUp, bitrateDown, bridgeCount, e2eRtt, framerate, packetLossUp, packetLossDown,
-                region, resolution, serverRegion));
+                region, resolution, serverRegion, localIP, remoteIP, transportType));
         }
     };
 }
