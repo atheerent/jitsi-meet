@@ -125,8 +125,8 @@ function _mapDispatchToProps(dispatch: Function, ownProps): Object {
                 e2eRtt = stats.e2eRtt;
             }
             if (stats.framerate) {
-                framerate = Object.keys(framerate || {})
-                    .map(ssrc => framerate[ssrc])
+                framerate = Object.keys(stats.framerate || {})
+                    .map(ssrc => stats.framerate[ssrc])
                     .join(', ') || 'N/A';
             }
             if (stats.packetLoss && stats.packetLoss.upload) {
@@ -139,9 +139,9 @@ function _mapDispatchToProps(dispatch: Function, ownProps): Object {
                 region = stats.region;
             }
             if (stats.resolution) {
-                resolution = Object.keys(resolution || {})
+                resolution = Object.keys(stats.resolution || {})
                     .map(ssrc => {
-                        const { width, height } = resolution[ssrc];
+                        const { width, height } = stats.resolution[ssrc];
 
                         return `${width}x${height}`;
                     })
