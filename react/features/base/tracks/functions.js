@@ -57,6 +57,9 @@ export function createLocalTracksF(
         resolution
     } = store.getState()['features/base/config'];
 
+    logger.info('createLocalTracksF-constraints', constraints);
+    logger.info('createLocalTracksF-state', store.getState()['features/base/config']);
+
     return (
         JitsiMeetJS.createLocalTracks(
             {
@@ -73,7 +76,10 @@ export function createLocalTracksF(
                 devices: options.devices.slice(0),
                 firefox_fake_device, // eslint-disable-line camelcase
                 micDeviceId,
-                resolution
+                resolution,
+                minFps: constraints.video.fps,
+                maxFps: constraints.video.fps,
+                fps: constraints.video.fps
             },
             firePermissionPromptIsShownEvent)
         .catch(err => {
