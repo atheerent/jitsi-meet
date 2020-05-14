@@ -127,7 +127,6 @@ export default class AbstractConnectionIndicator<P: Props, S: State> extends Com
     _onStatsUpdated(stats = {}) {
         // Rely on React to batch setState actions.
 
-        logger.log('deeep stats updated');
         const { connectionQuality } = stats;
         const newPercentageState = typeof connectionQuality === 'undefined'
             ? {} : { percent: connectionQuality };

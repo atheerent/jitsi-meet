@@ -84,7 +84,6 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
 }
 
 function _mapDispatchToProps(dispatch: Function, ownProps): Object {
-    logger.log('deeep _mapDispatchToProps called');
     return {
         _broadcastStats(participantId, stats) {
             var percent = 0;

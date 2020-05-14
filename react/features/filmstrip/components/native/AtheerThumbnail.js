@@ -241,7 +241,6 @@ function _mapDispatchToProps(dispatch: Function, ownProps): Object {
          */
         _onShowRemoteVideoMenu() {
             const { participant } = ownProps;
-            logger.log('deeep sending show connection stats event');
             dispatch(showConnectionStats(participant.id));
         }
     };
