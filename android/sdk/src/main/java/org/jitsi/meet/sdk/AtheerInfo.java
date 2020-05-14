@@ -26,18 +26,24 @@ public class AtheerInfo {
 
 
     /**
-     * Host.
+     * Proxy.
      */
     private ProxyServerInfo proxyServerInfo;
 
     /**
-     * port
+     * Remote Video
      */
     private RemoteVideoInfo remoteVideoInfo;
+
+    /**
+     * Camera Resolution
+     */
+    private CameraResolutionInfo cameraResolutionInfo;
 
     public AtheerInfo() {
         this.proxyServerInfo = null;
         this.remoteVideoInfo = null;
+        this.cameraResolutionInfo = null;
     }
 
     public AtheerInfo(Bundle b) {
@@ -49,6 +55,10 @@ public class AtheerInfo {
 
         if (b.containsKey("remoteVideoInfo")) {
             this.remoteVideoInfo = new RemoteVideoInfo(b.getBundle("remoteVideoInfo"));
+        }
+
+        if (b.containsKey("cameraResolutionInfo")) {
+            this.cameraResolutionInfo = new CameraResolutionInfo(b.getBundle("cameraResolutionInfo"));
         }
 
     }
@@ -71,6 +81,15 @@ public class AtheerInfo {
         this.remoteVideoInfo = remoteVideoInfo;
     }
 
+    public CameraResolutionInfo getCameraResolutionInfo() {
+
+        return cameraResolutionInfo;
+    }
+
+    public void setCameraResolutionInfo(CameraResolutionInfo cameraResolutionInfo) {
+        this.cameraResolutionInfo = cameraResolutionInfo;
+    }
+
     Bundle asBundle() {
         Bundle b = new Bundle();
 
@@ -80,6 +99,10 @@ public class AtheerInfo {
 
         if (remoteVideoInfo != null) {
             b.putBundle("remoteVideoInfo", remoteVideoInfo.asBundle());
+        }
+
+        if (cameraResolutionInfo != null) {
+            b.putBundle("cameraResolutionInfo", cameraResolutionInfo.asBundle());
         }
         return b;
     }

@@ -107,6 +107,11 @@ export class App extends AbstractApp {
                 logger.log("Calling WebRTCModule.initProxyServerInfo");
                 WebRTCModule.initProxyServerInfo(this.props.atheerInfo.proxyServerInfo.type, this.props.atheerInfo.proxyServerInfo.host, this.props.atheerInfo.proxyServerInfo.port, this.props.atheerInfo.proxyServerInfo.username, this.props.atheerInfo.proxyServerInfo.password);
             }
+
+            if(this.props.atheerInfo && this.props.atheerInfo.cameraResolutionInfo) {
+                logger.log("Calling WebRTCModule.cameraResolutionInfo");
+                WebRTCModule.initCameraResolutionInfo(this.props.atheerInfo.cameraResolutionInfo.width, this.props.atheerInfo.cameraResolutionInfo.height, this.props.atheerInfo.cameraResolutionInfo.frameRate, this.props.atheerInfo.cameraResolutionInfo.useOverRide);
+            }
         });
     }
 
