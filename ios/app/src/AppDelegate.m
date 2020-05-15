@@ -36,24 +36,24 @@
         [FIRApp configure];
         [Fabric with:@[[Crashlytics class]]];
     }
-  
+
     BOOL proxyEnabled = NO;
-    
+
     ProxyServerInfo *proxyServerInfo = [[ProxyServerInfo alloc] init];
     proxyServerInfo.type = @"HTTP";
     proxyServerInfo.host= @"10.0.0.42";
     proxyServerInfo.port = @"3120";
     proxyServerInfo.username = @"test";
     proxyServerInfo.password = @"password";
-  
+
     RemoteVideoInfo *remoteVideoInfo = [[RemoteVideoInfo alloc] init];
     remoteVideoInfo.width = @"140";
     remoteVideoInfo.height = @"100";
-  
+
     AtheerInfo *atheerInfo = [[AtheerInfo alloc] init];
     atheerInfo.proxyServerInfo = proxyServerInfo;
     atheerInfo.remoteVideoInfo = remoteVideoInfo;
-  
+
     JitsiMeet *jitsiMeet = [JitsiMeet sharedInstance];
 
     jitsiMeet.conferenceActivityType = JitsiMeetConferenceActivityType;
@@ -62,12 +62,13 @@
 
     jitsiMeet.defaultConferenceOptions = [JitsiMeetConferenceOptions fromBuilder:^(JitsiMeetConferenceOptionsBuilder *builder) {
         builder.serverURL = [NSURL URLWithString:@"https://meet.jit.si"];
-        builder.welcomePageEnabled = YES;
-      
+        //builder.room = @"https://meet.jit.si/san1#config.resolution=320&config.constraints.video.fps=24";
+        builder.welcomePageEnabled = NO;
+
         if(proxyEnabled) {
           builder.atheerInfo = atheerInfo;
         }
-      
+
         // Apple rejected our app because they claim requiring a
         // Dropbox account for recording is not acceptable.
 #if DEBUG

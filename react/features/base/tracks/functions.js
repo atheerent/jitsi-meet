@@ -50,6 +50,8 @@ export function createLocalTracksF(
         }
     }
 
+    logger.info('createLocalTracksF-state', store.getState()['features/base/config']);
+
     const {
         constraints,
         desktopSharingFrameRate,
@@ -58,7 +60,18 @@ export function createLocalTracksF(
     } = store.getState()['features/base/config'];
 
     logger.info('createLocalTracksF-constraints', constraints);
-    logger.info('createLocalTracksF-state', store.getState()['features/base/config']);
+
+    let {
+        fps
+    } = constraints.video;
+
+    logger.info('createLocalTracksF-fps-from-video-constraint', fps);
+
+    if (typeof fps === 'undefined' || fps === null) {
+        fps = 30;
+    }
+
+    logger.info('createLocalTracksF-fps', fps);
 
     return (
         JitsiMeetJS.createLocalTracks(
@@ -77,9 +90,9 @@ export function createLocalTracksF(
                 firefox_fake_device, // eslint-disable-line camelcase
                 micDeviceId,
                 resolution,
-                minFps: constraints.video.fps,
-                maxFps: constraints.video.fps,
-                fps: constraints.video.fps
+                minFps: fps,
+                maxFps: fps,
+                fps: fps
             },
             firePermissionPromptIsShownEvent)
         .catch(err => {
