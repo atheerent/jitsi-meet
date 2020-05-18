@@ -120,6 +120,7 @@ class RemoteVideoMenuTriggerButton extends Component<Props> {
         return (
             <Popover
                 content = { content }
+                disablePopover = { true }
                 onPopoverOpen = { this._onShowRemoteMenu }
                 position = { this.props.menuPosition }>
                 <span
