@@ -205,17 +205,6 @@ export default class RemoteVideo extends SmallVideo {
             <Provider store = { APP.store }>
                 <I18nextProvider i18n = { i18next }>
                     <AtlasKitThemeProvider mode = 'dark'>
-                        <RemoteVideoMenuTriggerButton
-                            initialVolumeValue = { initialVolumeValue }
-                            isAudioMuted = { this.isAudioMuted }
-                            isModerator = { isModerator }
-                            menuPosition = { remoteMenuPosition }
-                            onMenuDisplay
-                                = {this._onRemoteVideoMenuDisplay.bind(this)}
-                            onRemoteControlToggle = { onRemoteControlToggle }
-                            onVolumeChange = { onVolumeChange }
-                            participantID = { participantID }
-                            remoteControlState = { remoteControlState } />
                     </AtlasKitThemeProvider>
                 </I18nextProvider>
             </Provider>,
