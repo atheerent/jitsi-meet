@@ -649,7 +649,7 @@
 
 .display-name-on-black {
     .avatar-container {
-        visibility: hidden;
+        visibility: visible;
     }
 
     .displayNameContainer {
@@ -661,7 +661,7 @@
     }
 
     video {
-        opacity: 0.2;
+        opacity: 0.6;
         visibility: visible;
     }
 }
@@ -686,7 +686,7 @@
 
 .display-name-on-video {
     .avatar-container {
-        visibility: hidden;
+        visibility: visible;
     }
 
     .displayNameContainer {
@@ -694,10 +694,11 @@
     }
 
     .videocontainer__hoverOverlay {
-        visibility: visible;
+        visibility: hidden;
     }
 
     video {
+        opacity: 0.6;
         visibility: visible;
     }
 }
