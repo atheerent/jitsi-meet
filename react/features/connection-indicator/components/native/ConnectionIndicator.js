@@ -59,6 +59,8 @@ class ConnectionIndicator extends AbstractConnectionIndicator<Props, State> {
      * @returns {ReactElement}
      */
     render() {
+        return;
+        
         const { showIndicator, stats } = this.state;
         const { percent } = stats;
         const { _broadcastStats, participantId } = this.props;
