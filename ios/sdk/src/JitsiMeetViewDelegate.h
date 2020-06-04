@@ -50,6 +50,14 @@
 
 - (void)toggleFlashlight:(NSDictionary *)data;
 
+- (void)notifyConferenceStartTime:(NSDictionary *)data;
+
+- (void)showConnections:(NSDictionary *)data;
+
+- (void)updateConnections:(NSDictionary *)data;
+
+- (void)recordingSessionUpdated:(NSDictionary *)data;
+
 - (void)pinParticipant:(NSDictionary *)data;
 
 /**
