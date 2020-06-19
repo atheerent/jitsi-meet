@@ -67,6 +67,7 @@ class SpeakerStats extends Component<Props, State> {
 
         // Bind event handlers so they are only bound once per instance.
         this._updateStats = this._updateStats.bind(this);
+        this._getDisplayName = this._getDisplayName.bind(this);
     }
 
     /**
@@ -130,20 +131,22 @@ class SpeakerStats extends Component<Props, State> {
         const dominantSpeakerTime = statsModel.getTotalDominantSpeakerTime();
         const hasLeft = statsModel.hasLeft();
 
-        let displayName;
+        let name;
 
         if (statsModel.isLocalStats()) {
             const { t } = this.props;
             const meString = t('me');
 
-            displayName = this.props._localDisplayName;
-            displayName
-                = displayName ? `${displayName} (${meString})` : meString;
+            name = this.props._localDisplayName;
+            name
+                = name ? `${name} (${meString})` : meString;
         } else {
-            displayName
+            name
                 = this.state.stats[userId].getDisplayName()
                     || interfaceConfig.DEFAULT_REMOTE_DISPLAY_NAME;
         }
+
+        let displayName = this._getDisplayName(name);
 
         return (
             <SpeakerStatsItem
@@ -167,6 +170,12 @@ class SpeakerStats extends Component<Props, State> {
         const stats = this.props.conference.getSpeakerStats();
 
         this.setState({ stats });
+    }
+
+    _getDisplayName(name) {
+        var displayName = name.split(':');
+
+        return displayName[2];
     }
 }
 
