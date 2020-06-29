@@ -57,6 +57,8 @@ export function getInitials(s: ?string) {
         names.forEach(name => {
             initials = initials ? initials.concat(name.charAt(0)) : name.charAt(0);
         });
+
+        initials = initials.toUpperCase();
     } else {
         initials = s;
     }
