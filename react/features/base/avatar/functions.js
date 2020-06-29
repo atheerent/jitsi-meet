@@ -50,13 +50,18 @@ export function getInitials(s: ?string) {
             s = displayNameArray[1];
         }
     }
-    const initialsBasis = _.split(s, '@')[0];
-    const words = _.words(initialsBasis);
     let initials = '';
 
-    for (const w of words) {
-        (initials.length < 2) && (initials += w.substr(0, 1).toUpperCase());
+    if(s && s.length > 2) {
+        var names = s.split(' ');
+        names.forEach(name => {
+            initials = initials ? initials.concat(name.charAt(0)) : name.charAt(0);
+        });
+
+        initials = initials.toUpperCase();
+    } else {
+        initials = s;
     }
 
-    return words;
+    return initials;
 }
