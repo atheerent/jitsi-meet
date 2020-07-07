@@ -34,10 +34,11 @@ export default {
         alignItems: 'stretch',
         flex: 1,
         justifyContent: 'center',
-        top: 10,
-        left: 15,
-        position: 'absolute',
-        backgroundColor : "#ffffff00"
+        backgroundColor : "#ffffff00",
+        overflow: 'hidden',
+        position: 'relative',
+        padding: 5, 
+        margin: 2
     },
 
     thumbnailContainer: {
@@ -57,12 +58,20 @@ export default {
         width: 100
     },
 
+    /**
+     * The style of the scrollview containing the remote thumbnails.
+     */
+    scrollView: {
+        flexGrow: 0,
+        padding: 10
+    },
+
     muteAudioIndicatorContainer: {
         alignSelf: 'stretch',
-        bottom: -2,
+        bottom: 0,
         flex: 1,
         flexDirection: 'row',
-        right: -2,
+        right: 0,
         position: 'absolute',
         backgroundColor : "#757575",
         height: 30,

@@ -151,13 +151,13 @@ function Thumbnail(props: Props) {
         width: thumbnailDiameter,
         height: thumbnailDiameter,
         marginBottom: DEFAULT_THUMBNAIL_MARGIN_BOTTOM,
-        marginLeft: index * (thumbnailDiameter + 10)
+        marginLeft: 10
     }
 
     if (_thumbnailStyle && _thumbnailStyle.thumbnailRadius > 0) {
         thumbnailStyleOverride.borderRadius = _thumbnailStyle.thumbnailRadius;
-        thumbnailStyleOverride.width = _thumbnailStyle.thumbnailRadius * 2;
-        thumbnailStyleOverride.height = _thumbnailStyle.thumbnailRadius * 2;
+        thumbnailStyleOverride.width = _thumbnailStyle.thumbnailRadius * 2 + 10;
+        thumbnailStyleOverride.height = _thumbnailStyle.thumbnailRadius * 2 + 10;
     }
 
     /*if (_thumbnailStyle && _thumbnailStyle.thumbnailMarginBottom > 0) {
@@ -169,7 +169,6 @@ function Thumbnail(props: Props) {
         = participantId === largeVideo.participantId;
     const videoMuted = !videoTrack || videoTrack.muted;
     const isScreenShare = videoTrack && videoTrack.videoType === VIDEO_TYPE.DESKTOP;
-
     return (
             <Container
                 onClick = { _onClick }
@@ -177,8 +176,7 @@ function Thumbnail(props: Props) {
                 style = { [
                     atheerStyles.atheerThumbnail, thumbnailStyleOverride,
                     participant.pinned && !tileView
-                        ? _styles.thumbnailPinned : null,
-                    null
+                        ? _styles.thumbnailPinned : null
                 ] }
                 touchFeedback = { false }>
 
@@ -192,10 +190,6 @@ function Thumbnail(props: Props) {
                     useCircleVideo = { true }
                     zOrder = { 1 }
                     isLargeVideo = { false } />
-
-                <View>
-                    <ConnectionIndicator participantId = { participantId }/>
-                </View>
 
                 { renderDisplayName && <DisplayNameLabel participantId = { participantId } /> }
 

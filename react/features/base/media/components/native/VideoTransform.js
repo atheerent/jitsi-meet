@@ -10,6 +10,7 @@ import type { PanResponderInstance } from 'PanResponder';
 
 import { storeVideoTransform } from '../../actions';
 import styles from './styles';
+import logger from '../../../redux/logger';
 
 /**
  * The default/initial transform (= no transform).
@@ -522,7 +523,7 @@ class VideoTransform extends Component<Props, State> {
                 this.canMove = false;
                 transform = {
                     ...DEFAULT_TRANSFORM,
-                    scale: DEFAULT_TRANSFORM.scale
+                    scale: value
                 };
             }
 

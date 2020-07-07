@@ -138,50 +138,34 @@ class Filmstrip extends Component<Props> {
                 ? styles.filmstripNarrow
                 : atheerStyles.atheerFilmstripWide;
 
-        //var filmStripLength = 100 * this.props._participantsNumber + 20;
-        //this.props._visible = true;
-
-        var visibility = this.props._visible;
-
-        var thumbnailRadius = 40;
-        var thumbnailInterval = 10;
-        const _thumbnailStyle = this.props._thumbnailStyle;
-        if (_thumbnailStyle && _thumbnailStyle.thumbnailRadius > 0) {
-            thumbnailRadius = _thumbnailStyle.thumbnailRadius;
-        }
-        if (_thumbnailStyle && _thumbnailStyle.thumbnailMarginBottom > 0) {
-            thumbnailInterval = _thumbnailStyle.thumbnailMarginBottom;
-        }
-
         return (
             <Container
-                visible = { visibility }
-                style = { [ filmstripStyle, filmstripStyleOverride ] }
-                >
+                style = { [filmstripStyle, filmstripStyleOverride] }
+                visible = { this.props._visible }>
+                <ScrollView
+                    horizontal = { !isNarrowAspectRatio_ }
+                    showsHorizontalScrollIndicator = { false }
+                    showsVerticalScrollIndicator = { false }
+                    style = { styles.scrollView } >
+                    {
+                        !this._separateLocalThumbnail
+                            && !isNarrowAspectRatio_
+                            && <Thumbnail
+                            key = { this.props._localParticipant.id }
+                            participant = { this.props._localParticipant } />
+                    }
+                    {
 
-                <Thumbnail
-                    index = {0}
-                    participant = { this.props._localParticipant } />
-                {
+                        this._sort(
+                                this.props._participants,
+                                isNarrowAspectRatio_)
+                            .map(p => (
+                                <Thumbnail
+                                    key = { p.id }
+                                    participant = { p } />))
 
-                    this._sort(
-                            this.props._participants,
-                            isNarrowAspectRatio_)
-                        .map((p, index) => (
-
-                            <Thumbnail
-                                index = {index + 1}
-                                key = { p.id }
-                                participant = { p } />
-                            ))
-
-                }
-                {
-                    this._separateLocalThumbnail
-                        && isNarrowAspectRatio_
-                        && visibility
-                        && <Thumbnail participant = { this.props._localParticipant } />
-                }
+                    }
+                </ScrollView>
             </Container>
         );
     }
