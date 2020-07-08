@@ -18,7 +18,8 @@ export default {
     atheerFilmstripWide: {
         position: 'absolute',
         height: 120,
-        width: 400
+        flexGrow: 0,
+        right: 10
     },
 
     atheerParticipantViewStyle: {
