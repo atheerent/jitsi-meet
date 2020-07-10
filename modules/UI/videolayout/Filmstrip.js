@@ -329,7 +329,7 @@ const Filmstrip = {
         if (currentLayout === LAYOUTS.VERTICAL_FILMSTRIP_VIEW) {
             $('#filmstripLocalVideo').css({
                 // adds 4 px because of small video 2px border
-                width: `${local.thumbWidth + 4}px`
+                width: `74px`
             });
         } else if (currentLayout === LAYOUTS.HORIZONTAL_FILMSTRIP_VIEW) {
             this.filmstrip.css({
