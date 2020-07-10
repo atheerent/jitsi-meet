@@ -7,6 +7,8 @@
     margin: 0 $thumbnailVideoMargin;
     height: 70px !important;
     min-height: 70px !important;
+    width: 70px !important;
+    min-width: 70px !important;
 
 
     &.videoContainerFocused, &:hover {
