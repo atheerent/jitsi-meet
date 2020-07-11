@@ -28,7 +28,7 @@ export default {
         overflow: 'hidden',
         borderColor: '#E2E2E2',
         borderStyle: 'solid',
-        borderWidth: 3
+        borderWidth: 2
     },
 
     atheerThumbnail: {
@@ -38,8 +38,8 @@ export default {
         backgroundColor : "#ffffff00",
         overflow: 'hidden',
         position: 'relative',
-        padding: 5, 
-        margin: 2
+        padding: 0,
+        margin: 1
     },
 
     thumbnailContainer: {
@@ -49,7 +49,7 @@ export default {
         flex: 1,
         flexDirection: 'column',
         justifyContent: 'flex-start',
-        margin: 2,
+        margin: 1,
         overflow: 'visible',
         position: 'relative'
     },
@@ -64,7 +64,7 @@ export default {
      */
     scrollView: {
         flexGrow: 0,
-        padding: 10
+        padding: 0
     },
 
     muteAudioIndicatorContainer: {
@@ -74,18 +74,13 @@ export default {
         flexDirection: 'row',
         right: 0,
         position: 'absolute',
-        backgroundColor : "#757575",
-        height: 30,
-        width: 30,
-        borderRadius: 15,
+        height: 20,
+        width: 20,
         overflow: 'hidden',
-        borderColor: '#E2E2E2',
-        borderStyle: 'solid',
-        borderWidth: 3
     },
 
     muteAudioIndicatorIcon: {
-        marginLeft: 5,
-        marginTop: 5
+        marginLeft: 0,
+        marginTop: 0
     }
 };
