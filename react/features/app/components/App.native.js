@@ -1,7 +1,7 @@
 // @flow
 
 import React from 'react';
-
+import { NativeModules } from 'react-native';
 import '../../atheer';
 import '../../analytics';
 import '../../authentication';
@@ -104,6 +104,16 @@ export class App extends AbstractApp {
 
             if (typeof callIntegrationEnabled !== 'undefined') {
                 dispatch(updateSettings({ disableCallIntegration: !callIntegrationEnabled }));
+            }
+
+            if(this.props.atheerInfo && this.props.atheerInfo.proxyServerInfo) {
+                logger.log("Calling WebRTCModule.initProxyServerInfo");
+                WebRTCModule.initProxyServerInfo(this.props.atheerInfo.proxyServerInfo.type, this.props.atheerInfo.proxyServerInfo.host, this.props.atheerInfo.proxyServerInfo.port, this.props.atheerInfo.proxyServerInfo.username, this.props.atheerInfo.proxyServerInfo.password);
+            }
+
+            if(this.props.atheerInfo && this.props.atheerInfo.cameraResolutionInfo) {
+                logger.log("Calling WebRTCModule.cameraResolutionInfo");
+                WebRTCModule.initCameraResolutionInfo(this.props.atheerInfo.cameraResolutionInfo.width, this.props.atheerInfo.cameraResolutionInfo.height, this.props.atheerInfo.cameraResolutionInfo.frameRate, this.props.atheerInfo.cameraResolutionInfo.useOverRide);
             }
         });
     }

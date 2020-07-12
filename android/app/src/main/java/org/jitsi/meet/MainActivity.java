@@ -91,6 +91,7 @@ public class MainActivity extends JitsiMeetActivity {
             = new JitsiMeetConferenceOptions.Builder()
                 .setWelcomePageEnabled(true)
                 .setServerURL(buildURL("https://session.atheer.si"))
+                .setFeatureFlag("atheer.enabled", false)
                 .build();
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
 

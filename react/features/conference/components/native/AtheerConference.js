@@ -5,7 +5,7 @@ import { NativeModules, SafeAreaView, StatusBar, View } from 'react-native';
 import LinearGradient from 'react-native-linear-gradient';
 
 import { appNavigate } from '../../../app';
-import { PIP_ENABLED, getFeatureFlag } from '../../../base/flags';
+import { PIP_ENABLED, ATHEER_ENABLED, getFeatureFlag } from '../../../base/flags';
 import { Container, LoadingIndicator, TintedView } from '../../../base/react';
 import { connect } from '../../../base/redux';
 import {
@@ -167,7 +167,8 @@ class Conference extends AbstractConference<Props, *> {
             _largeVideoParticipantId,
             _reducedUI,
             _shouldDisplayTileView,
-            _toolboxVisible
+            _toolboxVisible,
+            _atheerEnabled
         } = this.props;
         const showGradient = _toolboxVisible;
         const applyGradientStretching = _filmstripVisible && isNarrowAspectRatio(this) && !_shouldDisplayTileView;
@@ -202,6 +203,10 @@ class Conference extends AbstractConference<Props, *> {
                     }
                 </View>
 
+                {/*
+                  * The Toolbox is in a stacking layer below the Filmstrip.
+                  */}
+                { !_atheerEnabled && <Toolbox /> }
                 <TestConnectionInfo />
 
             </Container>
@@ -375,6 +380,14 @@ function _mapStateToProps(state) {
          * @type {boolean}
          */
         _pictureInPictureEnabled: getFeatureFlag(state, PIP_ENABLED),
+
+        /**
+         * Whether Picture-in-Picture is enabled.
+         *
+         * @private
+         * @type {boolean}
+         */
+        _atheerEnabled: getFeatureFlag(state, ATHEER_ENABLED),
 
         /**
          * The indicator which determines whether the UI is reduced (to

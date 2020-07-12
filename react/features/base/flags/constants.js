@@ -42,3 +42,9 @@ export const PIP_ENABLED = 'pip.enabled';
  * Default: disabled (false).
  */
 export const WELCOME_PAGE_ENABLED = 'welcomepage.enabled';
+
+/**
+ * Flag indicating if the welcome page should be enabled.
+ * Default: disabled (false).
+ */
+export const ATHEER_ENABLED = 'atheer.enabled';
