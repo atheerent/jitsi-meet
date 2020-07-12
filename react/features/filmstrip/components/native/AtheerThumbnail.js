@@ -32,7 +32,8 @@ import styles, { AVATAR_SIZE } from './styles';
 import atheerStyles from './atheerStyles';
 import VideoMutedIndicator from './VideoMutedIndicator';
 
-import { showConnectionStats } from '../../atheerActions';
+import statsEmitter from '../../../connection-indicator/statsEmitter';
+import { ConnectionInfo } from '../../../connection-indicator/components';
 
 const logger = require('jitsi-meet-logger').getLogger(__filename);
 
@@ -58,11 +59,6 @@ type Props = {
      * Handles click/tap event on the thumbnail.
      */
     _onClick: ?Function,
-
-    /**
-     * Handles long press on the thumbnail.
-     */
-    _onShowRemoteVideoMenu: ?Function,
 
     /**
      * Whether to show the dominant speaker indicator or not.
@@ -118,7 +114,11 @@ type Props = {
      */
     tileView?: boolean,
 
-    index?: int
+    index?: int,
+
+    _onClickConnectionIndicator: ?Function,
+
+    isLocalVideo: Object
 };
 
 /**
@@ -132,7 +132,7 @@ function Thumbnail(props: Props) {
         _audioMuted: audioMuted,
         _largeVideo: largeVideo,
         _onClick,
-        _onShowRemoteVideoMenu,
+        _onClickConnectionIndicator,
         _renderDominantSpeakerIndicator: renderDominantSpeakerIndicator,
         _renderModeratorIndicator: renderModeratorIndicator,
         _styles,
@@ -172,7 +172,7 @@ function Thumbnail(props: Props) {
     return (
             <Container
                 onClick = { _onClick }
-                onLongPress = { _onShowRemoteVideoMenu }
+                onLongPress = { _onClickConnectionIndicator }
                 style = { [
                     atheerStyles.atheerThumbnail, thumbnailStyleOverride,
                     participant.pinned && !tileView
@@ -211,7 +211,7 @@ function Thumbnail(props: Props) {
  * @param {Props} ownProps - The own props of the component.
  * @returns {{
  *     _onClick: Function,
- *     _onShowRemoteVideoMenu: Function
+ *     _onClickConnectionIndicator: Function
  * }}
  */
 function _mapDispatchToProps(dispatch: Function, ownProps): Object {
@@ -228,14 +228,13 @@ function _mapDispatchToProps(dispatch: Function, ownProps): Object {
             dispatch(pinParticipant(participant.id));
         },
 
-        /**
-         * Handles long press on the thumbnail.
-         *
-         * @returns {void}
-         */
-        _onShowRemoteVideoMenu() {
-            const { participant } = ownProps;
-            dispatch(showConnectionStats(participant.id));
+        _onClickConnectionIndicator() {
+            const { participant, isLocalVideo } = ownProps;
+
+            dispatch(openDialog(ConnectionInfo, {
+                participantId: participant.id,
+                isLocalVideo: isLocalVideo
+            }));
         }
     };
 }

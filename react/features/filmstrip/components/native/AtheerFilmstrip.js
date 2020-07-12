@@ -152,7 +152,7 @@ class Filmstrip extends Component<Props> {
                             && !isNarrowAspectRatio_
                             && <Thumbnail
                             key = { this.props._localParticipant.id }
-                            participant = { this.props._localParticipant } />
+                            participant = { this.props._localParticipant } isLocalVideo = { true } />
                     }
                     {
 
@@ -162,7 +162,7 @@ class Filmstrip extends Component<Props> {
                             .map(p => (
                                 <Thumbnail
                                     key = { p.id }
-                                    participant = { p } />))
+                                    participant = { p } isLocalVideo = { false } />))
 
                     }
                 </ScrollView>
