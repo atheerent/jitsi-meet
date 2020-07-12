@@ -156,8 +156,8 @@ ext {
 
     // Maven repo where artifacts will be published
     mavenRepo = "s3://atheer-maven/releases"
-    mavenRepoAccessKey = System.env.MAVEN_REPO_ACCESS_KEY ?: ""
-    mavenRepoSecretKey = System.env.MAVEN_REPO_SECRET_KEY ?: ""
+    mavenRepoAccessKey = System.getenv('ATHEER_MAVEN_REPO_ACCESS_KEY')
+    mavenRepoSecretKey = System.getenv('ATHEER_MAVEN_REPO_SECRET_KEY')
 
 
     // Libre build

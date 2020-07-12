@@ -20,7 +20,7 @@ package org.jitsi.meet.sdk;
 import android.app.Activity;
 import androidx.annotation.Nullable;
 
-import com.facebook.react.jscexecutor.JSCExecutorFactory;
+import com.facebook.hermes.reactexecutor.HermesExecutorFactory;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.bridge.NativeModule;
@@ -218,9 +218,8 @@ class ReactInstanceManagerHolder {
             // Ignore any error, the module is not compiled when LIBRE_BUILD is enabled.
         }
 
-        // Keep on using JSC, the jury is out on Hermes.
-        JSCExecutorFactory jsFactory
-            = new JSCExecutorFactory("", "");
+        // Use the Hermes JavaScript engine.
+        HermesExecutorFactory jsFactory = new HermesExecutorFactory();
 
         reactInstanceManager
             = ReactInstanceManager.builder()

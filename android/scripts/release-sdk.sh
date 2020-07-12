@@ -10,7 +10,7 @@ MVN_HTTP=0
 DEFAULT_SDK_VERSION=$(grep sdkVersion ${THIS_DIR}/../gradle.properties | cut -d"=" -f2)
 SDK_VERSION=${OVERRIDE_SDK_VERSION:-${DEFAULT_SDK_VERSION}}
 RN_VERSION=$(jq -r '.dependencies."react-native"' ${THIS_DIR}/../../package.json)
-JSC_VERSION="r"$(jq -r '.dependencies."jsc-android"' ${THIS_DIR}/../../node_modules/react-native/package.json | cut -d . -f 1 | cut -c 2-)
+HERMES_VERSION=$(jq -r '.dependencies."hermes-engine"' ${THIS_DIR}/../../node_modules/react-native/package.json | cut -c 2-)
 DO_GIT_TAG=${GIT_TAG:-0}
 
 if [[ $THE_MVN_REPO == http* ]]; then
@@ -38,17 +38,19 @@ if [[ $MVN_HTTP == 1 ]]; then
         -DgeneratePom=false \
         -DpomFile=react-native-${RN_VERSION}.pom || true
     popd
-    # Push JSC
-    echo "Pushing JSC ${JSC_VERSION} to the Maven repo"
-    pushd ${THIS_DIR}/../../node_modules/jsc-android/dist/org/webkit/android-jsc/${JSC_VERSION}
+    # Push Hermes
+    echo "Pushing Hermes ${HERMES_VERSION} to the Maven repo"
+    pushd ${THIS_DIR}/../../node_modules/hermes-engine/android/
     mvn \
         deploy:deploy-file \
         -Durl=${MVN_REPO} \
         -DrepositoryId=${MVN_REPO_ID} \
-        -Dfile=android-jsc-${JSC_VERSION}.aar \
+        -Dfile=hermes-release.aar \
         -Dpackaging=aar \
-        -DgeneratePom=false \
-        -DpomFile=android-jsc-${JSC_VERSION}.pom || true
+        -DgroupId=com.facebook \
+        -DartifactId=hermes \
+        -Dversion=${HERMES_VERSION} \
+        -DgeneratePom=true || true
     popd
 else
     # Push React Native, if necessary
@@ -64,6 +66,20 @@ else
             -DpomFile=react-native-${RN_VERSION}.pom
         popd
     fi
+
+    # Push Hermes
+    echo "Pushing Hermes ${HERMES_VERSION} to the Maven repo"
+    pushd ${THIS_DIR}/../../node_modules/hermes-engine/android/
+    mvn \
+        deploy:deploy-file \
+        -Durl=${MVN_REPO} \
+        -Dfile=hermes-release.aar \
+        -Dpackaging=aar \
+        -DgroupId=com.facebook \
+        -DartifactId=hermes \
+        -Dversion=${HERMES_VERSION} \
+        -DgeneratePom=true || true
+    popd
 
     # Check if an SDK with that same version has already been released
     if [[ -d ${MVN_REPO}/org/jitsi/react/jitsi-meet-sdk/${SDK_VERSION} ]]; then
