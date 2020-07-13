@@ -17,7 +17,6 @@
 #import <Foundation/Foundation.h>
 
 #import "JitsiMeetUserInfo.h"
-#import "AtheerInfo.h"
 
 @interface JitsiMeetConferenceOptionsBuilder : NSObject
 
@@ -71,8 +70,6 @@
 - (void)setFeatureFlag:(NSString *_Nonnull)flag withBoolean:(BOOL)value;
 - (void)setFeatureFlag:(NSString *_Nonnull)flag withValue:(id _Nonnull)value;
 
-@property (nonatomic, nullable) AtheerInfo *atheerInfo;
-
 @end
 
 @interface JitsiMeetConferenceOptions : NSObject
@@ -93,8 +90,6 @@
 @property (nonatomic, readonly) BOOL welcomePageEnabled;
 
 @property (nonatomic, nullable) JitsiMeetUserInfo *userInfo;
-
-@property (nonatomic, nullable) AtheerInfo *atheerInfo;
 
 + (instancetype _Nonnull)fromBuilder:(void (^_Nonnull)(JitsiMeetConferenceOptionsBuilder *_Nonnull))initBlock;
 - (instancetype _Nonnull)init NS_UNAVAILABLE;

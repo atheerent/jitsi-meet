@@ -18,6 +18,7 @@
 #import "ProxyServerInfo.h"
 #import "ProxyServerInfo+Private.h"
 #import "RemoteVideoInfo+Private.h"
+#import "CameraResolutionInfo+Private.h"
 
 @implementation AtheerInfo
 
@@ -28,7 +29,7 @@
     if (self) {
         self.proxyServerInfo = proxyServerInfo;
         self.remoteVideoInfo = remoteVideoInfo;
-        self.cameraResolutionInfo = cameraResolutionInfo
+        self.cameraResolutionInfo = cameraResolutionInfo;
     }
 
     return self;
