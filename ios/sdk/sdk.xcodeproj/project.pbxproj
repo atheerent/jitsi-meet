@@ -25,6 +25,18 @@
 		0BCA49611EC4B6C600B793EE /* Proximity.m in Sources */ = {isa = PBXBuildFile; fileRef = 0BCA495E1EC4B6C600B793EE /* Proximity.m */; };
 		0BD906EA1EC0C00300C8C18E /* JitsiMeet.h in Headers */ = {isa = PBXBuildFile; fileRef = 0BD906E81EC0C00300C8C18E /* JitsiMeet.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		0F65EECE1D95DA94561BB47E /* libPods-JitsiMeet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 03F2ADC957FF109849B7FCA1 /* libPods-JitsiMeet.a */; };
+		494873E424BCFBE100F26367 /* RemoteVideoInfo+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 494873D824BCFBE000F26367 /* RemoteVideoInfo+Private.h */; };
+		494873E524BCFBE100F26367 /* AtheerInfo+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 494873D924BCFBE000F26367 /* AtheerInfo+Private.h */; };
+		494873E624BCFBE100F26367 /* AtheerInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 494873DA24BCFBE000F26367 /* AtheerInfo.h */; };
+		494873E724BCFBE100F26367 /* CameraResolutionInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 494873DB24BCFBE000F26367 /* CameraResolutionInfo.h */; };
+		494873E824BCFBE100F26367 /* AtheerInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 494873DC24BCFBE000F26367 /* AtheerInfo.m */; };
+		494873E924BCFBE100F26367 /* ProxyServerInfo+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 494873DD24BCFBE000F26367 /* ProxyServerInfo+Private.h */; };
+		494873EA24BCFBE100F26367 /* RemoteVideoInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 494873DE24BCFBE000F26367 /* RemoteVideoInfo.h */; };
+		494873EB24BCFBE100F26367 /* RemoteVideoInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 494873DF24BCFBE000F26367 /* RemoteVideoInfo.m */; };
+		494873EC24BCFBE100F26367 /* CameraResolutionInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 494873E024BCFBE000F26367 /* CameraResolutionInfo.m */; };
+		494873ED24BCFBE100F26367 /* ProxyServerInfo.h in Headers */ = {isa = PBXBuildFile; fileRef = 494873E124BCFBE000F26367 /* ProxyServerInfo.h */; };
+		494873EE24BCFBE100F26367 /* CameraResolutionInfo+Private.h in Headers */ = {isa = PBXBuildFile; fileRef = 494873E224BCFBE100F26367 /* CameraResolutionInfo+Private.h */; };
+		494873EF24BCFBE100F26367 /* ProxyServerInfo.m in Sources */ = {isa = PBXBuildFile; fileRef = 494873E324BCFBE100F26367 /* ProxyServerInfo.m */; };
 		6C31EDC820C06D490089C899 /* recordingOn.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6C31EDC720C06D490089C899 /* recordingOn.mp3 */; };
 		6C31EDCA20C06D530089C899 /* recordingOff.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 6C31EDC920C06D530089C899 /* recordingOff.mp3 */; };
 		752B2800235E290400DB929D /* RNEventEmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 752B27FF235E290400DB929D /* RNEventEmitter.m */; };
@@ -85,6 +97,18 @@
 		0BD906E51EC0C00300C8C18E /* JitsiMeet.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = JitsiMeet.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		0BD906E81EC0C00300C8C18E /* JitsiMeet.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = JitsiMeet.h; sourceTree = "<group>"; };
 		0BD906E91EC0C00300C8C18E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		494873D824BCFBE000F26367 /* RemoteVideoInfo+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "RemoteVideoInfo+Private.h"; sourceTree = "<group>"; };
+		494873D924BCFBE000F26367 /* AtheerInfo+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "AtheerInfo+Private.h"; sourceTree = "<group>"; };
+		494873DA24BCFBE000F26367 /* AtheerInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AtheerInfo.h; sourceTree = "<group>"; };
+		494873DB24BCFBE000F26367 /* CameraResolutionInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CameraResolutionInfo.h; sourceTree = "<group>"; };
+		494873DC24BCFBE000F26367 /* AtheerInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AtheerInfo.m; sourceTree = "<group>"; };
+		494873DD24BCFBE000F26367 /* ProxyServerInfo+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ProxyServerInfo+Private.h"; sourceTree = "<group>"; };
+		494873DE24BCFBE000F26367 /* RemoteVideoInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemoteVideoInfo.h; sourceTree = "<group>"; };
+		494873DF24BCFBE000F26367 /* RemoteVideoInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemoteVideoInfo.m; sourceTree = "<group>"; };
+		494873E024BCFBE000F26367 /* CameraResolutionInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CameraResolutionInfo.m; sourceTree = "<group>"; };
+		494873E124BCFBE000F26367 /* ProxyServerInfo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ProxyServerInfo.h; sourceTree = "<group>"; };
+		494873E224BCFBE100F26367 /* CameraResolutionInfo+Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "CameraResolutionInfo+Private.h"; sourceTree = "<group>"; };
+		494873E324BCFBE100F26367 /* ProxyServerInfo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ProxyServerInfo.m; sourceTree = "<group>"; };
 		6C31EDC720C06D490089C899 /* recordingOn.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = recordingOn.mp3; path = ../../sounds/recordingOn.mp3; sourceTree = "<group>"; };
 		6C31EDC920C06D530089C899 /* recordingOff.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; name = recordingOff.mp3; path = ../../sounds/recordingOff.mp3; sourceTree = "<group>"; };
 		752B27FE235E286600DB929D /* RNEventEmitter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RNEventEmitter.h; sourceTree = "<group>"; };
@@ -188,6 +212,18 @@
 		0BD906E71EC0C00300C8C18E /* src */ = {
 			isa = PBXGroup;
 			children = (
+				494873DA24BCFBE000F26367 /* AtheerInfo.h */,
+				494873DC24BCFBE000F26367 /* AtheerInfo.m */,
+				494873D924BCFBE000F26367 /* AtheerInfo+Private.h */,
+				494873DB24BCFBE000F26367 /* CameraResolutionInfo.h */,
+				494873E024BCFBE000F26367 /* CameraResolutionInfo.m */,
+				494873E224BCFBE100F26367 /* CameraResolutionInfo+Private.h */,
+				494873E124BCFBE000F26367 /* ProxyServerInfo.h */,
+				494873E324BCFBE100F26367 /* ProxyServerInfo.m */,
+				494873DD24BCFBE000F26367 /* ProxyServerInfo+Private.h */,
+				494873DE24BCFBE000F26367 /* RemoteVideoInfo.h */,
+				494873DF24BCFBE000F26367 /* RemoteVideoInfo.m */,
+				494873D824BCFBE000F26367 /* RemoteVideoInfo+Private.h */,
 				A480429821ECE2D800289B73 /* analytics */,
 				0BB9AD7C1F60356D001C08DB /* AppInfo.m */,
 				0BCA495C1EC4B6C600B793EE /* AudioMode.m */,
@@ -301,12 +337,20 @@
 				DE762DB422AFDE76000DEBD6 /* JitsiMeetUserInfo.h in Headers */,
 				0B412F181EDEC65D00B1A0A6 /* JitsiMeetView.h in Headers */,
 				0B93EF7E1EC9DDCD0030D24D /* RCTBridgeWrapper.h in Headers */,
+				494873ED24BCFBE100F26367 /* ProxyServerInfo.h in Headers */,
 				DE81A2DE2317ED5400AE1940 /* JitsiMeetBaseLogHandler.h in Headers */,
 				DE65AACC2318028300290BEC /* JitsiMeetBaseLogHandler+Private.h in Headers */,
 				0B412F221EDEF6EA00B1A0A6 /* JitsiMeetViewDelegate.h in Headers */,
+				494873EA24BCFBE100F26367 /* RemoteVideoInfo.h in Headers */,
 				0BD906EA1EC0C00300C8C18E /* JitsiMeet.h in Headers */,
+				494873E924BCFBE100F26367 /* ProxyServerInfo+Private.h in Headers */,
 				DE81A2D42316AC4D00AE1940 /* JitsiMeetLogger.h in Headers */,
+				494873EE24BCFBE100F26367 /* CameraResolutionInfo+Private.h in Headers */,
+				494873E624BCFBE100F26367 /* AtheerInfo.h in Headers */,
+				494873E724BCFBE100F26367 /* CameraResolutionInfo.h in Headers */,
 				DE65AACA2317FFCD00290BEC /* LogUtils.h in Headers */,
+				494873E524BCFBE100F26367 /* AtheerInfo+Private.h in Headers */,
+				494873E424BCFBE100F26367 /* RemoteVideoInfo+Private.h in Headers */,
 				DEAD3226220C497000E93636 /* JitsiMeetConferenceOptions.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -484,9 +528,13 @@
 				DEAFA779229EAD520033A7FA /* RNRootView.m in Sources */,
 				DE762DB622AFDE8D000DEBD6 /* JitsiMeetUserInfo.m in Sources */,
 				DEAD3227220C497000E93636 /* JitsiMeetConferenceOptions.m in Sources */,
+				494873E824BCFBE100F26367 /* AtheerInfo.m in Sources */,
+				494873EC24BCFBE100F26367 /* CameraResolutionInfo.m in Sources */,
 				0B93EF7F1EC9DDCD0030D24D /* RCTBridgeWrapper.m in Sources */,
 				0BA13D311EE83FF8007BEF7F /* ExternalAPI.m in Sources */,
+				494873EF24BCFBE100F26367 /* ProxyServerInfo.m in Sources */,
 				0BCA49601EC4B6C600B793EE /* POSIX.m in Sources */,
+				494873EB24BCFBE100F26367 /* RemoteVideoInfo.m in Sources */,
 				C6CC49AF207412CF000DFA42 /* PiPViewCoordinator.swift in Sources */,
 				DEFC743F21B178FA00E4DD96 /* LocaleDetector.m in Sources */,
 				0BCA495F1EC4B6C600B793EE /* AudioMode.m in Sources */,
