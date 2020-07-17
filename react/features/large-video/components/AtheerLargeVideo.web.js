@@ -9,6 +9,8 @@ import { commands } from '../../../../modules/API/external/external_api';
 
 import VideoLayout from '../../../../modules/UI/videolayout/VideoLayout';
 
+import { getLocalParticipant as getLocalParticipantFromStore } from '../../base/participants';
+
 var imageQuality = 0.9;
 var context, screenshotCanvas;
 var zoom, zoomX, zoomY;
@@ -169,8 +171,14 @@ function onMessage(event) {
             context.setTransform(zoom, 0, 0, zoom, (0.5 - zoomX * zoom) * screenshotCanvas.width,
                 (0.5 - zoomY * zoom) * screenshotCanvas.height);
         }
+        
+        if(isLocalParticipant()) {
+            context.scale(-1, 1);
+            context.drawImage(remoteVideo, 0, 0, (remoteVideo.videoWidth * -1), remoteVideo.videoHeight);
+        } else {
+            context.drawImage(remoteVideo, 0, 0, remoteVideo.videoWidth, remoteVideo.videoHeight);
+        }   
 
-        context.drawImage(remoteVideo, 0, 0, remoteVideo.videoWidth, remoteVideo.videoHeight);
         var image = {
             width: remoteVideo.videoWidth,
             height: remoteVideo.videoHeight,
@@ -200,4 +208,11 @@ function onMessage(event) {
 
         fullViewVideo.style.transform = "matrix(" + z + ", 0, 0, " + z + ", " + translationX + ", " + translationY + ")";
     }
+}
+
+function isLocalParticipant() {
+    if(getLocalParticipantFromStore(APP.store.getState()).id == VideoLayout.getParticipantId()) {
+        return true;
+    }
+    return false;
 }

@@ -194,6 +194,10 @@ export class VideoContainer extends LargeContainer {
         return $('#largeVideo');
     }
 
+    get $zoomVideo() {
+        return $('#previewVideo');
+    }
+
     /**
      *
      */
@@ -533,6 +537,10 @@ export class VideoContainer extends LargeContainer {
             transform: flipX ? 'scaleX(-1)' : 'none'
         });
 
+        this.$zoomVideo.css({
+            transform: flipX ? 'scaleX(-1)' : 'none'
+        });
+
         this._updateBackground();
 
         // Reset the large video background depending on the stream.
@@ -550,6 +558,10 @@ export class VideoContainer extends LargeContainer {
         }
         this.$video.css({
             transform: this.localFlipX ? 'scaleX(-1)' : 'none'
+        });
+
+        this.$zoomVideo.css({
+            transform: flipX ? 'scaleX(-1)' : 'none'
         });
 
         this._updateBackground();
