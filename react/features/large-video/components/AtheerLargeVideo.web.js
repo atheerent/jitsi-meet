@@ -11,6 +11,7 @@ import VideoLayout from '../../../../modules/UI/videolayout/VideoLayout';
 
 var imageQuality = 0.9;
 var context, screenshotCanvas;
+var zoom, zoomX, zoomY;
 
 declare var interfaceConfig: Object;
 declare var APP: Object;
@@ -162,6 +163,13 @@ function onMessage(event) {
         screenshotCanvas.width = remoteVideo.videoWidth;
         screenshotCanvas.height = remoteVideo.videoHeight;
         context.fillRect(0, 0, remoteVideo.videoWidth, remoteVideo.videoHeight);
+
+        //for zoomed annotation image
+        if (zoom && zoom != undefined) {
+            context.setTransform(zoom, 0, 0, zoom, (0.5 - zoomX * zoom) * screenshotCanvas.width,
+                (0.5 - zoomY * zoom) * screenshotCanvas.height);
+        }
+
         context.drawImage(remoteVideo, 0, 0, remoteVideo.videoWidth, remoteVideo.videoHeight);
         var image = {
             width: remoteVideo.videoWidth,
@@ -185,6 +193,10 @@ function onMessage(event) {
         var fullViewVideo = document.getElementById('largeVideoWrapper');
         var translationX = (0.5 - x) * fullViewVideo.offsetWidth * z;
         var translationY = (0.5 - y) * fullViewVideo.offsetHeight * z;
+
+        zoom = z;
+        zoomX = x;
+        zoomY = y;
 
         fullViewVideo.style.transform = "matrix(" + z + ", 0, 0, " + z + ", " + translationX + ", " + translationY + ")";
     }
