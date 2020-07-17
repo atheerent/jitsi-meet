@@ -561,7 +561,7 @@ export class VideoContainer extends LargeContainer {
         });
 
         this.$zoomVideo.css({
-            transform: flipX ? 'scaleX(-1)' : 'none'
+            transform: this.localFlipX ? 'scaleX(-1)' : 'none'
         });
 
         this._updateBackground();
