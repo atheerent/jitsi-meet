@@ -98,8 +98,19 @@ export function createLocalTracksF(
         firefox_fake_device, // eslint-disable-line camelcase
         resolution
     } = state['features/base/config'];
+
     const constraints = options.constraints
         ?? state['features/base/config'].constraints;
+
+    let fps = 30;
+
+    if(typeof constraints != 'undefined' && constraints.video != 'undefined' && constraints.video.fps != 'undefined') {
+        fps = constraints.video.fps;
+    }
+
+    logger.info('Atheer-createLocalTracksF-constraints', constraints);
+    logger.info('Atheer-createLocalTracksF-resolution', resolution);
+    logger.info('Atheer-createLocalTracksF-fps', fps);
 
     // Do not load blur effect if option for ignoring effects is present.
     // This is needed when we are creating a video track for presenter mode.
@@ -131,7 +142,10 @@ export function createLocalTracksF(
                     effects,
                     firefox_fake_device, // eslint-disable-line camelcase
                     micDeviceId,
-                    resolution
+                    resolution,
+                    minFps: fps,
+                    maxFps: fps,
+                    fps: fps
                 },
                 firePermissionPromptIsShownEvent)
             .catch(err => {
