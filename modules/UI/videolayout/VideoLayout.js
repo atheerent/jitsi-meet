@@ -41,6 +41,8 @@ let largeVideo;
  */
 let localFlipX = null;
 
+let participantId = null;
+
 /**
  * Handler for local flip X changed event.
  * @param {Object} val
@@ -731,6 +733,7 @@ const VideoLayout = {
 
             if (id !== currentId && videoType === VIDEO_CONTAINER_TYPE) {
                 APP.API.notifyOnStageParticipantChanged(id);
+                participantId = id;
             }
 
             let oldSmallVideo;
@@ -761,6 +764,10 @@ const VideoLayout = {
 
             currentSmallVideo && currentSmallVideo.updateView();
         }
+    },
+
+    getParticipantId () {
+        return participantId;
     },
 
     addLargeVideoContainer(type, container) {
