@@ -29,6 +29,7 @@ import org.jitsi.meet.sdk.JitsiMeet;
 import org.jitsi.meet.sdk.JitsiMeetActivity;
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
 
+import java.io.File;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -86,15 +87,8 @@ public class MainActivity extends JitsiMeetActivity {
 
     @Override
     protected void initialize() {
-        // Set default options
-        JitsiMeetConferenceOptions defaultOptions
-            = new JitsiMeetConferenceOptions.Builder()
-                .setWelcomePageEnabled(true)
-                .setServerURL(buildURL("https://session.atheer.si"))
-                .setFeatureFlag("atheer.enabled", false)
-                .build();
+        JitsiMeetConferenceOptions defaultOptions = getJitsiMeetOptions();
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
-
         super.initialize();
     }
 
@@ -147,5 +141,49 @@ public class MainActivity extends JitsiMeetActivity {
         return
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
                 && getApplicationInfo().targetSdkVersion >= Build.VERSION_CODES.M;
+    }
+
+    public String getJitsiConfig() {
+        StringBuffer config = new StringBuffer();
+
+        boolean disableSimulCast = false;
+
+        if(disableSimulCast) {
+            config.append("config.disableSimulcast=" + disableSimulCast + "&");
+        }
+
+        config.append("config.constraints.video.facingMode=\"environment\"&");
+        config.append("config.resolution=640&");
+        config.append("config.constraints.video.fps=15");
+
+
+        Log.d(TAG, "Jitsi Config URL:" + config.toString());
+
+        return config.toString();
+    }
+
+    public JitsiMeetConferenceOptions getJitsiMeetOptions() {
+        boolean useForDebugging = true;
+
+        if(useForDebugging) {
+            JitsiMeetConferenceOptions defaultOptions = new JitsiMeetConferenceOptions.Builder()
+                .setWelcomePageEnabled(false)
+                .setRoom("https://session.atheer.si" + File.separator + "hpe123" + "#" + getJitsiConfig())
+                .setFeatureFlag("pip.enabled", false)
+                .setFeatureFlag("calendar.enabled", false)
+                .setFeatureFlag("chat.enabled", false)
+                .setFeatureFlag("atheer.enabled", false)
+                .build();
+            return defaultOptions;
+        } else {
+            JitsiMeetConferenceOptions defaultOptions
+                = new JitsiMeetConferenceOptions.Builder()
+                .setWelcomePageEnabled(true)
+                .setServerURL(buildURL("https://session.atheer.si"))
+                .setFeatureFlag("atheer.enabled", false)
+                .build();
+
+            return defaultOptions;
+        }
     }
 }
