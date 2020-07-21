@@ -108,6 +108,12 @@ export function createLocalTracksF(
         fps = constraints.video.fps;
     }
 
+    let facingMode = 'user';
+
+    if(typeof constraints != 'undefined' && constraints.video != 'undefined' && constraints.video.facingMode != 'undefined') {
+        facingMode = constraints.video.facingMode;
+    }
+
     logger.info('Atheer-createLocalTracksF-constraints', constraints);
     logger.info('Atheer-createLocalTracksF-resolution', resolution);
     logger.info('Atheer-createLocalTracksF-fps', fps);
@@ -145,7 +151,8 @@ export function createLocalTracksF(
                     resolution,
                     minFps: fps,
                     maxFps: fps,
-                    fps: fps
+                    fps: fps,
+                    facingMode: facingMode
                 },
                 firePermissionPromptIsShownEvent)
             .catch(err => {
