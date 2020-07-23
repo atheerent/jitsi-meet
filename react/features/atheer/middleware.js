@@ -58,6 +58,8 @@ import {
 
 import { sendEvent } from '../mobile/external-api/functions';
 
+import { getSessionById } from '../recording/functions';
+
 import {
     ATHEER_LISTENERS,
     ATHEER_LISTENER_KEYS
@@ -311,114 +313,95 @@ MiddlewareRegistry.register(store => next => action => {
     const { type } = action;
 
     switch (type) {
-    case CONFERENCE_FAILED: {
+    case CONFERENCE_FAILED:
+        logger.log('jitsi info: CONFERENCE_FAILED');
         break;
-    }
-
     case CONFERENCE_JOINED:
-        logger.log('jitsi info: conference joined');
+        logger.log('jitsi info: CONFERENCE_JOINED');
         break;
-
     case CONFERENCE_LEFT:
-        logger.log('jitsi info: conference left');
+        logger.log('jitsi info: CONFERENCE_LEFT');
         jitsiHashDict = [];
         userHashDict = [];
         break;
-
     case CONFERENCE_WILL_JOIN:
         break;
+    case CONNECTION_DISCONNECTED:
+        logger.log('jitsi info: CONNECTION_DISCONNECTED');
+        break;
+    case PARTICIPANT_JOINED: {
+        logger.log('jitsi info: PARTICIPANT_JOINED');
 
-    case CONNECTION_DISCONNECTED: {
-        logger.log('jitsi info: connection disconnected');
+        const { participant: pInfo } = action;
+
+        logger.log('jitsi info: participant id ->' + pInfo.id);
+        logger.log('jitsi info: participant name ->' + pInfo.name);
+
+        userHashDict[pInfo.id] = _getAtheerUserhash(pInfo.name);
+        jitsiHashDict[pInfo.name] = pInfo.id;
+
+        sendEvent(store, type,
+        {
+            jitsiParticipantId: pInfo.id,
+            atheerUser: userHashDict[pInfo.id]
+        });
         break;
     }
+    case PARTICIPANT_LEFT: {
+        logger.log('jitsi info: PARTICIPANT_LEFT');
 
-    case PARTICIPANT_JOINED:
-        userHashDict[action.participant.id] = _getAtheerUserhash(action.participant.name);
-        jitsiHashDict[action.participant.name] = action.participant.id;
+        const { participant: pInfo } = action;
+
         sendEvent(store, type,
-        /* data */ {
-            jitsiParticipantId: action.participant.id,
-            atheerUser: _getAtheerUserhash(action.participant.name)
+        {
+            jitsiParticipantId: pInfo.id,
+            atheerUser: userHashDict[pInfo.id]
         });
         break;
-
-    case PARTICIPANT_LEFT:
-        sendEvent(store, type,
-        /* data */ {
-            jitsiParticipantId: action.participant.id,
-            atheerUser: userHashDict[action.participant.id]
-        });
-        break;
-
+    }
     case NOTIFY_CONFERENCE_START_TIME:
+        logger.log('jitsi info: NOTIFY_CONFERENCE_START_TIME');
         sendEvent(store, type,
-        /* data */ {
+        {
             startTime: action.time.toString()
         });
         break;
-
-    case SHOW_CONNECTIONS:
-        sendEvent(store, type,
-        /* data */ {
-            participantId: action.participantId
-        });
-        break;
-
-    case UPDATE_CONNECTIONS:
-        sendEvent(store, type,
-        /* data */ {
-            jitsiParticipantId: action.participant,
-            atheerUser: userHashDict[action.participant],
-            speed: action.speed.toString(),
-            bandwidthUp: action.bandwidthUp.toString(),
-            bandwidthDown: action.bandwidthDown.toString(),
-            bitrateUp: action.bitrateUp.toString(),
-            bitrateDown: action.bitrateDown.toString(),
-            bridgeCount: action.bridgeCount.toString(),
-            e2eRtt: action.e2eRtt.toString(),
-            framerate: action.framerate,
-            packetLossUp: action.packetLossUp.toString(),
-            packetLossDown: action.packetLossDown.toString(),
-            region: action.region,
-            resolution: action.resolution,
-            serverRegion: action.serverRegion,
-            localIP: action.localIP,
-            remoteIP: action.remoteIP,
-            transportType: action.transportType
-        });
-        break;
-
     case CONNECTION_FAILED:
+        logger.log('jitsi info: CONNECTION_FAILED');
         break;
-
     case LOAD_CONFIG_ERROR:
+        logger.log('jitsi info: LOAD_CONFIG_ERROR');
         break;
+    case PIN_PARTICIPANT: {
+        logger.log('jitsi info: PIN_PARTICIPANT');
 
-    case PIN_PARTICIPANT:
+        const { participant: pInfo } = action;
+
         sendEvent(store, type,
-        /* data */ {
-            jitsiParticipantId: action.participant.id,
-            atheerUser: userHashDict[action.participant.id]
+        {
+            jitsiParticipantId: pInfo.id,
+            atheerUser: userHashDict[pInfo.id]
         });
         break;
-
+    }
     case RECORDING_SESSION_UPDATED:
+        logger.log('jitsi info: RECORDING_SESSION_UPDATED');
+
+        const { sessionData: sData } = action;
+
+        logger.log('jitsi info: RECORDING_SESSION_UPDATED id ->' + sData.id);
+        logger.log('jitsi info: RECORDING_SESSION_UPDATED status ->' + sData.status);
+
         sendEvent(store, type,
-        /* data */ {
-            status: action.sessionData.status,
-            id: action.sessionData.id,
-            error: action.sessionData.error,
-            initiator: action.sessionData.initiator,
-            mode: action.sessionData.mode
+        {
+            id: sData.id,
+            status: sData.status
         });
         break;
-
     case SET_ROOM:
         Store = store;
         break;
     }
-
     return result;
 });
 

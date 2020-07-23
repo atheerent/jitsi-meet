@@ -6,7 +6,8 @@ import {
     PARTICIPANT_JOINED,
     PARTICIPANT_LEFT,
     PIN_PARTICIPANT,
-    getLocalParticipant
+    getLocalParticipant,
+    isLocalParticipantModerator
 } from '../base/participants';
 import { MiddlewareRegistry } from '../base/redux';
 import {
@@ -17,7 +18,7 @@ import {
     getTrackByMediaTypeAndParticipant
 } from '../base/tracks';
 
-import { selectParticipant, selectParticipantInLargeVideo } from './actions';
+import { selectParticipant, selectParticipantInLargeVideo, selectLocalParticipantInLargeVideo} from './actions';
 import { MEDIA_TYPE } from '../base/media';
 import { SELECT_LARGE_VIDEO_PARTICIPANT } from './actionTypes';
 /**
@@ -32,7 +33,15 @@ MiddlewareRegistry.register(store => next => action => {
     const state = store.getState();
     switch (action.type) {
     case DOMINANT_SPEAKER_CHANGED:
+        break;
     case PARTICIPANT_JOINED:
+        //const isModerator = isLocalParticipantModerator(store.getState());
+        //if(!isModerator) {
+        //    break;
+        //}
+        if (store.getState()['features/base/config'].iAmRecorder) {
+            store.dispatch(selectParticipantInLargeVideo());
+        }
         break;
     case TRACK_ADDED:
         const largeVideo = state['features/large-video'];
@@ -42,9 +51,11 @@ MiddlewareRegistry.register(store => next => action => {
         }
         break;
     case PIN_PARTICIPANT:
+        store.dispatch(selectParticipantInLargeVideo());
+        break;
     case PARTICIPANT_LEFT:
     case TRACK_REMOVED:
-        store.dispatch(selectParticipantInLargeVideo());
+        store.dispatch(selectLocalParticipantInLargeVideo());
         break;
 
     case CONFERENCE_JOINED:

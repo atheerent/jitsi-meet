@@ -8,7 +8,7 @@ const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
  * development with webpack-dev-server.
  */
 const devServerProxyTarget
-    = process.env.WEBPACK_DEV_SERVER_PROXY_TARGET || 'https://sessions.atheer.dev';
+    = process.env.WEBPACK_DEV_SERVER_PROXY_TARGET || 'https://session.atheer.dev';
 
 const analyzeBundle = process.argv.indexOf('--analyze-bundle') !== -1;
 
@@ -39,7 +39,9 @@ const config = {
             '/': {
                 bypass: devServerProxyBypass,
                 secure: false,
-                target: devServerProxyTarget
+                target: devServerProxyTarget,
+                logLevel: "debug",
+                changeOrigin: true
             }
         },
         disableHostCheck: true

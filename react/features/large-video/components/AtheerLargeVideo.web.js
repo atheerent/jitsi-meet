@@ -108,7 +108,7 @@ window.addEventListener("message", onMessage, false);
 function onMessage(event) {
     var receivedData;
     if (!event.data) {
-        console.error('Message event contains no readable data.');
+        console.log('Message event contains no readable data.');
         return;
     }
     if (typeof event.data === 'object') {
@@ -171,13 +171,13 @@ function onMessage(event) {
             context.setTransform(zoom, 0, 0, zoom, (0.5 - zoomX * zoom) * screenshotCanvas.width,
                 (0.5 - zoomY * zoom) * screenshotCanvas.height);
         }
-        
+
         if(isLocalParticipant()) {
             context.scale(-1, 1);
             context.drawImage(remoteVideo, 0, 0, (remoteVideo.videoWidth * -1), remoteVideo.videoHeight);
         } else {
             context.drawImage(remoteVideo, 0, 0, remoteVideo.videoWidth, remoteVideo.videoHeight);
-        }   
+        }
 
         var image = {
             width: remoteVideo.videoWidth,

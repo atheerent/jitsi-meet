@@ -163,12 +163,12 @@ public class MainActivity extends JitsiMeetActivity {
     }
 
     public JitsiMeetConferenceOptions getJitsiMeetOptions() {
-        boolean useForDebugging = true;
+        boolean useForDebugging = false;
 
         if(useForDebugging) {
             JitsiMeetConferenceOptions defaultOptions = new JitsiMeetConferenceOptions.Builder()
                 .setWelcomePageEnabled(false)
-                .setRoom("https://session.atheer.si" + File.separator + "hpe123" + "#" + getJitsiConfig())
+                .setRoom("https://session.atheer.dev" + File.separator + "hpe123" + "#" + getJitsiConfig())
                 .setFeatureFlag("pip.enabled", false)
                 .setFeatureFlag("calendar.enabled", false)
                 .setFeatureFlag("chat.enabled", false)
@@ -179,7 +179,7 @@ public class MainActivity extends JitsiMeetActivity {
             JitsiMeetConferenceOptions defaultOptions
                 = new JitsiMeetConferenceOptions.Builder()
                 .setWelcomePageEnabled(true)
-                .setServerURL(buildURL("https://session.atheer.si"))
+                .setServerURL(buildURL("https://session.atheer.dev"))
                 .setFeatureFlag("atheer.enabled", false)
                 .build();
 

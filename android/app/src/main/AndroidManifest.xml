@@ -26,7 +26,7 @@
         <category android:name="android.intent.category.DEFAULT" />
         <data android:host="alpha.jitsi.net" android:scheme="https" />
         <data android:host="beta.meet.jit.si" android:scheme="https" />
-        <data android:host="session.atheer.si" android:scheme="https" />
+        <data android:host="session.atheer.dev" android:scheme="https" />
       </intent-filter>
       <intent-filter>
         <action android:name="android.intent.action.VIEW" />

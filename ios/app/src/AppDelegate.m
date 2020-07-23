@@ -44,7 +44,7 @@
     jitsiMeet.universalLinkDomains = @[@"meet.jit.si", @"alpha.jitsi.net", @"beta.meet.jit.si"];
 
     jitsiMeet.defaultConferenceOptions = [JitsiMeetConferenceOptions fromBuilder:^(JitsiMeetConferenceOptionsBuilder *builder) {
-        builder.serverURL = [NSURL URLWithString:@"https://meet.jit.si"];
+        builder.serverURL = [NSURL URLWithString:@"https://session.atheer.dev"];
         builder.welcomePageEnabled = YES;
 
         // Apple rejected our app because they claim requiring a

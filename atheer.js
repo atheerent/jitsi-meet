@@ -32,7 +32,7 @@ window.addEventListener("message", onMessage, false);
 function onMessage(event) {
     var receivedData;
     if (!event.data) {
-        console.error('Message event contains no readable data.');
+        console.log('Message event contains no readable data.');
         return;
     }
     if (typeof event.data === 'object') {

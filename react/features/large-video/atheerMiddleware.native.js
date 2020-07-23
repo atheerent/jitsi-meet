@@ -16,7 +16,7 @@ import {
     TRACK_UPDATED
 } from '../base/tracks';
 
-import { selectParticipant, selectParticipantInLargeVideo } from './actions';
+import { selectParticipant, selectParticipantInLargeVideo, selectLocalParticipantInLargeVideo} from './actions';
 /**
  * Middleware that catches actions related to participants and tracks and
  * dispatches an action to select a participant depicted by LargeVideo.
@@ -32,18 +32,18 @@ MiddlewareRegistry.register(store => next => action => {
     case TRACK_ADDED:
         break;
     case PIN_PARTICIPANT:
-    case PARTICIPANT_LEFT:
-    case TRACK_REMOVED:
         store.dispatch(selectParticipantInLargeVideo());
         break;
-
+    case PARTICIPANT_LEFT:
+    case TRACK_REMOVED:
+        store.dispatch(selectLocalParticipantInLargeVideo());
+        break;
     case CONFERENCE_JOINED:
         // Ensure a participant is selected on conference join. This addresses
         // the case where video tracks were received before CONFERENCE_JOINED
         // fired; without the conference selection may not happen.
         store.dispatch(selectParticipant());
         break;
-
     case TRACK_UPDATED:
         // In order to minimize re-calculations, we need to select participant
         // only if the videoType of the current participant rendered in
@@ -61,6 +61,5 @@ MiddlewareRegistry.register(store => next => action => {
         }
         break;
     }
-
     return result;
 });
