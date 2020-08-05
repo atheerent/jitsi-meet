@@ -25,15 +25,32 @@ import android.util.Log;
 import android.view.KeyEvent;
 import androidx.annotation.Nullable;
 
+import com.facebook.react.modules.network.NetworkingModule;
+import com.facebook.react.modules.websocket.WebSocketModule;
+
+import org.jitsi.meet.sdk.AtheerInfo;
 import org.jitsi.meet.sdk.JitsiMeet;
 import org.jitsi.meet.sdk.JitsiMeetActivity;
 import org.jitsi.meet.sdk.JitsiMeetConferenceOptions;
+import org.jitsi.meet.sdk.ProxyServerInfo;
+import org.jitsi.meet.sdk.RemoteVideoInfo;
 
+import okhttp3.Authenticator;
+import okhttp3.Credentials;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
+import okhttp3.Route;
+
+import java.io.IOException;
 import java.io.File;
 import java.lang.reflect.Method;
+import java.net.InetSocketAddress;
 import java.net.MalformedURLException;
+import java.net.Proxy;
 import java.net.URL;
 import java.util.Map;
+
 
 /**
  * The one and only Activity that the Jitsi Meet app needs. The
@@ -87,7 +104,53 @@ public class MainActivity extends JitsiMeetActivity {
 
     @Override
     protected void initialize() {
-        JitsiMeetConferenceOptions defaultOptions = getJitsiMeetOptions();
+
+        boolean enableProxy = false;
+
+        AtheerInfo atheerInfo = new AtheerInfo();
+
+        if(enableProxy) {
+            ProxyServerInfo proxyServerInfo = new ProxyServerInfo();
+            proxyServerInfo.setType("HTTPS");
+            proxyServerInfo.setHost("10.0.0.42");
+            proxyServerInfo.setPort("3120");
+            proxyServerInfo.setUsername("proxy");
+            proxyServerInfo.setPassword("hamid123");
+
+            atheerInfo.setProxyServerInfo(proxyServerInfo);
+
+            Authenticator proxyAuthenticator = new Authenticator() {
+                @Override public Request authenticate(Route route, Response response) throws IOException {
+                    String credential = Credentials.basic("proxy", "hamid123");
+                    return response.request().newBuilder()
+                        .header("Proxy-Authorization", credential)
+                        .build();
+                }
+            };
+
+            NetworkingModule.setCustomClientBuilder(
+                new NetworkingModule.CustomClientBuilder() {
+
+                    @Override
+                    public void apply(OkHttpClient.Builder builder) {
+                        Log.d(this.getClass().getSimpleName(), "Calling NetworkingModule Custom Client Builder");
+                        builder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("10.0.0.42", 3120)));
+                        builder.proxyAuthenticator(proxyAuthenticator);
+                    }
+                });
+
+            WebSocketModule.setCustomClientBuilder(
+                new WebSocketModule.CustomClientBuilder() {
+                    @Override
+                    public void apply(OkHttpClient.Builder builder) {
+                        Log.d(this.getClass().getSimpleName(), "Calling WebSocketModule Custom Client Builder");
+                        builder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("10.0.0.42", 3120)));
+                        builder.proxyAuthenticator(proxyAuthenticator);
+                   }
+                });
+        }
+
+        JitsiMeetConferenceOptions defaultOptions = getJitsiMeetOptions(atheerInfo);
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
         super.initialize();
     }
@@ -162,7 +225,7 @@ public class MainActivity extends JitsiMeetActivity {
         return config.toString();
     }
 
-    public JitsiMeetConferenceOptions getJitsiMeetOptions() {
+    public JitsiMeetConferenceOptions getJitsiMeetOptions(AtheerInfo atheerInfo) {
         boolean useForDebugging = false;
 
         if(useForDebugging) {
@@ -173,6 +236,7 @@ public class MainActivity extends JitsiMeetActivity {
                 .setFeatureFlag("calendar.enabled", false)
                 .setFeatureFlag("chat.enabled", false)
                 .setFeatureFlag("atheer.enabled", false)
+                .setAtheerInfo(atheerInfo)
                 .build();
             return defaultOptions;
         } else {
@@ -181,6 +245,7 @@ public class MainActivity extends JitsiMeetActivity {
                 .setWelcomePageEnabled(true)
                 .setServerURL(buildURL("https://session.atheer.dev"))
                 .setFeatureFlag("atheer.enabled", false)
+                .setAtheerInfo(atheerInfo)
                 .build();
 
             return defaultOptions;
