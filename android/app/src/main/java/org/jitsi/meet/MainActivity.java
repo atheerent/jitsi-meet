@@ -219,9 +219,9 @@ public class MainActivity extends JitsiMeetActivity {
             config.append("config.disableSimulcast=" + disableSimulCast + "&");
         }
 
-        config.append("config.constraints.video.facingMode=\"environment\"&");
-        config.append("config.resolution=640&");
-        config.append("config.constraints.video.fps=15");
+        config.append("config.constraints.video.facingMode=\"user\"&");
+        config.append("config.resolution=720&");
+        config.append("config.constraints.video.fps=30");
 
 
         Log.d(TAG, "Jitsi Config URL:" + config.toString());
@@ -230,7 +230,7 @@ public class MainActivity extends JitsiMeetActivity {
     }
 
     public JitsiMeetConferenceOptions getJitsiMeetOptions(AtheerInfo atheerInfo) {
-        boolean useForDebugging = false;
+        boolean useForDebugging = true;
 
         if(useForDebugging) {
             JitsiMeetConferenceOptions defaultOptions = new JitsiMeetConferenceOptions.Builder()
