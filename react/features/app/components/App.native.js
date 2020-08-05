@@ -29,6 +29,8 @@ import logger from '../logger';
 import { AbstractApp } from './AbstractApp';
 import type { Props as AbstractAppProps } from './AbstractApp';
 
+const { WebRTCModule } = NativeModules;
+
 declare var __DEV__;
 
 /**
@@ -108,6 +110,11 @@ export class App extends AbstractApp {
 
             if(this.props.atheerInfo && this.props.atheerInfo.proxyServerInfo) {
                 logger.log("Calling WebRTCModule.initProxyServerInfo");
+                logger.log("Calling WebRTCModule.initProxyServerInfo" + this.props.atheerInfo.proxyServerInfo.type);
+                logger.log("Calling WebRTCModule.initProxyServerInfo" + this.props.atheerInfo.proxyServerInfo.host);
+                logger.log("Calling WebRTCModule.initProxyServerInfo" + this.props.atheerInfo.proxyServerInfo.port);
+                logger.log("Calling WebRTCModule.initProxyServerInfo" + this.props.atheerInfo.proxyServerInfo.username);
+                logger.log("Calling WebRTCModule.initProxyServerInfo" + this.props.atheerInfo.proxyServerInfo.password);
                 WebRTCModule.initProxyServerInfo(this.props.atheerInfo.proxyServerInfo.type, this.props.atheerInfo.proxyServerInfo.host, this.props.atheerInfo.proxyServerInfo.port, this.props.atheerInfo.proxyServerInfo.username, this.props.atheerInfo.proxyServerInfo.password);
             }
 

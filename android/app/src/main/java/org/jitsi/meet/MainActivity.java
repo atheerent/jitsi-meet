@@ -105,23 +105,27 @@ public class MainActivity extends JitsiMeetActivity {
     @Override
     protected void initialize() {
 
-        boolean enableProxy = false;
+        boolean enableProxy = true;
+        String proxyHost = "squid.atheerair.dev";
+        int proxyPort = 80;
+        String proxyUser = "squid-user";
+        String proxyPassword = "P@ssword";
 
         AtheerInfo atheerInfo = new AtheerInfo();
 
         if(enableProxy) {
             ProxyServerInfo proxyServerInfo = new ProxyServerInfo();
             proxyServerInfo.setType("HTTPS");
-            proxyServerInfo.setHost("10.0.0.42");
-            proxyServerInfo.setPort("3120");
-            proxyServerInfo.setUsername("proxy");
-            proxyServerInfo.setPassword("hamid123");
+            proxyServerInfo.setHost(proxyHost);
+            proxyServerInfo.setPort(Integer.toString(proxyPort));
+            proxyServerInfo.setUsername(proxyUser);
+            proxyServerInfo.setPassword(proxyPassword);
 
             atheerInfo.setProxyServerInfo(proxyServerInfo);
 
             Authenticator proxyAuthenticator = new Authenticator() {
                 @Override public Request authenticate(Route route, Response response) throws IOException {
-                    String credential = Credentials.basic("proxy", "hamid123");
+                    String credential = Credentials.basic(proxyServerInfo.getUsername(), proxyServerInfo.getPassword());
                     return response.request().newBuilder()
                         .header("Proxy-Authorization", credential)
                         .build();
@@ -134,7 +138,7 @@ public class MainActivity extends JitsiMeetActivity {
                     @Override
                     public void apply(OkHttpClient.Builder builder) {
                         Log.d(this.getClass().getSimpleName(), "Calling NetworkingModule Custom Client Builder");
-                        builder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("10.0.0.42", 3120)));
+                        builder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort)));
                         builder.proxyAuthenticator(proxyAuthenticator);
                     }
                 });
@@ -144,7 +148,7 @@ public class MainActivity extends JitsiMeetActivity {
                     @Override
                     public void apply(OkHttpClient.Builder builder) {
                         Log.d(this.getClass().getSimpleName(), "Calling WebSocketModule Custom Client Builder");
-                        builder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("10.0.0.42", 3120)));
+                        builder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(proxyHost, proxyPort)));
                         builder.proxyAuthenticator(proxyAuthenticator);
                    }
                 });
