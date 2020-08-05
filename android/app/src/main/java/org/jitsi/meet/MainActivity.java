@@ -106,7 +106,7 @@ public class MainActivity extends JitsiMeetActivity {
     protected void initialize() {
         Log.d(this.getClass().getSimpleName(), "initialize");
 
-        boolean enableProxy = false;
+        boolean enableProxy = true;
 
         RemoteVideoInfo remoteVideoInfo = new RemoteVideoInfo();
         remoteVideoInfo.setWidth("100");
@@ -118,16 +118,16 @@ public class MainActivity extends JitsiMeetActivity {
         if(enableProxy) {
             ProxyServerInfo proxyServerInfo = new ProxyServerInfo();
             proxyServerInfo.setType("HTTPS");
-            proxyServerInfo.setHost("10.0.0.42");
-            proxyServerInfo.setPort("3120");
-            proxyServerInfo.setUsername("proxy");
-            proxyServerInfo.setPassword("hamid123");
+            proxyServerInfo.setHost("squid.atheerair.dev");
+            proxyServerInfo.setPort("80");
+            proxyServerInfo.setUsername("squid-user");
+            proxyServerInfo.setPassword("P@ssword");
 
             atheerInfo.setProxyServerInfo(proxyServerInfo);
 
             Authenticator proxyAuthenticator = new Authenticator() {
                 @Override public Request authenticate(Route route, Response response) throws IOException {
-                    String credential = Credentials.basic("proxy", "hamid123");
+                    String credential = Credentials.basic("squid-user", "P@ssword");
                     return response.request().newBuilder()
                             .header("Proxy-Authorization", credential)
                             .build();
@@ -140,7 +140,7 @@ public class MainActivity extends JitsiMeetActivity {
                         @Override
                         public void apply(OkHttpClient.Builder builder) {
                             Log.d(this.getClass().getSimpleName(), "Calling NetworkingModule Custom Client Builder");
-                            builder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("10.0.0.42", 3120)));
+                            builder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("squid.atheerair.dev", 80)));
                             builder.proxyAuthenticator(proxyAuthenticator);
                         }
                     });
@@ -150,22 +150,21 @@ public class MainActivity extends JitsiMeetActivity {
                         @Override
                         public void apply(OkHttpClient.Builder builder) {
                             Log.d(this.getClass().getSimpleName(), "Calling WebSocketModule Custom Client Builder");
-                            builder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("10.0.0.42", 3120)));
+                            builder.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress("squid.atheerair.dev", 80)));
                             builder.proxyAuthenticator(proxyAuthenticator);
                         }
                     });
         }
 
-        // Set default options
-        JitsiMeetConferenceOptions defaultOptions
-            = new JitsiMeetConferenceOptions.Builder()
-                .setWelcomePageEnabled(true)
-                .setServerURL(buildURL("https://meet.jit.atheerair.com"))
-                .setAtheerInfo(atheerInfo)
-                .setFeatureFlag("pip.enabled", true)
-                .setFeatureFlag("calendar.enabled", false)
-                .setFeatureFlag("chat.enabled", false)
-                .build();
+        JitsiMeetConferenceOptions defaultOptions = new JitsiMeetConferenceOptions.Builder()
+            .setRoom("https://meet.airsuite-live.atheerair.com/airps1" + "#" + getJitsiConfig())
+            .setAtheerInfo(atheerInfo)
+            .setWelcomePageEnabled(false)
+            .setFeatureFlag("pip.enabled", false)
+            .setFeatureFlag("calendar.enabled", false)
+            .setFeatureFlag("chat.enabled", false)
+            .build();
+
         JitsiMeet.setDefaultConferenceOptions(defaultOptions);
 
         super.initialize();
@@ -220,5 +219,117 @@ public class MainActivity extends JitsiMeetActivity {
         return
             Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
                 && getApplicationInfo().targetSdkVersion >= Build.VERSION_CODES.M;
+    }
+
+    public String getJitsiConfig() {
+        StringBuffer config = new StringBuffer();
+
+        boolean disableSimulCast = false;
+        int cameraResolutionCode  = getCemaraResolutionCode();
+
+        int resolutionWidth = getCemaraResolutionWidth(cameraResolutionCode);
+        int resolutionHeight = getCemaraResolutionHeight(cameraResolutionCode);
+        int frameRate = getFrameRate();
+
+        if(disableSimulCast) {
+            config.append("config.disableSimulcast=" + disableSimulCast + "&");
+        }
+
+        config.append("config.resolution=" + getCemaraResolution(cameraResolutionCode) + "&");
+
+        config.append("config.constraints.video.width.ideal=" + resolutionWidth + "&");
+        config.append("config.constraints.video.width.max=" + resolutionWidth + "&");
+        config.append("config.constraints.video.width.min=" + resolutionWidth + "&");
+
+        config.append("config.constraints.video.height.ideal=" + resolutionHeight + "&");
+        config.append("config.constraints.video.height.max=" + resolutionHeight + "&");
+        config.append("config.constraints.video.height.min=" + resolutionHeight + "&");
+
+        config.append("config.constraints.video.fps=" + frameRate);
+
+        Log.d(TAG, "Jitsi Config URL:" + config.toString());
+
+        return config.toString();
+    }
+
+    private int getCemaraResolutionCode() {
+        String cameraResolution = "4";
+        if(cameraResolution != null && cameraResolution.length() > 0) {
+            return Integer.parseInt(cameraResolution);
+        } else {
+            return 4;
+        }
+    }
+
+    private int getCemaraResolution(int cameraResolutionCode) {
+        switch(cameraResolutionCode) {
+            case 0:
+                return 180;
+            case 1:
+                return 320;
+            case 2:
+                return 360;
+            case 3:
+                return 640;
+            case 4:
+                return 720;
+            default:
+                return 720;
+        }
+    }
+
+    private int getCemaraResolutionWidth(int cameraResolutionCode) {
+        switch(cameraResolutionCode) {
+            case 0:
+                return 320;
+            case 1:
+                return 320;
+            case 2:
+                return 640;
+            case 3:
+                return 640;
+            case 4:
+                return 1280;
+            default:
+                return 1280;
+        }
+    }
+
+    private int getCemaraResolutionHeight(int cameraResolutionCode) {
+        switch(cameraResolutionCode) {
+            case 0:
+                return 180;
+            case 1:
+                return 240;
+            case 2:
+                return 360;
+            case 3:
+                return 480;
+            case 4:
+                return 720;
+            default:
+                return 720;
+        }
+    }
+
+    private int getFrameRate() {
+        String frameRateStr = "30";
+        if(frameRateStr != null && frameRateStr.length() > 0) {
+            int frameRate = Integer.parseInt(frameRateStr);
+            switch(frameRate) {
+                case 0:
+                    return 10;
+                case 1:
+                    return 15;
+                case 2:
+                    return 24;
+                case 3:
+                    return 30;
+                default:
+                    return 30;
+            }
+        } else {
+            return 30;
+        }
     }
 }
