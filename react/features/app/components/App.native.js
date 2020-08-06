@@ -122,6 +122,11 @@ export class App extends AbstractApp {
                 logger.log("Calling WebRTCModule.cameraResolutionInfo");
                 WebRTCModule.initCameraResolutionInfo(this.props.atheerInfo.cameraResolutionInfo.width, this.props.atheerInfo.cameraResolutionInfo.height, this.props.atheerInfo.cameraResolutionInfo.frameRate, this.props.atheerInfo.cameraResolutionInfo.useOverRide);
             }
+
+            if(this.props.atheerInfo && this.props.atheerInfo.enableWebRtcLogging) {
+                logger.log("Calling WebRTCModule.enableWebRtcLogging");
+                WebRTCModule.enableWebRTCLogging();
+            }
         });
     }
 

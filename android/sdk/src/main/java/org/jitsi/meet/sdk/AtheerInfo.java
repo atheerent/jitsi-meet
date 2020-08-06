@@ -40,10 +40,13 @@ public class AtheerInfo {
      */
     private CameraResolutionInfo cameraResolutionInfo;
 
+    private Boolean enableWebRtcLogging = false;
+
     public AtheerInfo() {
         this.proxyServerInfo = null;
         this.remoteVideoInfo = null;
         this.cameraResolutionInfo = null;
+        this.enableWebRtcLogging = false;
     }
 
     public AtheerInfo(Bundle b) {
@@ -59,6 +62,10 @@ public class AtheerInfo {
 
         if (b.containsKey("cameraResolutionInfo")) {
             this.cameraResolutionInfo = new CameraResolutionInfo(b.getBundle("cameraResolutionInfo"));
+        }
+
+        if(b.containsKey("enableWebRtcLogging")) {
+            this.enableWebRtcLogging = b.getBoolean("enableWebRtcLogging");
         }
 
     }
@@ -90,6 +97,14 @@ public class AtheerInfo {
         this.cameraResolutionInfo = cameraResolutionInfo;
     }
 
+    public Boolean getEnableWebRtcLogging() {
+        return enableWebRtcLogging;
+    }
+
+    public void setEnableWebRtcLogging(Boolean enableWebRtcLogging) {
+        this.enableWebRtcLogging = enableWebRtcLogging;
+    }
+
     Bundle asBundle() {
         Bundle b = new Bundle();
 
@@ -104,6 +119,9 @@ public class AtheerInfo {
         if (cameraResolutionInfo != null) {
             b.putBundle("cameraResolutionInfo", cameraResolutionInfo.asBundle());
         }
+
+        b.putBoolean("enableWebRtcLogging", enableWebRtcLogging);
+
         return b;
     }
 }
