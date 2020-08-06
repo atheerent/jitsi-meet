@@ -112,7 +112,7 @@ public class MainActivity extends JitsiMeetActivity {
         String proxyPassword = "P@ssword";
 
         AtheerInfo atheerInfo = new AtheerInfo();
-        atheerInfo.setEnableWebRtcLogging(false);
+        atheerInfo.setEnableWebRtcLogging(true);
 
         if(enableProxy) {
             ProxyServerInfo proxyServerInfo = new ProxyServerInfo();
