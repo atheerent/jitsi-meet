@@ -37,7 +37,7 @@ allprojects {
                 if (details.requested.group == 'com.facebook.react'
                         && details.requested.name == 'react-native') {
                     def file = new File("$rootDir/../node_modules/react-native/package.json")
-                    def version = new JsonSlurper().parseText(file.text).version
+                    def version = "atheer-0.61.5"
                     details.useVersion version
                 }
             }
