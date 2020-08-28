@@ -19,6 +19,8 @@ import { API_ID } from './constants';
 import {
     processExternalDeviceRequest
 } from '../../react/features/device-selection/functions';
+import { openDialog } from '../../react/features/base/dialog';
+import { ScreenShareDialog } from '../../react/features/base/dialog/components/web';
 
 const logger = require('jitsi-meet-logger').getLogger(__filename);
 
@@ -36,6 +38,8 @@ let commands = {};
  * was received before the initialization.
  */
 let initialScreenSharingState = false;
+
+let isScreenSharing = false;
 
 /**
  * The transport instance used for communication with external apps.
@@ -289,8 +293,15 @@ function shouldBeEnabled() {
 function toggleScreenSharing(enable) {
     if (APP.conference.isDesktopSharingEnabled) {
 
-        // eslint-disable-next-line no-empty-function
-        APP.conference.toggleScreenSharing(enable).catch(() => {});
+        if(!isScreenSharing && JitsiMeetJS.util.browser.isFirefox()) {
+            APP.store.dispatch(openDialog(ScreenShareDialog));
+        } else {
+            // eslint-disable-next-line no-empty-function
+            APP.conference.toggleScreenSharing(enable).catch(() => {});
+        }
+
+        isScreenSharing = !isScreenSharing;
+        
     } else {
         initialScreenSharingState = !initialScreenSharingState;
     }
