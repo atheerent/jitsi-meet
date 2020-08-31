@@ -11,7 +11,8 @@ import {
 import {
     pinParticipant,
     PARTICIPANT_JOINED,
-    PARTICIPANT_LEFT
+    PARTICIPANT_LEFT,
+    getLocalParticipant
 } from '../base/participants'
 import { LOAD_CONFIG_ERROR } from '../base/config';
 import {
@@ -318,6 +319,22 @@ MiddlewareRegistry.register(store => next => action => {
         break;
     case CONFERENCE_JOINED:
         logger.log('jitsi info: CONFERENCE_JOINED');
+
+        const state = store.getState();
+        const { room } = state['features/base/conference'];
+        const { loadableAvatarUrl, name, id } = getLocalParticipant(state);
+
+        logger.log('jitsi info: CONFERENCE_JOINED room', room);
+        logger.log('jitsi info: CONFERENCE_JOINED participant id ->' + id);
+        logger.log('jitsi info: CONFERENCE_JOINED participant name ->' + name);
+        logger.log('jitsi info: CONFERENCE_JOINED Atheer name ->' + _getAtheerUserhash(name));
+
+        sendEvent(store, type,
+        {
+            jitsiParticipantId: id,
+            jitsiParticipantDisplayName: name,
+            atheerUser: _getAtheerUserhash(name)
+        });
         break;
     case CONFERENCE_LEFT:
         logger.log('jitsi info: CONFERENCE_LEFT');
@@ -343,6 +360,7 @@ MiddlewareRegistry.register(store => next => action => {
         sendEvent(store, type,
         {
             jitsiParticipantId: pInfo.id,
+            jitsiParticipantDisplayName: pInfo.name,
             atheerUser: userHashDict[pInfo.id]
         });
         break;
@@ -355,6 +373,7 @@ MiddlewareRegistry.register(store => next => action => {
         sendEvent(store, type,
         {
             jitsiParticipantId: pInfo.id,
+            jitsiParticipantDisplayName: pInfo.name,
             atheerUser: userHashDict[pInfo.id]
         });
         break;
@@ -380,6 +399,7 @@ MiddlewareRegistry.register(store => next => action => {
         sendEvent(store, type,
         {
             jitsiParticipantId: pInfo.id,
+            jitsiParticipantDisplayName: pInfo.name,
             atheerUser: userHashDict[pInfo.id]
         });
         break;

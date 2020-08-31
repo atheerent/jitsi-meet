@@ -44,22 +44,13 @@ export function getAvatarColor(initials: ?string) {
 export function getInitials(s: ?string) {
     // We don't want to use the domain part of an email address, if it is one
     logger.log('atheer-jitsi-debug trying to get initials', s);
+    let initials = '';
+
     if (s != undefined) {
         var displayNameArray = s.split(':');
         if (displayNameArray.length > 1) {
-            s = displayNameArray[1];
+            initials = displayNameArray[1];
         }
     }
-    let initials = '';
-
-    if(s && s.length > 2) {
-        var names = s.split(' ');
-        names.forEach(name => {
-            initials = initials ? initials.concat(name.charAt(0)) : name.charAt(0);
-        });
-    } else {
-        initials = s;
-    }
-    initials = initials ? initials.toUpperCase() : initials;
     return initials;
 }

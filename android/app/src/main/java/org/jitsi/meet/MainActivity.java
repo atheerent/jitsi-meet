@@ -105,7 +105,7 @@ public class MainActivity extends JitsiMeetActivity {
     @Override
     protected void initialize() {
 
-        boolean enableProxy = true;
+        boolean enableProxy = false;
         String proxyHost = "squid.atheerair.dev";
         int proxyPort = 80;
         String proxyUser = "squid-user";
@@ -231,7 +231,7 @@ public class MainActivity extends JitsiMeetActivity {
     }
 
     public JitsiMeetConferenceOptions getJitsiMeetOptions(AtheerInfo atheerInfo) {
-        boolean useForDebugging = true;
+        boolean useForDebugging = false;
 
         if(useForDebugging) {
             JitsiMeetConferenceOptions defaultOptions = new JitsiMeetConferenceOptions.Builder()
