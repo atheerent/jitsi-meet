@@ -25,7 +25,7 @@ import UIEvents from '../../../service/UI/UIEvents';
 
 import RemoteVideo from './RemoteVideo';
 import LargeVideoManager from './LargeVideoManager';
-import { VIDEO_CONTAINER_TYPE } from './VideoContainer';
+import { VIDEO_CONTAINER_TYPE, SCREEN_SHARE_TYPE } from './VideoContainer';
 
 import LocalVideo from './LocalVideo';
 
@@ -731,7 +731,7 @@ const VideoLayout = {
 
             // FIXME video type is not the same thing as container type
 
-            if (id !== currentId && videoType === VIDEO_CONTAINER_TYPE) {
+            if (id !== currentId && (videoType === VIDEO_CONTAINER_TYPE || videoType === SCREEN_SHARE_TYPE)) {
                 APP.API.notifyOnStageParticipantChanged(id);
                 participantId = id;
             }
