@@ -17,6 +17,8 @@ import UIUtil from '../util/UIUtil';
 // FIXME should be 'video'
 export const VIDEO_CONTAINER_TYPE = 'camera';
 
+export const SCREEN_SHARE_TYPE = 'desktop';
+
 const FADE_DURATION_MS = 300;
 
 /**
