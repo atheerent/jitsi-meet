@@ -174,7 +174,7 @@ class SpeakerStats extends Component<Props, State> {
 
     _getDisplayName(name) {
         var displayName = "Atheer User";
-        if(name != null && name.split(':').length > 4) {
+        if(name != null && name.split(':').length > 3) {
             displayName = name.split(':')[3]
         }
         return displayName;

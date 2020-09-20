@@ -20,6 +20,7 @@ const AVATAR_OPACITY = 0.4;
  * @returns {string}
  */
 export function getAvatarColor(initials: ?string) {
+    logger.log('atheer-jitsi-debug trying to get avatar color', initials);
     let colorIndex = 0;
 
     if (initials) {
@@ -44,9 +45,9 @@ export function getAvatarColor(initials: ?string) {
 export function getInitials(s: ?string) {
     // We don't want to use the domain part of an email address, if it is one
     logger.log('atheer-jitsi-debug trying to get initials', s);
-    let initials = 'AU';
+    let initials = undefined;
 
-    if (s != undefined) {
+    if (s) {
         var displayNameArray = s.split(':');
         if (displayNameArray.length > 3) {
             initials = displayNameArray[2];
