@@ -303,19 +303,19 @@ var config = {
     // This can be useful for debugging purposes (post-processing/analysis of
     // the webrtc stats) as it is done in the jitsi-meet-torture bandwidth
     // estimation tests.
-    gatherStats: true,
+    // gatherStats: false,
 
     // To enable sending statistics to callstats.io you must provide the
     // Application ID and Secret.
-    callStatsID: '426609706',
-    callStatsSecret: 'a8yliDCeA8S2:Lkn5nVwNp8E7TskAOtBE7q4jzIMjPQny6jkx2f8XU5E=',
+    // callStatsID: '',
+    // callStatsSecret: '',
 
     // enables callstatsUsername to be reported as statsId and used
     // by callstats as repoted remote id
-    enableStatsID: true,
+    // enableStatsID: false
 
     // enables sending participants display name to callstats
-    enableDisplayNameInStats: true,
+    // enableDisplayNameInStats: false
 
 
     // Privacy
