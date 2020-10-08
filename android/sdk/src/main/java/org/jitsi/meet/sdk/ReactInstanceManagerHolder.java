@@ -78,20 +78,7 @@ class ReactInstanceManagerHolder {
             nativeModules.add(new RNConnectionService(reactContext));
         }
 
-        // Initialize the WebRTC module by hand, since we want to override some
-        // initialization options.
-        WebRTCModule.Options options = new WebRTCModule.Options();
-
-        AudioDeviceModule adm = JavaAudioDeviceModule.builder(reactContext)
-            .createAudioDeviceModule();
-        VideoDecoderFactory videoDecoderFactory = new SoftwareVideoDecoderFactory();
-        VideoEncoderFactory videoEncoderFactory = new SoftwareVideoEncoderFactory();
-
-        options.setAudioDeviceModule(adm);
-        options.setVideoDecoderFactory(videoDecoderFactory);
-        options.setVideoEncoderFactory(videoEncoderFactory);
-
-        nativeModules.add(new WebRTCModule(reactContext, options));
+        nativeModules.add(new WebRTCModule(reactContext));
 
         try {
             Class<?> amplitudeModuleClass = Class.forName("org.jitsi.meet.sdk.AmplitudeModule");

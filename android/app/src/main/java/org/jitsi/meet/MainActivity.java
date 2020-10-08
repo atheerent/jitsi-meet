@@ -222,8 +222,7 @@ public class MainActivity extends JitsiMeetActivity {
 
         config.append("config.constraints.video.facingMode=\"user\"&");
         config.append("config.resolution=720&");
-        config.append("config.constraints.video.fps=30");
-
+        config.append("config.constraints.video.fps=30&");
 
         Log.d(TAG, "Jitsi Config URL:" + config.toString());
 
@@ -231,12 +230,12 @@ public class MainActivity extends JitsiMeetActivity {
     }
 
     public JitsiMeetConferenceOptions getJitsiMeetOptions(AtheerInfo atheerInfo) {
-        boolean useForDebugging = false;
+        boolean useForDebugging = true;
 
         if(useForDebugging) {
             JitsiMeetConferenceOptions defaultOptions = new JitsiMeetConferenceOptions.Builder()
                 .setWelcomePageEnabled(false)
-                .setRoom("https://session.atheer.dev" + File.separator + "hpe123" + "#" + getJitsiConfig())
+                .setRoom("https://session.atheer.dev" + File.separator + "bwe12" + "#" + getJitsiConfig())
                 .setFeatureFlag("pip.enabled", false)
                 .setFeatureFlag("calendar.enabled", false)
                 .setFeatureFlag("chat.enabled", false)
