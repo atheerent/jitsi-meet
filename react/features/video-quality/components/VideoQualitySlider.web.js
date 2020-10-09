@@ -148,9 +148,7 @@ class VideoQualitySlider extends Component<Props> {
         if (!_videoSupported) {
             classNames += ' video-not-supported';
             warning = this._renderAudioOnlyLockedMessage();
-        } else if (_p2p && !_audioOnly) {
-            warning = this._renderP2PMessage();
-        }
+        } 
 
         return (
             <div className = { classNames }>
